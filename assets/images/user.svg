@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50.759" height="50" viewBox="0 0 50.759 50">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#e2fbff"/>
+      <stop offset="1" stop-color="#ffe2cf"/>
+    </linearGradient>
+    <clipPath id="clip-path">
+      <path id="Mask" d="M24.5,0h.759a24.5,24.5,0,1,1,0,49H24.5a24.5,24.5,0,0,1,0-49Z" fill="rgba(53,59,80,0.99)" stroke="rgba(53,59,80,0)" stroke-width="1"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <path id="Combined_Shape" data-name="Combined Shape" d="M5.174,22.014v.068q-.028,2.155-3.633,3.241c2.9,2.1,5.792,3.781,8.687,3.781s5.792-1.681,8.687-3.781q-3.58-1.087-3.632-3.245c0-.256,0-.621,0-1.3q0-.163,0-.334c.173.024.159.009,0-.035,0-1.8.012-4.218.023-6.677,2.264-2.927,1.432-6.358.723-6.272-.87.1-8.405-7.027-9.851-7.392a5.382,5.382,0,0,0-5.748,4.1c-.632,3.289-.9,11.579,1.5,14.888A3.123,3.123,0,0,0,5.158,20.16c0,.688.006,1.075.016,1.854Z" transform="translate(18.916 29.104) rotate(180)" fill="url(#linear-gradient)"/>
+    </clipPath>
+    <linearGradient id="linear-gradient-3" x1="0.5" y1="1" x2="0.688" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#353b50"/>
+      <stop offset="1" stop-color="#232439"/>
+    </linearGradient>
+    <clipPath id="clip-path-3">
+      <path id="Combined_Shape-2" data-name="Combined Shape" d="M35.413,5.867c1.5,3.044,2.361,10.065,2.361,10.065H0S.863,8.91,2.361,5.867,12.607,0,12.607,0C14.293,3.46,23.547,3.46,25.162,0,25.162,0,33.915,2.823,35.413,5.867Z" fill="#fff"/>
+    </clipPath>
+  </defs>
+  <g id="Group_30" data-name="Group 30" transform="translate(0.5 0.5)" opacity="0.139">
+    <g id="Path_7" data-name="Path 7" transform="translate(0 0)">
+      <path id="Mask-2" data-name="Mask" d="M24.5,0h.759a24.5,24.5,0,1,1,0,49H24.5a24.5,24.5,0,0,1,0-49Z" stroke="rgba(53,59,80,0)" stroke-width="1"/>
+      <g id="Mask_Group_27" data-name="Mask Group 27" clip-path="url(#clip-path)">
+        <g id="User_07a" data-name="User 07a" transform="translate(5.992 8.631)">
+          <g id="Group_10" data-name="Group 10" transform="translate(6.143 0)">
+            <g id="Group_11" data-name="Group 11" transform="translate(0)">
+              <g id="Group_11-2" data-name="Group 11" transform="translate(22.194 31.572) rotate(180)">
+                <g id="Group_2" data-name="Group 2" transform="translate(0 0)">
+                  <g id="Group_14" data-name="Group 14">
+                    <g id="Path_48" data-name="Path 48" transform="translate(0.742 0)">
+                      <path id="Combined_Shape-3" data-name="Combined Shape" d="M5.174,22.014v.068q-.028,2.155-3.633,3.241c2.9,2.1,5.792,3.781,8.687,3.781s5.792-1.681,8.687-3.781q-3.58-1.087-3.632-3.245c0-.256,0-.621,0-1.3q0-.163,0-.334c.173.024.159.009,0-.035,0-1.8.012-4.218.023-6.677,2.264-2.927,1.432-6.358.723-6.272-.87.1-8.405-7.027-9.851-7.392a5.382,5.382,0,0,0-5.748,4.1c-.632,3.289-.9,11.579,1.5,14.888A3.123,3.123,0,0,0,5.158,20.16c0,.688.006,1.075.016,1.854Z" transform="translate(18.916 29.104) rotate(180)" fill="url(#linear-gradient)"/>
+                      <g id="Path_48-2" data-name="Path 48" transform="translate(0)" clip-path="url(#clip-path-2)">
+                        <path id="Path_48-3" data-name="Path 48" d="M0,1.891A13.722,13.722,0,0,0,5.686,0S3.295,3.169,0,3.781Z" transform="translate(13.742 10.837) rotate(180)" fill="#ffbe94" opacity="0.228"/>
+                      </g>
+                    </g>
+                    <path id="Path_22" data-name="Path 22" d="M19,16.245c1.088-2.611,5.449-7.927,1.69-11.236C19.431-1.135,12.449-.455,7.789.963c-3.132.953-5.5,2.836-6,1.418C-1.372,5.009.21,7.58,2.293,8.318c1.89.67,5.086,1.339,10.521.709.971-.113.767,2.853,1.286,3.174.778.481,1.382-2.543,3.516-1.635s.868,5.119-1.423,5.119c-.79,0-1.185,2.166.948,3.19C18.688,19.632,18.3,17.941,19,16.245Z" transform="translate(22.194 31.572) rotate(180)" fill="url(#linear-gradient-3)"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+          <g id="Group_21" data-name="Group 21" transform="translate(0 26.966)">
+            <path id="Combined_Shape-4" data-name="Combined Shape" d="M35.413,5.867c1.5,3.044,2.361,10.065,2.361,10.065H0S.863,8.91,2.361,5.867,12.607,0,12.607,0C14.293,3.46,23.547,3.46,25.162,0,25.162,0,33.915,2.823,35.413,5.867Z" fill="#fff"/>
+            <g id="Group_21-2" data-name="Group 21" clip-path="url(#clip-path-3)">
+              <path id="Combined_Shape-5" data-name="Combined Shape" d="M0,7.548V6.29H40.922V7.548ZM0,4.4V3.145H40.922V4.4ZM0,1.258V0H40.922V1.258Z" transform="translate(-1.574 5.19)" fill="#353b50"/>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

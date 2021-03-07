@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="28" height="28" viewBox="0 0 28 28">
+  <defs>
+    <clipPath id="clip-path">
+      <circle id="Ellipse_487" data-name="Ellipse 487" cx="14" cy="14" r="14" transform="translate(3043 1991)" fill="#fff" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+  </defs>
+  <g id="Group_10122" data-name="Group 10122" transform="translate(-3043 -1991)">
+    <g id="Mask_Group_26" data-name="Mask Group 26" clip-path="url(#clip-path)">
+      <g id="Ellipse_2" data-name="Ellipse 2" transform="translate(3043 1991)" fill="#fff" stroke="#2cb2a6" stroke-width="2">
+        <circle cx="14" cy="14" r="14" stroke="none"/>
+        <circle cx="14" cy="14" r="13" fill="none"/>
+      </g>
+      <path id="Icon_ionic-ios-arrow-up" data-name="Icon ionic-ios-arrow-up" d="M9.45,13.856l2.466-2.468a.466.466,0,1,1,.658.66l-2.794,2.8a.465.465,0,0,1-.643.014L6.323,12.05a.466.466,0,1,1,.658-.66Z" transform="translate(3047.396 1994.471)" fill="#676767"/>
+      <path id="Icon_ionic-ios-arrow-up-2" data-name="Icon ionic-ios-arrow-up" d="M9.45,13.856l2.466-2.468a.466.466,0,1,1,.658.66l-2.794,2.8a.465.465,0,0,1-.643.014L6.323,12.05a.466.466,0,1,1,.658-.66Z" transform="translate(3047.396 1990.604)" fill="#676767"/>
+      <g id="Rectangle_3931" data-name="Rectangle 3931" transform="translate(3004 1953)" fill="none" stroke="#707070" stroke-width="1">
+        <rect width="100" height="102" stroke="none"/>
+        <rect x="0.5" y="0.5" width="99" height="101" fill="none"/>
+      </g>
+    </g>
+  </g>
+</svg>

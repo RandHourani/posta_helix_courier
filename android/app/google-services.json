@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "542794392827",
+    "firebase_url": "https://courierapp-ebd7c.firebaseio.com",
+    "project_id": "courierapp-ebd7c",
+    "storage_bucket": "courierapp-ebd7c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:542794392827:android:debb55b13841d431c5fc5e",
+        "android_client_info": {
+          "package_name": "com.tradinos.posta_courier"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "542794392827-taq2b9rujqori2u37elulfad2k53ohmf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBASmiOGSxcHW4EU277lk50O9kc-yTAg7g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "542794392827-taq2b9rujqori2u37elulfad2k53ohmf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

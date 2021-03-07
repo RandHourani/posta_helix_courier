@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="49" height="49" viewBox="0 0 49 49">
+  <g id="Group_10123" data-name="Group 10123" transform="translate(-151.6 -523)">
+    <path id="Path_33243" data-name="Path 33243" d="M24.5,0A24.5,24.5,0,1,1,0,24.5,24.5,24.5,0,0,1,24.5,0Z" transform="translate(151.6 523)" fill="#fff"/>
+    <text id="Stop" transform="translate(165.6 551)" fill="#df2f45" font-size="10" font-family="NunitoSans-ExtraBold, Nunito Sans" font-weight="800"><tspan x="0" y="0">Stop</tspan></text>
+    <g id="Ellipse_469" data-name="Ellipse 469" transform="translate(154.6 526)" fill="none" stroke="#df2f45" stroke-width="1.5" opacity="0.2">
+      <circle cx="21.5" cy="21.5" r="21.5" stroke="none"/>
+      <circle cx="21.5" cy="21.5" r="20.75" fill="none"/>
+    </g>
+  </g>
+</svg>

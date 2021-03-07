@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17.184" height="20.016" viewBox="0 0 17.184 20.016">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#e2741c"/>
+      <stop offset="1" stop-color="#c5a87e"/>
+    </linearGradient>
+  </defs>
+  <g id="pin-with-large-head-variant" transform="translate(0 4.75) rotate(-26)">
+    <g id="Layer_8_12_">
+      <path id="Path_4" data-name="Path 4" d="M5.717,0A5.117,5.117,0,0,0,2.079,8.715L0,16.985,5.356,10.1a.442.442,0,0,0,.362.134A5.118,5.118,0,0,0,5.717,0Zm3.6,6.68c-.469.032-.914-.846-.992-1.962s.24-2.047.71-2.08.914.846.993,1.961S9.786,6.647,9.316,6.68Z" fill="url(#linear-gradient)"/>
+    </g>
+  </g>
+</svg>
