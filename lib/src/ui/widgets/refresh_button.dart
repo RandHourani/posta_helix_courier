@@ -13,7 +13,6 @@ class RotateImage extends StatefulWidget {
   @override
   RotateImageState createState() => new RotateImageState();
 }
-//
 class RotateImageState extends State
     with SingleTickerProviderStateMixin {
 
