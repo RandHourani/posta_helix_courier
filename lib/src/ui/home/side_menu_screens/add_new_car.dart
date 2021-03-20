@@ -155,15 +155,14 @@ class AddNewCar extends StatelessWidget {
                                                         value,
                                                         style: TextStyle(
                                                           fontFamily:
-                                                          FontFamilies
-                                                              .POPPINS,
+                                                              FontFamilies
+                                                                  .POPPINS,
                                                           fontSize:
-                                                          (MediaQuery
-                                                              .of(
-                                                              context)
-                                                              .size
-                                                              .height *
-                                                              0.02),
+                                                              (MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height *
+                                                                  0.02),
                                                           color: AppColors
                                                               .labelColor,
                                                         ),

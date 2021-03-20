@@ -23,6 +23,7 @@ class VehicleModel {
       "brand_id": vehicleBloc.getCarBrand() != null
           ? int.parse(vehicleBloc.getSelectedBrandId())
           : null,
+
     }
   };
 

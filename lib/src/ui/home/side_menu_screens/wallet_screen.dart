@@ -176,12 +176,9 @@ class WalletScreen extends StatelessWidget {
                                     color: AppColors.TITLE_TEXT_COLOR,
                                     fontFamily: FontFamilies.POPPINS,
                                     fontSize:
-                                    (MediaQuery
-                                        .of(context)
-                                        .size
-                                        .height *
-                                        0.02) +
-                                        7,
+                                        (MediaQuery.of(context).size.height *
+                                                0.02) +
+                                            7,
                                   )),
                             ],
                           ),

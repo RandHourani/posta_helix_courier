@@ -17,7 +17,6 @@ import 'package:posta_courier/models/registered_captain_model.dart';
 import 'package:posta_courier/src/ui/home/google_maps/home_screen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:posta_courier/src/ui/widgets/dialog_loading.dart';
-
 class InterviewScreen extends StatelessWidget {
   double itemExtent = 60.0;
   FixedExtentScrollController scrollController;
@@ -283,7 +282,7 @@ class InterviewScreen extends StatelessWidget {
                                         }
                                       },
                                     );
-                                    }),
+                                  }),
                                   );
                                 },
                                 child: Row(
@@ -387,12 +386,12 @@ class InterviewScreen extends StatelessWidget {
       ),
     );
   }
-
   Future<void> _showDialog(context) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
+
         Future.delayed(Duration(seconds: 2), () {
           Navigator.push(
             context,
@@ -420,6 +419,7 @@ class InterviewScreen extends StatelessWidget {
             }),
           );
           Navigator.of(context).pop(true);
+
         });
         return LoadingDialogWidget();
       },

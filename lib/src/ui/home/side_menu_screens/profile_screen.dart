@@ -416,17 +416,17 @@ class ProfileScreen extends StatelessWidget {
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment
                                                       .start,
-                                                  children: [
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          right: 10, left: 10),
-                                                      child: Image.asset(
-                                                        "assets/images/gallery.png",
-                                                        width: 35,
-                                                        height: 30,
-                                                        color: Colors.black,
-                                                      ),
-                                                    ),
+                                                 children: [
+                                                   Padding(
+                                                     padding: EdgeInsets.only(
+                                                         right: 10, left: 10),
+                                                     child: Image.asset(
+                                                       "assets/images/gallery.png",
+                                                       width: 35,
+                                                       height: 30,
+                                                       color: Colors.black,
+                                                     ),
+                                                   ),
 
 
                                                     Container(child: Text(

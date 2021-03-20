@@ -35,6 +35,7 @@ class OfflineMap extends StatelessWidget {
         else
           {return GoogleMap(
             liteModeEnabled: true,
+
             onMapCreated: (GoogleMapController controller) {
               rootBundle.loadString('assets/map_style').then((string) {
                 _controller.setMapStyle(string);

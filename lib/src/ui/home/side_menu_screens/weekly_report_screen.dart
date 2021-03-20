@@ -221,8 +221,7 @@ class WeeklyReportScreen extends StatelessWidget {
             },
             itemCount: snapshot.data.report.report.length,
           );
-        }
-        else {
+        } else {
           return SpinKitCircle(
             color: AppColors.MAIN_COLOR,
           );

@@ -25,8 +25,8 @@ class OnlineMap extends StatelessWidget{
 
 
           if (snap.data == null) {
-            return
-              Center(child:    GoogleMap(
+            return Center(
+              child: GoogleMap(
             liteModeEnabled: true,
             onMapCreated: (GoogleMapController controller) {
               rootBundle.loadString('assets/map_style').then((string) {
@@ -44,7 +44,7 @@ class OnlineMap extends StatelessWidget{
               tilt: 59.0, // 2
             ),
           ));
-          }
+        }
           else{
           return GoogleMap(
             liteModeEnabled: true,

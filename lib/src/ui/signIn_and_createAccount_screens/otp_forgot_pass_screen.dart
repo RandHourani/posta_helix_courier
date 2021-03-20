@@ -69,11 +69,8 @@ class OtpForgotPassScreen extends StatelessWidget {
                             color: AppColors.TITLE_TEXT_COLOR,
                             fontFamily: FontFamilies.POPPINS,
                             fontSize:
-                            (MediaQuery
-                                .of(context)
-                                .size
-                                .width * 0.04) +
-                                FontSize.HEADING_FONT,
+                                (MediaQuery.of(context).size.width * 0.04) +
+                                    FontSize.HEADING_FONT,
                             fontWeight: FontWeight.w700),
                       ),
                       Padding(

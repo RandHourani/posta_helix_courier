@@ -3978,20 +3978,19 @@ class DocumentsScreen extends StatelessWidget {
                                                   FontSize.BUTTON_FONT_L,
                                               color: Colors.black,
                                             ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 10),
-                                    child: Icon(
-                                      Icons.arrow_forward,
-                                      color: Colors.black,
-                                      size: (MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width *
-                                          0.008) +
-                                          18,
-                                    ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 10),
+                                          child: Icon(
+                                            Icons.arrow_forward,
+                                            color: Colors.black,
+                                            size: (MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.008) +
+                                                18,
+                                          ),
                                   ),
                                 ],
                               ),

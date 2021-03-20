@@ -30,16 +30,16 @@ class CaptainProvider {
     var response = await client.post(captainRegistrationUrl,
         body: json.encode({  "captain": {
           "activation_code": otpBloc.getSignUpCode().toString(),
-          "first_name": personalDetailsBloc.getFirstName().toString(),
-          "last_name": personalDetailsBloc.getLastName().toString(),
-          "birthday":
-          Utils.dateFormat2(personalDetailsBloc.getBirthday().toString()),
-          "driving_certificate_end_date": Utils.dateFormat2(
-              personalDetailsBloc.getDriverExpiredDate().toString()),
-          "driving_certificate_start_date": Utils.dateFormat2(
-              personalDetailsBloc.getDriverIssueDate().toString()),
-          "email": personalDetailsBloc.getEmail().toString(),
-          "gender": personalDetailsBloc.getGender(),
+            "first_name": personalDetailsBloc.getFirstName().toString(),
+            "last_name": personalDetailsBloc.getLastName().toString(),
+            "birthday":
+                Utils.dateFormat2(personalDetailsBloc.getBirthday().toString()),
+            "driving_certificate_end_date": Utils.dateFormat2(
+                personalDetailsBloc.getDriverExpiredDate().toString()),
+            "driving_certificate_start_date": Utils.dateFormat2(
+                personalDetailsBloc.getDriverIssueDate().toString()),
+            "email": personalDetailsBloc.getEmail().toString(),
+            "gender": personalDetailsBloc.getGender(),
             "nationality_id": personalDetailsBloc.getNationalityId(),
             "password": personalDetailsBloc.getPassword().toString(),
             "password_confirmation":
@@ -60,17 +60,17 @@ class CaptainProvider {
     print(response.body);
     return CaptainModel.fromJson(jsonDecode(response.body));
   }
-
   Future<CaptainModel> editPersonalData(Map<String, dynamic> body) async {
     final storage = new FlutterSecureStorage();
     String id = await storage.read(key: "id");
     String auth = await storage.read(key: "accessToken");
-    var response = await client
-        .put(vehicleUrl + id.toString(), body: json.encode(body), headers: {
-      "Authorization": "Bearer " + auth,
-      "content-type": "application/json",
-      "Accept": "application/json"
-    });
+    var response = await client.put(vehicleUrl + id.toString(),
+        body: json.encode(body),
+        headers: {
+          "Authorization": "Bearer " + auth,
+          "content-type": "application/json",
+          "Accept": "application/json"
+        });
     print(response.statusCode.toString());
     print(response.body);
     checkCaptainDataBloc.checkCaptainData();
@@ -78,15 +78,16 @@ class CaptainProvider {
     return CaptainModel.fromJson(jsonDecode(response.body));
   }
 
-  Future<CaptainModel> vehicleRequest(
-      String id, auth, Map<String, dynamic> body) async {
+  Future<CaptainModel> vehicleRequest(String id, auth,
+      Map<String, dynamic>body) async {
     print(VehicleModel.carData);
-    var response = await client
-        .put(vehicleUrl + id.toString(), body: json.encode(body), headers: {
-      "Authorization": "Bearer " + auth,
-      "content-type": "application/json",
-      "Accept": "application/json"
-    });
+    var response = await client.put(vehicleUrl + id.toString(),
+        body: json.encode(body),
+        headers: {
+          "Authorization": "Bearer " + auth,
+          "content-type": "application/json",
+          "Accept": "application/json"
+        });
     print(response.statusCode.toString());
     print(response.body);
     checkCaptainDataBloc.checkCaptainData();

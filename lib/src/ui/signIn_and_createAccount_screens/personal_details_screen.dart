@@ -215,11 +215,8 @@ class PersonalDetailsScreen extends StatelessWidget {
                                 style: TextStyle(
                                   fontFamily: FontFamilies.POPPINS,
                                   fontSize:
-                                  (MediaQuery
-                                      .of(context)
-                                      .size
-                                      .height *
-                                      0.02),
+                                      (MediaQuery.of(context).size.height *
+                                          0.02),
                                   color: AppColors.labelColor,
                                 ),
                               ),

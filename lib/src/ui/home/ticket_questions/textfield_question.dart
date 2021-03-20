@@ -39,7 +39,10 @@ class QuestionState extends State<TextFieldQuestion> {
           ),
           Container(
               margin: EdgeInsets.only(top: 5, bottom: 10),
-              width: MediaQuery.of(context).size.width / 1.26,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width / 1.26,
               // height: 30,
               child: TextField(
                 decoration: new InputDecoration(

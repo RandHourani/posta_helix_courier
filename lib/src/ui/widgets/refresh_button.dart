@@ -9,11 +9,11 @@ class RefreshButton extends StatelessWidget {
     return RotateImage();
   }
 }
-
 class RotateImage extends StatefulWidget {
   @override
   RotateImageState createState() => new RotateImageState();
 }
+
 class RotateImageState extends State
     with SingleTickerProviderStateMixin {
 
@@ -24,7 +24,7 @@ class RotateImageState extends State
     super.initState();
 
     animationController = new AnimationController(
-      value: this,
+      vsync: this,
       duration: new Duration(seconds: 5),
     );
 

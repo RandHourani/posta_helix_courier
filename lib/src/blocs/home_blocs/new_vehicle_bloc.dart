@@ -154,9 +154,9 @@ class NewVehicleBloc {
     final storage = new FlutterSecureStorage();
     String id = await storage.read(key: "id");
     String auth = await storage.read(key: "accessToken");
-    final request = await _repository.newVehicle(id,
+    final request = await _repository.newVehicle(
+        id,
         auth,
-
         _insuranceFront.value.path,
         _insuranceBack.value.path,
         _vehicleLicenseFront.value.path,
@@ -178,10 +178,9 @@ class NewVehicleBloc {
   setSelectedColor(String value) {
     _carColorSelected.add(value);
     ColorsDBProvider.db.getAllColors().then((value) {
-      _carColorSelectedId.add(
-          value[value.indexWhere((element) =>
-          element.name ==
-              _carColorSelected.value)].id);
+      _carColorSelectedId.add(value[value
+              .indexWhere((element) => element.name == _carColorSelected.value)]
+          .id);
     });
   }
 
@@ -304,6 +303,7 @@ class NewVehicleBloc {
   setRegistrationExpireDateValidation(String value) {
     _registrationExpireDateValidation.add(value);
   }
+
 
 
   updateInsuranceFront(File file) {

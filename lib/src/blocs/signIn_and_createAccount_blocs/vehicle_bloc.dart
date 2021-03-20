@@ -124,7 +124,7 @@ class VehicleBloc {
     print(_carBrandId.value);
 
     CarDataModel carModels =
-    await _repository.requestCarModels(_carBrandId.value);
+        await _repository.requestCarModels(_carBrandId.value);
     _carBrandModels.sink.add(carModels);
     _carModelSelected.add(_carBrandModels.value.carData.data[0].name);
   }

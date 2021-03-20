@@ -59,7 +59,7 @@ class CountryBloc {
         .value
         .data
         .data[_country.value.data.data
-        .indexWhere((element) => element.id == countryId)]
+            .indexWhere((element) => element.id == countryId)]
         .countryCode);
   }
 

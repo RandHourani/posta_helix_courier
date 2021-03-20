@@ -1175,73 +1175,64 @@ class VehicleDetailsScreen extends StatelessWidget {
   carBrandTextField(context) {
     return captainPersonalData != null
         ? Brands(
-      init: captainPersonalData != null
-          ? captainPersonalData.data.car.carBrandName
-          : "",
-    )
+            init: captainPersonalData != null
+                ? captainPersonalData.data.car.carBrandName
+                : "",
+          )
         : TypeAheadFormField(
-      textFieldConfiguration: TextFieldConfiguration(
-        focusNode: brandsNode,
-        style: TextStyle(
-          fontFamily: FontFamilies.POPPINS,
-          fontSize: (MediaQuery
-              .of(context)
-              .size
-              .height * 0.02),
-          color: Colors.black,
-        ),
-        controller: _typeAheadController,
-        decoration: InputDecoration(
-          // hintText: captainPersonalData!=null?captainPersonalData.data.car.carBrandName:" ",
-          contentPadding: EdgeInsets.all(0),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: AppColors.LIGHT_BLUE),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: AppColors.MAIN_COLOR),
-          ),
-          labelText: 'Vehicle Make',
-          labelStyle: TextStyle(
-            color: AppColors.labelColor,
-            fontFamily: FontFamilies.POPPINS,
-            fontSize: (MediaQuery
-                .of(context)
-                .size
-                .height * 0.02),
-          ),
-        ),
-      ),
-      itemBuilder: (BuildContext context, suggestion) {
-        return ListTile(
-          title: Text(
-            suggestion,
-            style: TextStyle(
-              fontFamily: FontFamilies.POPPINS,
-              fontSize: (MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.02),
-              color: AppColors.labelColor,
+            textFieldConfiguration: TextFieldConfiguration(
+              focusNode: brandsNode,
+              style: TextStyle(
+                fontFamily: FontFamilies.POPPINS,
+                fontSize: (MediaQuery.of(context).size.height * 0.02),
+                color: Colors.black,
+              ),
+              controller: _typeAheadController,
+              decoration: InputDecoration(
+                // hintText: captainPersonalData!=null?captainPersonalData.data.car.carBrandName:" ",
+                contentPadding: EdgeInsets.all(0),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.LIGHT_BLUE),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.MAIN_COLOR),
+                ),
+                labelText: 'Vehicle Make',
+                labelStyle: TextStyle(
+                  color: AppColors.labelColor,
+                  fontFamily: FontFamilies.POPPINS,
+                  fontSize: (MediaQuery.of(context).size.height * 0.02),
+                ),
+              ),
             ),
-          ),
-        );
-      },
-      suggestionsCallback: (String pattern) {
-        return vehicleBloc.getSuggestions(pattern);
-      },
-      onSuggestionSelected: (suggestion) {
-        // captainPersonalData != null
-        //     ? _typeAheadController.text =
-        //         captainPersonalData.data.car.carBrandName
-        //     :
-        _typeAheadController.text = suggestion;
-        vehicleBloc.setCarBrand(suggestion.toString());
-        // vehicleBloc.getSuggestions("a");
-      },
-      onSaved: (suggestion) {
-        // vehicleBloc.getSuggestions(null);
-      },
-    );
+            itemBuilder: (BuildContext context, suggestion) {
+              return ListTile(
+                title: Text(
+                  suggestion,
+                  style: TextStyle(
+                    fontFamily: FontFamilies.POPPINS,
+                    fontSize: (MediaQuery.of(context).size.height * 0.02),
+                    color: AppColors.labelColor,
+                  ),
+                ),
+              );
+            },
+            suggestionsCallback: (String pattern) {
+              return vehicleBloc.getSuggestions(pattern);
+            },
+            onSuggestionSelected: (suggestion) {
+              // captainPersonalData != null
+              //     ? _typeAheadController.text =
+              //         captainPersonalData.data.car.carBrandName
+              //     :
+              _typeAheadController.text = suggestion;
+              vehicleBloc.setCarBrand(suggestion.toString());
+              // vehicleBloc.getSuggestions("a");
+            },
+            onSaved: (suggestion) {
+              // vehicleBloc.getSuggestions(null);
+            },
+          );
   }
 
   Widget plateNumberTextField() => StreamBuilder<String>(

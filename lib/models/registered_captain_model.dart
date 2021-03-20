@@ -39,26 +39,30 @@ class DataDetails {
   Interview interview;
   bool goingOffline;
 
-  DataDetails({this.username,
-    this.id,
-    this.firstName,
-    this.lastName,
-    this.accessToken,
-    this.email,
-    this.birthday,
-    this.drivingCertificateStartDate,
-    this.drivingCertificateEndDate,
-    this.profileImage,
-    this.idCardFront,
-    this.idCardBack,
-    this.drivingCertificateFront,
-    this.drivingCertificateBack,
-    this.nationalityId,
-    this.bankId,
-    this.countryId,
-    this.car, this.approvedAt,
-    this.activeSuggestion,
-    this.rating, this.interview, this.goingOffline});
+  DataDetails(
+      {this.username,
+      this.id,
+      this.firstName,
+      this.lastName,
+      this.accessToken,
+      this.email,
+      this.birthday,
+      this.drivingCertificateStartDate,
+      this.drivingCertificateEndDate,
+      this.profileImage,
+      this.idCardFront,
+      this.idCardBack,
+      this.drivingCertificateFront,
+      this.drivingCertificateBack,
+      this.nationalityId,
+      this.bankId,
+      this.countryId,
+      this.car,
+      this.approvedAt,
+      this.activeSuggestion,
+      this.rating,
+      this.interview,
+      this.goingOffline});
 
   factory DataDetails.fromJson(Map<String, dynamic> json) {
     var list = json['data'] as List;
@@ -71,9 +75,9 @@ class DataDetails {
         email: json['email'] as String,
         birthday: json['birthday'] as String,
         drivingCertificateStartDate:
-        json['driving_certificate_start_date'] as String,
+            json['driving_certificate_start_date'] as String,
         drivingCertificateEndDate:
-        json['driving_certificate_end_date'] as String,
+            json['driving_certificate_end_date'] as String,
         profileImage: json['profile_image'] as String,
         idCardFront: json['id_card_front'] as String,
         idCardBack: json['id_card_back'] as String,
@@ -84,14 +88,15 @@ class DataDetails {
         countryId: json['country_id'] as int,
         car: Car.fromJson(json['cars']),
         goingOffline: json['goingOffline'] as bool,
-        interview: json['interview'] != null ? Interview.fromJson(
-            json['interview']) : null,
-        rating: json['avg_rating'] as String,
-        approvedAt: json['approved_at'] != null
-            ? json['approved_at'] as String
+        interview: json['interview'] != null
+            ? Interview.fromJson(json['interview'])
             : null,
-        activeSuggestion: json['active_suggestion'] != null ? ActiveSuggestion
-            .fromJson(json['active_suggestion']) : null);
+        rating: json['avg_rating'] as String,
+        approvedAt:
+            json['approved_at'] != null ? json['approved_at'] as String : null,
+        activeSuggestion: json['active_suggestion'] != null
+            ? ActiveSuggestion.fromJson(json['active_suggestion'])
+            : null);
   }
 }
 

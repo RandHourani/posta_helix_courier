@@ -75,6 +75,7 @@ class BrandsState extends State<Brands> {
         });
         vehicleBloc.setCarBrand(suggestion.toString());
 
+
         // vehicleBloc.getSuggestions("a");
       },
       hideOnError: true,
@@ -82,6 +83,7 @@ class BrandsState extends State<Brands> {
         setState(() {
           _typeAheadController.text = suggestion;
           // vehicleBloc.setCarBrand(suggestion.toString());
+
         });
         // vehicleBloc.getSuggestions(null);
       },

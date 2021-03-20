@@ -120,8 +120,7 @@ class Repository {
   }
    setProfileImage(File img) {
     return accountDatProvide.setProfileImage(img);
-   }
-
+  }
 
   Future<InterviewDataModel> requestInterViewData(String date) {
     return interviewDatProvide.getInterviewTime(date);
@@ -130,7 +129,6 @@ class Repository {
   Future<CaptainModel> createAccount(Map<String, dynamic> body) {
     return captainProvider.request(body);
   }
-
   Future<CaptainModel> editAccount(Map<String, dynamic> body) {
     return captainProvider.editPersonalData(body);
   }
@@ -172,7 +170,9 @@ class Repository {
         idFront,
         idBack,
         licenseFront,
-        licenseBack, id,
+        licenseBack,
+
+        id,
         auth);
   }
 

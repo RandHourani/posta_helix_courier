@@ -160,7 +160,6 @@ class TextFieldValidation {
               Utils.dateFormat1(date.toString()));
     }
   }
-
   checkNewCarRegistrationExpiredDateValidation(String date) {
     DateFormat format = DateFormat("yyyy-MM-dd");
 
