@@ -9,6 +9,7 @@ class RefreshButton extends StatelessWidget {
     return RotateImage();
   }
 }
+
 class RotateImage extends StatefulWidget {
   @override
   RotateImageState createState() => new RotateImageState();
