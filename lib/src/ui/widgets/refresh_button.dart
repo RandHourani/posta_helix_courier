@@ -24,7 +24,7 @@ class RotateImageState extends State
     super.initState();
 
     animationController = new AnimationController(
-      vsync: this,
+      value: this,
       duration: new Duration(seconds: 5),
     );
 
