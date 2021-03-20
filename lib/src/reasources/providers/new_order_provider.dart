@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
+import 'package:posta_courier/src/utils/util.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:http/http.dart';
@@ -73,13 +73,17 @@ class OrderProvider {
       "sortBy": "id",
     };
 
-    var uri = Uri.http('development.postahelix.com', '/api/order', queryParameters);
+    var uri =
+        Uri.http('development.postahelix.com', '/api/order', queryParameters);
 
     var response = await client.get(uri, headers: {
       "Authorization": "Bearer " + accessToken,
       "Accept": "application/json",
       "Content_Type": "application/json",
     });
+    if (response.statusCode == 401) {
+      Utils.setScreen('/signIn');
+    } else {}
     return OrderModel.formJson(jsonDecode(response.body));
   }
 

@@ -28,24 +28,27 @@ class CaptainDetails{
   int countryId;
   int totalRating;
   CaptainCar car;
+  Nationality nationality;
 
   CaptainDetails(
       {this.id,
-        this.nationalityId,
-        this.birthday,
-        this.email,
-        this.lastName,
-        this.firstName,
-        this.countryId,
-        this.username,
-        this.drivingCertificateB,
-        this.drivingCertificateED,
-        this.drivingCertificateF,
-        this.drivingCertificateSD,
-        this.gender,
-        this.idCardB,
-        this.idCardF,
-        this.totalRating,this.car});
+      this.nationalityId,
+      this.birthday,
+      this.email,
+      this.lastName,
+      this.firstName,
+      this.countryId,
+      this.username,
+      this.drivingCertificateB,
+      this.drivingCertificateED,
+      this.drivingCertificateF,
+      this.drivingCertificateSD,
+      this.gender,
+      this.idCardB,
+      this.idCardF,
+      this.totalRating,
+      this.car,
+      this.nationality});
 
   factory CaptainDetails.fromJson(Map<String, dynamic> json) {
     return CaptainDetails(
@@ -64,12 +67,31 @@ class CaptainDetails{
         drivingCertificateB: json['driving_certificate_back'] as String,
         nationalityId: json['nationality_id'] as int,
         totalRating: json['total_ratings'] as int,
-        countryId: json['country_id']as int,
-        car:json['car']!=null? CaptainCar.fromJson(json['car']):null
+        countryId: json['country_id'] as int,
+        car: json['car'] != null ? CaptainCar.fromJson(json['car']) : null,
+        nationality: Nationality.fromJson(json['nationality'])
+
     );
   }
 
 }
+
+class Nationality {
+  int id;
+
+  String name;
+
+  Nationality({this.id, this.name});
+
+  factory Nationality.fromJson(Map<String, dynamic>json)
+  {
+    return Nationality(
+        id: json['id'] as int,
+        name: json['name'] as String
+    );
+  }
+}
+
 class CaptainCar {
   int id;
   String insuranceExpiredDate;

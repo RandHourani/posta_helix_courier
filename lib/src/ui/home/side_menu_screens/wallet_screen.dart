@@ -12,6 +12,7 @@ import 'package:posta_courier/src/constants/fonts_size.dart';
 import 'package:posta_courier/src/ui/home/side_menu_screens/view_receipt_screen.dart';
 import 'package:posta_courier/src/ui/widgets/dialog_loading.dart';
 import 'package:posta_courier/src/utils/util.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class WalletScreen extends StatelessWidget {
   List<String> list = List();
@@ -162,11 +163,10 @@ class WalletScreen extends StatelessWidget {
                                   fontWeight: FontWeight.w700,
                                   color: AppColors.MAIN_COLOR,
                                   fontFamily: FontFamilies.POPPINS,
-                                  fontSize: (MediaQuery.of(context)
-                                      .size
-                                      .height *
-                                      0.02) +
-                                      23,
+                                  fontSize:
+                                      (MediaQuery.of(context).size.height *
+                                              0.02) +
+                                          23,
                                 ),
                               ),
                               TextSpan(
@@ -175,7 +175,9 @@ class WalletScreen extends StatelessWidget {
                                   style: TextStyle(
                                     color: AppColors.TITLE_TEXT_COLOR,
                                     fontFamily: FontFamilies.POPPINS,
-                                    fontSize: (MediaQuery.of(context)
+                                    fontSize:
+                                    (MediaQuery
+                                        .of(context)
                                         .size
                                         .height *
                                         0.02) +
@@ -199,7 +201,9 @@ class WalletScreen extends StatelessWidget {
                 if (snapshot.hasData) {
                   return buildListView(snapshot.data);
                 } else {
-                  return LoadingDialogWidget();
+                  return SpinKitCircle(
+                    color: AppColors.MAIN_COLOR,
+                  );
                 }
               },
             ),
@@ -364,13 +368,17 @@ class WalletScreen extends StatelessWidget {
                           Align(
                             alignment: Alignment.centerRight,
                             child: Text(
-                              Utils.dateTimeFormat6(
-                              data.wallet.data[position].dateTime.toString()),
+                              Utils.dateTimeFormat6(data
+                                  .wallet.data[position].dateTime
+                                  .toString()),
                               style: TextStyle(
                                   fontFamily: FontFamilies.POPPINS,
                                   fontSize:
-                                      (MediaQuery.of(context).size.height *
-                                          0.015)),
+                                  (MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height *
+                                      0.015)),
                             ),
                           ),
                         ],
@@ -728,12 +736,19 @@ class WalletScreen extends StatelessWidget {
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 data.wallet.data[position].transactionList[0]
-                                    .details,
+                                    .details ==
+                                    null
+                                    ? " "
+                                    : data.wallet.data[position]
+                                    .transactionList[0].details,
                                 style: TextStyle(
                                     fontFamily: FontFamilies.POPPINS,
                                     fontSize:
-                                        (MediaQuery.of(context).size.height *
-                                            0.013)),
+                                    (MediaQuery
+                                        .of(context)
+                                        .size
+                                        .height *
+                                        0.013)),
                               ),
                             ),
                           ],

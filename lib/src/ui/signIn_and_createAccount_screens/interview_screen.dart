@@ -15,6 +15,8 @@ import 'package:posta_courier/src/ui/widgets/dialog.dart';
 import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/get_captain_data_bloc.dart';
 import 'package:posta_courier/models/registered_captain_model.dart';
 import 'package:posta_courier/src/ui/home/google_maps/home_screen.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:posta_courier/src/ui/widgets/dialog_loading.dart';
 
 class InterviewScreen extends StatelessWidget {
   double itemExtent = 60.0;
@@ -256,25 +258,31 @@ class InterviewScreen extends StatelessWidget {
                                         stream: checkCaptainDataBloc.checkUser,
                                         builder: (BuildContext context,
                                             AsyncSnapshot<LogInModel> snapshot) {
-                                          if (snapshot.data.data.approvedAt != null) {
-
-
+                                        if (snapshot.hasData) {
+                                          if (snapshot.data.data.approvedAt !=
+                                              null) {
                                             return HomeScreen();
-                                          } else if (snapshot.data.data.car.car.isEmpty||
-                                              snapshot.data.data.idCardBack == null ||
-                                              snapshot.data.data.idCardFront == null ||
-                                              snapshot.data.data.drivingCertificateFront ==
+                                          } else if (snapshot
+                                                  .data.data.car.car.isEmpty ||
+                                              snapshot.data.data.idCardBack ==
                                                   null ||
-                                              snapshot.data.data.drivingCertificateBack ==
-                                                  null
-                                          ) {
-
+                                              snapshot.data.data.idCardFront ==
+                                                  null ||
+                                              snapshot.data.data
+                                                      .drivingCertificateFront ==
+                                                  null ||
+                                              snapshot.data.data
+                                                      .drivingCertificateBack ==
+                                                  null) {
                                             return InCompletedInfoScreen();
                                           } else {
                                             return CompletedInfoScreen();
                                           }
-                                        },
-                                      );
+                                        } else {
+                                          return CompletedInfoScreen();
+                                        }
+                                      },
+                                    );
                                     }),
                                   );
                                 },
@@ -380,6 +388,44 @@ class InterviewScreen extends StatelessWidget {
     );
   }
 
+  Future<void> _showDialog(context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        Future.delayed(Duration(seconds: 2), () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) {
+              return StreamBuilder(
+                stream: checkCaptainDataBloc.checkUser,
+                builder: (BuildContext context,
+                    AsyncSnapshot<LogInModel> snapshot) {
+                  if (snapshot.data.data.approvedAt != null) {
+                    return HomeScreen();
+                  } else if (snapshot.data.data.car.car.isEmpty ||
+                      snapshot.data.data.idCardBack == null ||
+                      snapshot.data.data.idCardFront == null ||
+                      snapshot.data.data.drivingCertificateFront ==
+                          null ||
+                      snapshot.data.data.drivingCertificateBack ==
+                          null
+                  ) {
+                    return InCompletedInfoScreen();
+                  } else {
+                    return CompletedInfoScreen();
+                  }
+                },
+              );
+            }),
+          );
+          Navigator.of(context).pop(true);
+        });
+        return LoadingDialogWidget();
+      },
+    );
+  }
+
   InkWell calendarDialog(BuildContext context) {
     return InkWell(
       onTap: () {
@@ -426,219 +472,250 @@ class InterviewScreen extends StatelessWidget {
     return StreamBuilder(
       stream: interviewBloc.interviewHM,
       builder: (context, AsyncSnapshot<List<InterviewModel>> snapshot) {
-        if (snapshot.hasData &&
-            snapshot.data != null &&
-            snapshot.data != null &&
-            snapshot.data.isNotEmpty) {
-          interviewBloc.setInterviewMins(0);
-          interviewBloc.setHour(snapshot.data[0].hour.toString());
+        if (snapshot.hasData) {
+          if (snapshot.hasData &&
+              snapshot.data != null &&
+              snapshot.data != null &&
+              snapshot.data.isNotEmpty) {
+            interviewBloc.setInterviewMins(0);
+            interviewBloc.setHour(snapshot.data[0].hour.toString());
 
-          return Container(
-              margin: EdgeInsets.only(right: 70, left: 70),
-              child: AlertDialog(
-                contentPadding: EdgeInsets.all(8),
-                insetPadding: EdgeInsets.all(0),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15.0))),
-                content: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Container(
-                          height: 220,
-                          width: 190,
-                          child: ListView(
-                            shrinkWrap: true,
-                            // mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "  Set Your Appointment Time",
-                                    style: TextStyle(
-                                      fontFamily: FontFamilies.POPPINS,
-                                      fontSize:
-                                          (MediaQuery.of(context).size.height *
-                                              0.02),
-                                      color: AppColors.labelColor,
-                                    ),
-                                  )),
-                              Divider(
-                                color: AppColors.LIGHT_GREY,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 180,
-                                    width: MediaQuery.of(context).size.height *
-                                        0.07,
-                                    child: CupertinoPicker(
-                                      scrollController: scrollController,
-                                      itemExtent: itemExtent,
-                                      children: <Widget>[
-                                        for (i = 0;
-                                            i < snapshot.data.length;
-                                            i++)
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Text(
-                                                snapshot.data[i].hour
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontFamily:
-                                                      FontFamilies.POPPINS,
-                                                  fontSize:
-                                                      (MediaQuery.of(context)
-                                                              .size
-                                                              .height *
-                                                          0.02),
-                                                  color: AppColors.labelColor,
+            return Container(
+                margin: EdgeInsets.only(right: 70, left: 70),
+                child: AlertDialog(
+                  contentPadding: EdgeInsets.all(8),
+                  insetPadding: EdgeInsets.all(0),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                  content: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Container(
+                            height: 220,
+                            width: 190,
+                            child: ListView(
+                              shrinkWrap: true,
+                              // mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "  Set Your Appointment Time",
+                                      style: TextStyle(
+                                        fontFamily: FontFamilies.POPPINS,
+                                        fontSize:
+                                        (MediaQuery
+                                            .of(context)
+                                            .size
+                                            .height *
+                                            0.02),
+                                        color: AppColors.labelColor,
+                                      ),
+                                    )),
+                                Divider(
+                                  color: AppColors.LIGHT_GREY,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: 180,
+                                      width: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height *
+                                          0.07,
+                                      child: CupertinoPicker(
+                                        scrollController: scrollController,
+                                        itemExtent: itemExtent,
+                                        children: <Widget>[
+                                          for (i = 0;
+                                          i < snapshot.data.length;
+                                          i++)
+                                            Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Text(
+                                                  snapshot.data[i].hour
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                    FontFamilies.POPPINS,
+                                                    fontSize:
+                                                    (MediaQuery
+                                                        .of(context)
+                                                        .size
+                                                        .height *
+                                                        0.02),
+                                                    color: AppColors.labelColor,
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                      ],
-                                      onSelectedItemChanged: (int index) {
-                                        interviewBloc.setInterviewMins(index);
-                                        interviewBloc.setHour(snapshot
-                                            .data[index].hour
-                                            .toString());
-                                      },
-                                      looping: false,
-                                      backgroundColor: Colors.white,
+                                              ],
+                                            ),
+                                        ],
+                                        onSelectedItemChanged: (int index) {
+                                          interviewBloc.setInterviewMins(index);
+                                          interviewBloc.setHour(snapshot
+                                              .data[index].hour
+                                              .toString());
+                                        },
+                                        looping: false,
+                                        backgroundColor: Colors.white,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 120,
-                                    width: 20,
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      color: Colors.white,
-                                      child: Align(
+                                    SizedBox(
+                                      height: 120,
+                                      width: 20,
+                                      child: Container(
                                         alignment: Alignment.center,
-                                        child: Text(
-                                          ":",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 20),
+                                        color: Colors.white,
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            ":",
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 20),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.height *
-                                        0.07,
-                                    height: 120,
-                                    child: StreamBuilder(
-                                      stream: interviewBloc.interviewMins,
-                                      builder: (context, snap) {
-                                        // print(snap.data);
-                                        interviewBloc
-                                            .setMins(snap.data[0].toString());
+                                    Container(
+                                      width: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height *
+                                          0.07,
+                                      height: 120,
+                                      child: StreamBuilder(
+                                        stream: interviewBloc.interviewMins,
+                                        builder: (context,
+                                            AsyncSnapshot<List<String>> snap) {
+                                          // print(snap.data);
 
-                                        if (snap.hasData) {
-                                          return CupertinoPicker(
-                                            scrollController: scrollController2,
-                                            itemExtent: itemExtent,
-                                            children: <Widget>[
-                                              for (var j = 0;
-                                                  j < snap.data.length;
-                                                  j++)
-                                                Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: <Widget>[
-                                                      Text(
-                                                        snap.data[j].toString(),
-                                                        style: TextStyle(
-                                                          fontFamily:
-                                                              FontFamilies
-                                                                  .POPPINS,
-                                                          fontSize:
-                                                              (MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .height *
-                                                                  0.02),
-                                                          color: AppColors
-                                                              .labelColor,
+                                          if (snap.hasData) {
+                                            interviewBloc
+                                                .setMins(
+                                                snap.data.first.toString());
+
+                                            return CupertinoPicker(
+                                              scrollController: scrollController2,
+                                              itemExtent: itemExtent,
+                                              children: <Widget>[
+                                                for (var j = 0;
+                                                j < snap.data.length;
+                                                j++)
+                                                  Row(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .center,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          snap.data[j]
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                            FontFamilies
+                                                                .POPPINS,
+                                                            fontSize:
+                                                            (MediaQuery
+                                                                .of(
+                                                                context)
+                                                                .size
+                                                                .height *
+                                                                0.02),
+                                                            color: AppColors
+                                                                .labelColor,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ]),
-                                            ],
-                                            onSelectedItemChanged: (int index) {
-                                              interviewBloc.setMins(
-                                                  snap.data[index].toString());
-                                            },
-                                            looping: false,
-                                            backgroundColor: Colors.white,
-                                          );
-                                        } else {
-                                          return Text(" ");
-                                        }
-                                      },
+                                                      ]),
+                                              ],
+                                              onSelectedItemChanged: (
+                                                  int index) {
+                                                interviewBloc.setMins(
+                                                    snap.data[index]
+                                                        .toString());
+                                              },
+                                              looping: false,
+                                              backgroundColor: Colors.white,
+                                            );
+                                          } else {
+                                            return Text(" ");
+                                          }
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
-                    ]),
-                actions: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(bottom: 10, right: 10),
-                    child: InkWell(
-                      child: Text(
-                        "Cancel",
-                        style: TextStyle(
-                          fontFamily: FontFamilies.POPPINS,
-                          fontSize: (MediaQuery.of(context).size.height * 0.02),
-                          color: AppColors.labelColor,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(bottom: 10, right: 20, left: 10),
-                    child: InkWell(
-                      child: Text(
-                        "Ok",
-                        style: TextStyle(
+                                  ],
+                                ),
+                              ],
+                            )),
+                      ]),
+                  actions: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(bottom: 10, right: 10),
+                      child: InkWell(
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(
                             fontFamily: FontFamilies.POPPINS,
-                            fontSize:
-                                (MediaQuery.of(context).size.height * 0.02) + 5,
-                            color: AppColors.MAIN_COLOR,
-                            fontWeight: FontWeight.w700),
+                            fontSize: (MediaQuery
+                                .of(context)
+                                .size
+                                .height * 0.02),
+                            color: AppColors.labelColor,
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
                       ),
-                      onTap: () {
-                        FlutterStatusbarcolor.setStatusBarColor(Colors.white);
-                        interviewBloc.setSelectedTime();
-                        Navigator.of(context).pop();
-                      },
                     ),
-                  ),
-                ],
-              ));
-        } else {
-          // print(snapshot.data);
-          return StreamBuilder(
-            stream: interviewBloc.interviewDate,
-            builder: (context, snap) {
-              if (snap.hasData) {
-                return ErrorDialogWidget(
-                    text:
-                        "Ops, No Slot Available \nTry to choose another date");
-              } else {
-                return ErrorDialogWidget(text: "Please choose date first ");
-              }
-            },
+                    Container(
+                      margin: EdgeInsets.only(bottom: 10, right: 20, left: 10),
+                      child: InkWell(
+                        child: Text(
+                          "Ok",
+                          style: TextStyle(
+                              fontFamily: FontFamilies.POPPINS,
+                              fontSize:
+                              (MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height * 0.02) + 5,
+                              color: AppColors.MAIN_COLOR,
+                              fontWeight: FontWeight.w700),
+                        ),
+                        onTap: () {
+                          FlutterStatusbarcolor.setStatusBarColor(Colors.white);
+                          interviewBloc.setSelectedTime();
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ),
+                  ],
+                ));
+          }
+          else {
+            // print(snapshot.data);
+            return StreamBuilder(
+              stream: interviewBloc.interviewDate,
+              builder: (context, snap) {
+                if (snap.hasData) {
+                  return ErrorDialogWidget(
+                      text:
+                      "Ops, No Slot Available \nTry to choose another date");
+                } else {
+                  return ErrorDialogWidget(text: "Please choose date first ");
+                }
+              },
+            );
+          }
+        }
+        else {
+          return SpinKitCircle(
+            color: AppColors.MAIN_COLOR,
           );
         }
       },

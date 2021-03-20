@@ -9,7 +9,6 @@ import 'package:country_codes/country_codes.dart';
 
 class PhoneBloc {
   final _phoneNumber = BehaviorSubject<String>();
-
   final _countryCode = BehaviorSubject<String>();
   final _countryFlag = BehaviorSubject<String>();
   final _isInternetConnected = BehaviorSubject<bool>();
@@ -61,17 +60,19 @@ class PhoneBloc {
     }
   }
 
-
   resetCountry() {
     _countryFlag.add(null);
     _countryCode.add(null);
   }
 
+  resetPhone() {
+    _phoneNumber.add(null);
+  }
+
   Future<void> getActivationCode() async {
     CountryDetails countryDetails = CountryCodes.detailsForLocale();
-    String countryCode = _countryCode.value == null
-        ? "962"
-        : _countryCode.value;
+    String countryCode =
+    _countryCode.value == null ? "962" : _countryCode.value;
     _countryCode.add(countryCode);
     print(_countryCode.value);
     String phoneNumber = countryCode + _phoneNumber.value;
@@ -89,7 +90,6 @@ class PhoneBloc {
   getPhoneNumber() {
     return _countryCode.value + _phoneNumber.value.toString();
   }
-
 
   userValidationII() {
     return _activationCode.value.message;

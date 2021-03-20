@@ -8,6 +8,8 @@ import 'package:posta_courier/src/constants/fonts_size.dart';
 import 'package:posta_courier/src/utils/util.dart';
 import 'package:posta_courier/models/weekly_report.dart';
 import 'package:posta_courier/src/ui/widgets/dialog_loading.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 class WeeklyReportScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -208,19 +210,23 @@ class WeeklyReportScreen extends StatelessWidget {
     return StreamBuilder(
       stream: weeklyReportBloc.weeklyReport,
       builder: (BuildContext context, AsyncSnapshot<WeeklyReport> snapshot) {
-        if(snapshot.hasData){
-        return ListView.builder(
-          itemBuilder: (context, position) {
-            return Column(
-              children: <Widget>[
-                walletCard(context, snapshot.data.report.report[position]),
-              ],
-            );
-          },
-          itemCount: snapshot.data.report.report.length,
-        );}
-        else
-        {return LoadingDialogWidget();}
+        if (snapshot.hasData) {
+          return ListView.builder(
+            itemBuilder: (context, position) {
+              return Column(
+                children: <Widget>[
+                  walletCard(context, snapshot.data.report.report[position]),
+                ],
+              );
+            },
+            itemCount: snapshot.data.report.report.length,
+          );
+        }
+        else {
+          return SpinKitCircle(
+            color: AppColors.MAIN_COLOR,
+          );
+        }
       },
     );
   }

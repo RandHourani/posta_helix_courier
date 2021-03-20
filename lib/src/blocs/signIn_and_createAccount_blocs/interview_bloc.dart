@@ -37,9 +37,9 @@ class InterviewBloc {
     List<InterviewModel> times = List();
     if (_interviewDate.value == null) {
       InterviewDataModel time = await _repository.requestInterViewData(
-          Utils.dateFormat5(DateTime.now().toString()).toString());
+          Utils.dateFormat5(Utils.dateTimeFormat1(DateTime.now().toString()))
+              .toString());
       _interviewTime.sink.add(time);
-
     } else {
       InterviewDataModel time = await _repository.requestInterViewData(
           Utils.dateFormat5(_interviewDate.value).toString());
@@ -99,6 +99,11 @@ class InterviewBloc {
 
   resetTime() {
     _selectedTime.add(null);
+  }
+
+  resetInterview() {
+    _selectedTime.add(null);
+    _interviewDate.add(null);
   }
 
   sendInterviewData() {

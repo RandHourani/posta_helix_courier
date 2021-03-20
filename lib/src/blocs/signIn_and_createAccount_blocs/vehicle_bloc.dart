@@ -2,12 +2,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:posta_courier/models/captain_store_model.dart';
 import 'package:posta_courier/models/car_model.dart';
 import 'package:posta_courier/models/city_model.dart';
+import 'package:posta_courier/models/get_captain_model.dart';
 import 'package:posta_courier/models/registered_captain_model.dart';
 import 'package:posta_courier/src/reasources/repository.dart';
 import 'package:posta_courier/validation/text_field_validation.dart';
 import 'package:posta_courier/db/providers/colors_provider.dart';
 import 'package:posta_courier/db/providers/vehicle_brands.dart';
-
+import 'package:posta_courier/src/utils/util.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'country_cities_bloc.dart';
@@ -21,11 +22,11 @@ class VehicleBloc {
   final _carBrandId = BehaviorSubject<String>();
   final _lastQuery = BehaviorSubject<String>();
 
-  final _plateCode = BehaviorSubject<String>();
   final _plateNumber = BehaviorSubject<String>();
 
   final _carBrandModels = BehaviorSubject<CarDataModel>();
   final _carModelSelected = BehaviorSubject<String>();
+  final _carModelSelectedId = BehaviorSubject<int>();
 
   final _countries = BehaviorSubject<CityModel>();
   final _selectedCountriesName = BehaviorSubject<String>();
@@ -37,31 +38,24 @@ class VehicleBloc {
   final _manufacturingYearSelected = BehaviorSubject<String>();
   final _manufacturingYearList = BehaviorSubject<List<String>>();
 
-  final _selectedDate = BehaviorSubject<DateTime>();
   final _registrationExpireDateValidation = BehaviorSubject<String>();
   final _registrationExpireDate = BehaviorSubject<String>();
 
   final _calendarColor = BehaviorSubject<bool>();
+  List<String> matches = List();
+  final list = BehaviorSubject<List<String>>();
+
+  Function(String) get changePlateNumber => _plateNumber.sink.add;
 
   Observable<CityModel> get countries => _countries.stream;
 
   Observable<String> get selectedCountries => _selectedCountriesName.stream;
-  List<String> matches = List();
-  final list = BehaviorSubject<List<String>>();
-
-  Function(String) get changePlateCode => _plateCode.sink.add;
-
-  Function(String) get changePlateNumber => _plateNumber.sink.add;
 
   Observable<CarDataModel> get carBrand => _carBrand.stream;
 
   Observable<String> get selectedCarBrand => _selectedCarBrand.stream;
 
-  Observable<String> get plateCode => _plateCode.stream.transform(
-      validation.checkValidation(_plateCode.value, "please Enter plate code"));
-
-  Observable<String> get plateNumber => _plateNumber.stream.transform(validation
-      .checkValidation(_plateNumber.value, "please Enter plate number"));
+  Observable<String> get plateNumber => _plateNumber.stream;
 
   Observable<CarDataModel> get carModels => _carBrandModels.stream;
 
@@ -74,8 +68,6 @@ class VehicleBloc {
   Observable<String> get selectedManuYear => _manufacturingYearSelected.stream;
 
   Observable<List<String>> get manuYearList => _manufacturingYearList.stream;
-
-  Observable<DateTime> get selectedDate => _selectedDate.stream;
 
   Observable<String> get registrationExpiredDate =>
       _registrationExpireDate.stream;
@@ -100,22 +92,20 @@ class VehicleBloc {
     _calendarColor.add(val);
   }
 
-  setVehicleData(LogInModel model) {
-    _plateNumber.add(model.data.car.car.first.number);
-    _registrationExpireDate.add(model.data.car.car.first.insuranceExpiredDate);
+  setPlateNumber(String val) {
+    _plateNumber.add(val);
+    print(_plateNumber.value);
   }
 
-  checkRegistrationExpireDateValidation() {
-    if (_registrationExpireDateValidation.value == null) {
-      return true;
-    } else {
-      return false;
-    }
+  setVehicleDetails(CaptainData data) {
+    _plateNumber.add(data.data.car.number);
+    _carColorSelectedId.add(data.data.car.colorId);
   }
 
   fetchAllCarBrand() async {
     BrandsDBProvider.getAllBrands().then((value) async {
-      if (value != null) {
+      if (value.length > 0) {
+        print(value.length);
       } else {
         CarDataModel carBrand = await _repository.requestCarBrand();
         _carBrand.sink.add(carBrand);
@@ -130,15 +120,27 @@ class VehicleBloc {
     });
   }
 
-  setBrandId(int id) {
-    _carBrandId.add(id.toString());
-  }
-
   fetchAllCarModels() async {
+    print(_carBrandId.value);
+
     CarDataModel carModels =
-        await _repository.requestCarModels(_carBrandId.value);
+    await _repository.requestCarModels(_carBrandId.value);
     _carBrandModels.sink.add(carModels);
     _carModelSelected.add(_carBrandModels.value.carData.data[0].name);
+  }
+
+  fetchSelectedCarBrandModels(int id) async {
+    print(_carBrandId.value);
+
+    CarDataModel carModels =
+    await _repository.requestCarModels(_carBrandId.value);
+    _carBrandModels.sink.add(carModels);
+    _carModelSelected.add(_carBrandModels
+        .value
+        .carData
+        .data[_carBrandModels.value.carData.data
+        .indexWhere((element) => element.id == id)]
+        .name);
   }
 
   getCountries() async {
@@ -146,36 +148,73 @@ class VehicleBloc {
   }
 
   fetchAllCarColor() async {
-    ColorsDBProvider.db.getAllColors().then((value) async {
-      if (value.length > 0) {
-      } else {
-        CarDataModel carBrand = await _repository.requestCarColor();
-        _carColor.sink.add(carBrand);
+    if (_carColor.value == null) {
+      CarDataModel carBrand = await _repository.requestCarColor();
+      _carColor.sink.add(carBrand);
+    } else {}
+  }
 
-        for (int i = 0; i < _carColor.value.carData.data.length; i++) {
-          ColorsDBProvider.newColor(
-              ColorModelDetails(name: _carColor.value.carData.data[i].name));
-        }
+  createVehicle() async {
+    final storage = new FlutterSecureStorage();
+    String id = await storage.read(key: "id");
+    String auth = await storage.read(key: "accessToken");
+    var response = await _repository.vehicle(id, auth, {
+      "captain": {},
+      "car": {
+        "color_id":
+        _carColorSelectedId.value != null ? _carColorSelectedId.value : 1,
+        "brand_model_id":
+        getSelectedModelId() != null ? getSelectedModelId() : null,
+        "number": getPlateNumber().toString(),
+        "state": _selectedCountriesName.value == null
+            ? _countries.value.data[0].nameEN
+            : _selectedCountriesName.value,
+        "insurance_expired_date":
+        vehicleBloc.getRegistrationExpireDate() != null
+            ? Utils.dateFormat2(getRegistrationExpireDate().toString())
+            : null,
+        "car_manufacture_year": getManufacturingYearSelected().toString(),
+        "city_id": getSelectedCityId(),
+        "brand_id": getCarBrand() != null
+            ? int.parse(vehicleBloc.getSelectedBrandId())
+            : null,
       }
     });
   }
 
+  checkRegistrationExpireDateValidation() {
+    if (_registrationExpireDateValidation.value == null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   setSelectedColor(String value) {
     _carColorSelected.add(value);
-    ColorsDBProvider.db.getAllColors().then((value) {
-      _carColorSelectedId.add(value
-          .indexWhere((element) => element.name == _carColorSelected.value));
-    });
+    _carColorSelectedId.add(_carColor
+        .value
+        .carData
+        .data[_carColor.value.carData.data
+        .indexWhere((element) => element.name == value)]
+        .id);
+  }
+
+  setSelectedColorId(int value) {
+    _carColorSelectedId.add(value);
+    _carColorSelected.add(_carColor
+        .value
+        .carData
+        .data[_carColor.value.carData.data
+        .indexWhere((element) => element.id == _carColorSelectedId.value)]
+        .name);
   }
 
   int getSelectedColor() {
-    return _carColorSelectedId.value == null
-        ? 0
-        : _carColorSelectedId.value + 1;
+    return _carColorSelectedId.value == null ? 1 : _carColorSelectedId.value;
   }
 
   Future<List<String>> getSuggestions(String query) async {
-    // if (query == null) query = "a";
     if (_lastQuery.value != query) {
       _lastQuery.add(query);
       CarDataModel carBrand = await _repository.carBrandList(query);
@@ -188,7 +227,6 @@ class VehicleBloc {
             .then((value) => matches.add(value[i].name));
       }
       list.add(matches.toSet().toList());
-
       list.value
           .retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
       return list.value;
@@ -200,9 +238,7 @@ class VehicleBloc {
   }
 
   setCarBrand(String value) {
-    if (value == _selectedCarBrand.value) {
-
-    } else {
+    if (value == _selectedCarBrand.value) {} else {
       _selectedCarBrand.add(value);
       int index = list.value
           .indexWhere((element) => _selectedCarBrand.value == element);
@@ -210,14 +246,18 @@ class VehicleBloc {
       print(_carBrandId.value);
       fetchAllCarModels();
     }
-    int index = list.value
-        .indexWhere((element) => _selectedCarBrand.value == element);
-    _carBrandId.add(_carBrand.value.carData.data[index].id.toString());
   }
 
-  findCarBrand(String value, int index) {
-    _selectedCarBrand.add(value);
-    _carBrandId.add((index - 1).toString());
+  findCarBrandModel(int index) {
+    fetchSelectedCarBrandModels(index);
+
+    // _carModelSelected.add(_carBrandModels
+    //     .value
+    //     .carData
+    //     .data[_carBrandModels.value.carData.data
+    //         .indexWhere((element) => element.id == index)]
+    //     .name);
+    _carModelSelectedId.add(index);
   }
 
   getCarBrand() {
@@ -225,11 +265,13 @@ class VehicleBloc {
   }
 
   setSelectedCountries(String value) {
+    print(value);
     _selectedCountriesName.add(value);
   }
 
   setSelectedModel(String value) {
     _carModelSelected.add(value);
+    print(value);
   }
 
   getSelectedModel() {
@@ -237,13 +279,18 @@ class VehicleBloc {
   }
 
   getSelectedModelId() {
-
-    return _carBrandModels
+    print(_carModelSelected.value);
+    _carModelSelectedId.add(_carBrandModels
         .value
         .carData
         .data[_carBrandModels.value.carData.data
-            .indexWhere((element) => _carModelSelected.value == element.name)]
-        .id;
+        .indexWhere((element) => element.name == _carModelSelected.value)]
+        .id);
+    return _carModelSelectedId.value;
+  }
+
+  setSelectedModelId(int value) {
+    _carModelSelectedId.add(value);
   }
 
   getSelectedBrandId() {
@@ -292,32 +339,42 @@ class VehicleBloc {
     _registrationExpireDateValidation.add(value);
   }
 
-  createVehicle() async {
-    final storage = new FlutterSecureStorage();
-    String id = await storage.read(key: "id");
-    String auth = await storage.read(key: "accessToken");
-    var response = await _repository.vehicle(id, auth);
-  }
-
   getPlateNumber() {
     return _plateNumber.value;
   }
 
   getSelectedCity() {
-    if (_selectedCountriesName.value == null) {
-      _selectedCountriesName.add(_countries.value.data.first.nameEN);
-    } else {
-    }
+    // print(_selectedCountriesName.value);
+    // if (_selectedCountriesName.value == null) {
+    //   print(_selectedCountriesName.value);
+    //
+    //   _selectedCountriesName.add(_countries.value.data.first.nameEN);
+    // } else {}
+    // print(_selectedCountriesName.value);
     return _selectedCountriesName.value;
-
   }
 
   int getSelectedCityId() {
-    int index;
-    index = _countries.value.data.indexWhere(
-        (element) => _selectedCountriesName.value == element.nameEN);
+    if (_selectedCountriesName.value != null) {
+      return _countries
+          .value
+          .data[_countries.value.data.indexWhere(
+              (element) => _selectedCountriesName.value == element.nameEN)]
+          .id;
+    } else {
+      return _countries.value.data.first.id;
+    }
+  }
 
-    return index;
+  resetData() {
+    _registrationExpireDate.add(null);
+    _carColorSelected.add(null);
+    _manufacturingYearSelected.add(null);
+    _selectedCarBrand.add(null);
+    getSuggestions(" ");
+    _carModelSelected.add(null);
+    _carBrandModels.add(null);
+    _selectedCountriesName.add(null);
   }
 
   void dispose() {

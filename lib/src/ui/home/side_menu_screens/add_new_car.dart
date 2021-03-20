@@ -33,9 +33,9 @@ class AddNewCar extends StatelessWidget {
   Widget build(BuildContext context) {
     FlutterStatusbarcolor.setStatusBarColor(Colors.white);
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-    // newVehicleBloc.getCountries();
+    newVehicleBloc.getCountries();
     newVehicleBloc.fetchAllCarBrand();
-    // newVehicleBloc.fetchAllCarColor();
+    newVehicleBloc.fetchAllCarColor();
     newVehicleBloc.getManufacturingYear();
     newVehicleBloc.setCalendarColor(false);
 
@@ -147,20 +147,27 @@ class AddNewCar extends StatelessWidget {
                                               return list.map((value) {
                                                 return PopupMenuItem(
                                                   value: value,
-                                                  child: Text(
-                                                    value,
-                                                    style: TextStyle(
-                                                      fontFamily:
-                                                          FontFamilies.POPPINS,
-                                                      fontSize: (MediaQuery.of(
-                                                                  context)
+                                                  child: Container(
+                                                      height: 22,
+                                                      alignment: Alignment
+                                                          .bottomCenter,
+                                                      child: Text(
+                                                        value,
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                          FontFamilies
+                                                              .POPPINS,
+                                                          fontSize:
+                                                          (MediaQuery
+                                                              .of(
+                                                              context)
                                                               .size
                                                               .height *
-                                                          0.02),
-                                                      color:
-                                                          AppColors.labelColor,
-                                                    ),
-                                                  ),
+                                                              0.02),
+                                                          color: AppColors
+                                                              .labelColor,
+                                                        ),
+                                                      )),
                                                 );
                                               }).toList();
                                             },
@@ -240,70 +247,78 @@ class AddNewCar extends StatelessWidget {
                                     style: TextStyle(
                                       fontFamily: FontFamilies.POPPINS,
                                       fontSize:
-                                          (MediaQuery.of(context).size.height *
-                                              0.02),
+                                      (MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height *
+                                          0.02),
                                       color: AppColors.labelColor,
                                     ),
                                   ),
-                                  FutureBuilder<List<ColorModelDetails>>(
-                                      future:
-                                          ColorsDBProvider.db.getAllColors(),
-                                      builder: (BuildContext context,
-                                          AsyncSnapshot<List<ColorModelDetails>>
-                                              snapshot) {
+                                  StreamBuilder(
+                                    stream: newVehicleBloc.carColor,
+                                    builder: (context,
+                                        AsyncSnapshot<CarDataModel> snapshot) {
+                                      if (snapshot.hasData) {
                                         List<String> list = List();
+                                        for (int i = 0;
+                                        i <
+                                            snapshot
+                                                .data.carData.data.length;
+                                        i++) {
+                                          list.add(snapshot
+                                              .data.carData.data[i].name
+                                              .toString());
+                                        }
 
-                                        if (snapshot.hasData) {
-                                          for (int i = 0;
-                                              i < snapshot.data.length;
-                                              i++) {
-                                            list.add(snapshot.data[i].name);
-                                          }
-
-                                          return PopupMenuButton<String>(
-                                            padding: EdgeInsets.all(0),
-                                            itemBuilder: (context) {
-                                              return list.map((value) {
-                                                return PopupMenuItem(
-                                                  value: value,
-                                                  child: Text(
-                                                    value,
-                                                    style: TextStyle(
-                                                      fontFamily:
-                                                          FontFamilies.POPPINS,
-                                                      fontSize: (MediaQuery.of(
-                                                                  context)
-                                                              .size
-                                                              .height *
-                                                          0.02),
-                                                      color:
-                                                          AppColors.labelColor,
-                                                    ),
-                                                  ),
-                                                );
-                                              }).toList();
-                                            },
-                                            child: StreamBuilder(
-                                              stream:
-                                                  newVehicleBloc.selectedColor,
-                                              builder: (context, snapshot) {
-                                                if(snapshot.hasData){
-                                                  print(snapshot.data.length);
-                                                return Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: <Widget>[
-                                                    Text(
-                                                      snapshot.data.toString(),
+                                        return PopupMenuButton<String>(
+                                          padding: EdgeInsets.all(0),
+                                          itemBuilder: (context) {
+                                            return list.map((value) {
+                                              return PopupMenuItem(
+                                                value: value,
+                                                child: Container(
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                      value,
                                                       style: TextStyle(
                                                         fontFamily: FontFamilies
                                                             .POPPINS,
                                                         fontSize:
-                                                            (MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height *
-                                                                0.02),
+                                                        (MediaQuery
+                                                            .of(
+                                                            context)
+                                                            .size
+                                                            .height *
+                                                            0.02),
+                                                        color: AppColors
+                                                            .labelColor,
+                                                      ),
+                                                    )),
+                                              );
+                                            }).toList();
+                                          },
+                                          child: StreamBuilder(
+                                            stream:
+                                            newVehicleBloc.selectedColor,
+                                            builder: (context, snap) {
+                                              if (snap.hasData) {
+                                                return Row(
+                                                  mainAxisSize:
+                                                  MainAxisSize.min,
+                                                  children: <Widget>[
+                                                    Text(
+                                                      snap.data.toString(),
+                                                      style: TextStyle(
+                                                        fontFamily: FontFamilies
+                                                            .POPPINS,
+                                                        fontSize:
+                                                        (MediaQuery
+                                                            .of(
+                                                            context)
+                                                            .size
+                                                            .height *
+                                                            0.02),
                                                         color: AppColors
                                                             .labelColor,
                                                       ),
@@ -312,61 +327,73 @@ class AddNewCar extends StatelessWidget {
                                                       child: Icon(
                                                         Icons
                                                             .keyboard_arrow_down,
-                                                        size: 15,
+                                                        size: (MediaQuery
+                                                            .of(
+                                                            context)
+                                                            .size
+                                                            .height *
+                                                            0.02),
                                                       ),
                                                       alignment:
-                                                          Alignment.center,
+                                                      Alignment.center,
                                                       padding: EdgeInsets.only(
                                                           bottom: 3),
                                                     ),
                                                   ],
-                                                );}
-                                                else
-                                                  {
-                                                    return Row(
-                                                      mainAxisSize:
-                                                      MainAxisSize.min,
-                                                      children: <Widget>[
-                                                        Text(
-                                                         list[0],
-                                                          style: TextStyle(
-                                                            fontFamily: FontFamilies
-                                                                .POPPINS,
-                                                            fontSize:
-                                                            (MediaQuery.of(
-                                                                context)
-                                                                .size
-                                                                .height *
-                                                                0.02),
-                                                            color: AppColors
-                                                                .labelColor,
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          child: Icon(
-                                                            Icons
-                                                                .keyboard_arrow_down,
-                                                            size: 15,
-                                                          ),
-                                                          alignment:
-                                                          Alignment.center,
-                                                          padding: EdgeInsets.only(
-                                                              bottom: 3),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  }
-                                              },
-                                            ),
-                                            onSelected: (value) {
-                                              newVehicleBloc
-                                                  .setSelectedColor(value);
+                                                );
+                                              } else {
+                                                return Row(
+                                                  mainAxisSize:
+                                                  MainAxisSize.min,
+                                                  children: <Widget>[
+                                                    Text(
+                                                      list[0],
+                                                      style: TextStyle(
+                                                        fontFamily: FontFamilies
+                                                            .POPPINS,
+                                                        fontSize:
+                                                        (MediaQuery
+                                                            .of(
+                                                            context)
+                                                            .size
+                                                            .height *
+                                                            0.02),
+                                                        color: AppColors
+                                                            .labelColor,
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      child: Icon(
+                                                        Icons
+                                                            .keyboard_arrow_down,
+                                                        size: (MediaQuery
+                                                            .of(
+                                                            context)
+                                                            .size
+                                                            .height *
+                                                            0.02),
+                                                      ),
+                                                      alignment:
+                                                      Alignment.center,
+                                                      padding: EdgeInsets.only(
+                                                          bottom: 3),
+                                                    ),
+                                                  ],
+                                                );
+                                              }
                                             },
-                                          );
-                                        } else {
-                                          return Text("");
-                                        }
-                                      })
+                                          ),
+                                          onSelected: (value) {
+                                            plateNumberNode.unfocus();
+                                            newVehicleBloc
+                                                .setSelectedColor(value);
+                                          },
+                                        );
+                                      } else {
+                                        return Text("");
+                                      }
+                                    },
+                                  )
                                 ]),
                           ),
                           Container(
@@ -413,19 +440,24 @@ class AddNewCar extends StatelessWidget {
                                             return list.map((value) {
                                               return PopupMenuItem(
                                                 value: value,
-                                                child: Text(
-                                                  value,
-                                                  style: TextStyle(
-                                                    fontFamily:
-                                                        FontFamilies.POPPINS,
-                                                    fontSize:
-                                                        (MediaQuery.of(context)
-                                                                .size
-                                                                .height *
+                                                child: Container(
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                      value,
+                                                      style: TextStyle(
+                                                        fontFamily: FontFamilies
+                                                            .POPPINS,
+                                                        fontSize:
+                                                        (MediaQuery
+                                                            .of(
+                                                            context)
+                                                            .size
+                                                            .height *
                                                             0.02),
-                                                    color: AppColors.labelColor,
-                                                  ),
-                                                ),
+                                                        color: AppColors
+                                                            .labelColor,
+                                                      ),
+                                                    )),
                                               );
                                             }).toList();
                                           },
@@ -544,68 +576,112 @@ class AddNewCar extends StatelessWidget {
                                     style: TextStyle(
                                       fontFamily: FontFamilies.POPPINS,
                                       fontSize:
-                                          (MediaQuery.of(context).size.height *
-                                              0.02),
+                                      (MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height *
+                                          0.02),
                                       color: AppColors.labelColor,
                                     ),
                                   ),
-
-                                  FutureBuilder<List<City>>(
-                                      future:
-                                      CitiesDBProvider.db.getAllCities(),
-                                      builder: (BuildContext context,
-                                          AsyncSnapshot<List<City>>
-                                          snapshot) {
-                                        print(snapshot.data);
-                                        if (snapshot.hasData) {
-                                          List<String> list = List();
-                                          for (int i = 0;
-                                          i < snapshot.data.length;
-                                          i++) {
-                                            list.add(snapshot.data[i].nameEN
-                                                .toString());
-                                          }
-                                          // newVehicleBloc
-                                          //     .setSelectedCountries(list[0]);
-                                          return PopupMenuButton<String>(
-                                            padding: EdgeInsets.all(0),
-                                            itemBuilder: (context) {
-                                              return list.map((value) {
-                                                return PopupMenuItem(
-                                                  value: value,
-                                                  child: Text(
-                                                    value,
-                                                    style: TextStyle(
-                                                      fontFamily:
-                                                      FontFamilies.POPPINS,
-                                                      fontSize: (MediaQuery.of(
-                                                          context)
-                                                          .size
-                                                          .height *
-                                                          0.02),
-                                                      color:
-                                                      AppColors.labelColor,
+                                  StreamBuilder(
+                                    stream: newVehicleBloc.countries,
+                                    builder: (context,
+                                        AsyncSnapshot<CityModel> snapshot) {
+                                      if (snapshot.hasData) {
+                                        List<String> list = List();
+                                        for (int i = 0;
+                                        i < snapshot.data.data.length;
+                                        i++) {
+                                          list.add(snapshot.data.data[i].nameEN
+                                              .toString());
+                                        }
+                                        // newVehicleBloc
+                                        //     .setSelectedCountries(list[0]);
+                                        return PopupMenuButton<String>(
+                                          padding: EdgeInsets.all(0),
+                                          itemBuilder: (context) {
+                                            return list.map((value) {
+                                              return PopupMenuItem(
+                                                value: value,
+                                                child: Container(
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                      value,
+                                                      style: TextStyle(
+                                                        fontFamily: FontFamilies
+                                                            .POPPINS,
+                                                        fontSize:
+                                                        (MediaQuery
+                                                            .of(
+                                                            context)
+                                                            .size
+                                                            .height *
+                                                            0.02),
+                                                        color: AppColors
+                                                            .labelColor,
+                                                      ),
+                                                    )),
+                                              );
+                                            }).toList();
+                                          },
+                                          child: StreamBuilder(
+                                            stream: newVehicleBloc
+                                                .selectedCountries,
+                                            builder: (context, snap) {
+                                              if (snap.hasData) {
+                                                return Row(
+                                                  mainAxisSize: MainAxisSize
+                                                      .min,
+                                                  children: <Widget>[
+                                                    Text(
+                                                      snap.data.toString(),
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                        FontFamilies.POPPINS,
+                                                        fontSize: (MediaQuery
+                                                            .of(
+                                                            context)
+                                                            .size
+                                                            .height *
+                                                            0.02),
+                                                        color:
+                                                        AppColors.labelColor,
+                                                      ),
                                                     ),
-                                                  ),
+                                                    Container(
+                                                      child: Icon(
+                                                        Icons
+                                                            .keyboard_arrow_down,
+                                                        size: (MediaQuery
+                                                            .of(
+                                                            context)
+                                                            .size
+                                                            .height *
+                                                            0.02),
+                                                      ),
+                                                      alignment: Alignment
+                                                          .center,
+                                                      padding: EdgeInsets.only(
+                                                          bottom: 3),
+                                                    ),
+                                                  ],
                                                 );
-                                              }).toList();
-                                            },
-                                            child: StreamBuilder(
-                                              stream:
-                                              newVehicleBloc.selectedCountries,
-                                              builder: (context, snap) {
-                                                if(snap.hasData){
+                                              }
+                                              else {
                                                 return Row(
                                                   mainAxisSize:
                                                   MainAxisSize.min,
                                                   children: <Widget>[
                                                     Text(
-                                                      snap.data.toString(),
+                                                      snapshot.data.data.first
+                                                          .nameEN,
                                                       style: TextStyle(
-                                                        fontFamily: FontFamilies
+                                                        fontFamily:
+                                                        FontFamilies
                                                             .POPPINS,
-                                                        fontSize:
-                                                        (MediaQuery.of(
+                                                        fontSize: (MediaQuery
+                                                            .of(
                                                             context)
                                                             .size
                                                             .height *
@@ -620,59 +696,27 @@ class AddNewCar extends StatelessWidget {
                                                             .keyboard_arrow_down,
                                                         size: 15,
                                                       ),
-                                                      alignment:
-                                                      Alignment.center,
-                                                      padding: EdgeInsets.only(
+                                                      alignment: Alignment
+                                                          .center,
+                                                      padding:
+                                                      EdgeInsets.only(
                                                           bottom: 3),
                                                     ),
                                                   ],
-                                                );}
-                                                else
-                                                {
-                                                  return Row(
-                                                    mainAxisSize:
-                                                    MainAxisSize.min,
-                                                    children: <Widget>[
-                                                      Text(
-                                                        list[0],
-                                                        style: TextStyle(
-                                                          fontFamily: FontFamilies
-                                                              .POPPINS,
-                                                          fontSize:
-                                                          (MediaQuery.of(
-                                                              context)
-                                                              .size
-                                                              .height *
-                                                              0.02),
-                                                          color: AppColors
-                                                              .labelColor,
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        child: Icon(
-                                                          Icons
-                                                              .keyboard_arrow_down,
-                                                          size: 15,
-                                                        ),
-                                                        alignment:
-                                                        Alignment.center,
-                                                        padding: EdgeInsets.only(
-                                                            bottom: 3),
-                                                      ),
-                                                    ],
-                                                  );
-                                                }
-                                              },
-                                            ),
-                                            onSelected: (value) {
-                                              newVehicleBloc
-                                                  .setSelectedCountries(value);
+                                                );
+                                              }
                                             },
-                                          );
-                                        } else {
-                                          return Text("");
-                                        }
-                                      })
+                                          ),
+                                          onSelected: (value) {
+                                            newVehicleBloc
+                                                .setSelectedCountries(value);
+                                          },
+                                        );
+                                      } else {
+                                        return Text("");
+                                      }
+                                    },
+                                  ),
                                 ]),
                           ),
                           plateNumberTextField(),
@@ -806,10 +850,9 @@ class AddNewCar extends StatelessWidget {
                           return RaisedButton(
                             onPressed: () {
                               TextFieldValidation()
-                                  .checkRegistrationExpiredDateValidation(
-                                      newVehicleBloc
-                                          .getRegistrationExpireDate());
-
+                                  .checkNewCarRegistrationExpiredDateValidation(
+                                  newVehicleBloc
+                                      .getRegistrationExpireDate());
                               if (newVehicleBloc
                                   .checkRegistrationExpireDateValidation()) {
                                 Navigator.push(
@@ -896,7 +939,7 @@ class AddNewCar extends StatelessWidget {
 
   carBrandTextField(context) {
     if (_typeAheadController.text == null) {
-      newVehicleBloc.getSuggestions("a");
+      // newVehicleBloc.getSuggestions("a");
     }
 
     return TypeAheadFormField(
@@ -943,8 +986,8 @@ class AddNewCar extends StatelessWidget {
         _typeAheadController.text = suggestion;
 
         newVehicleBloc.setCarBrand(suggestion.toString());
-        newVehicleBloc.fetchAllCarModels();
-        newVehicleBloc.getSuggestions("a");
+        // newVehicleBloc.fetchAllCarModels();
+        // newVehicleBloc.getSuggestions("a");
       },
       onSaved: (suggestion) {
         newVehicleBloc.getSuggestions(null);

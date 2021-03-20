@@ -11,7 +11,8 @@ import 'package:posta_courier/models/city_model.dart';
 import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/country_cities_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:posta_courier/src/reasources/repository.dart';
-
+import 'package:posta_courier/db/providers/colors_provider.dart';
+import 'package:posta_courier/db/providers/vehicle_brands.dart';
 import 'approved_captain_bloc.dart';
 
 class NewVehicleBloc {
@@ -29,11 +30,13 @@ class NewVehicleBloc {
   final _selectedCountriesName = BehaviorSubject<String>();
   final _carColor = BehaviorSubject<CarDataModel>();
   final _carColorSelected = BehaviorSubject<String>();
+  final _carColorSelectedId = BehaviorSubject<int>();
   final _manufacturingYearSelected = BehaviorSubject<String>();
   final _manufacturingYearList = BehaviorSubject<List<String>>();
   final _selectedDate = BehaviorSubject<DateTime>();
   final _registrationExpireDateValidation = BehaviorSubject<String>();
   final _registrationExpireDate = BehaviorSubject<String>();
+  final _lastQuery = BehaviorSubject<String>();
   final _calendarColor = BehaviorSubject<bool>();
   final _captainRegistered = BehaviorSubject<CaptainModel>();
 
@@ -116,13 +119,20 @@ class NewVehicleBloc {
   }
 
   fetchAllCarBrand() async {
-    CarDataModel carBrand = await _repository.requestCarBrand();
-    _carBrand.sink.add(carBrand);
-    for (int i = 0; i < _carBrand.value.carData.data.length; i++) {
-      matches.add(" " + _carBrand.value.carData.data[i].name);
-
-    }
-    list.add(matches);
+    BrandsDBProvider.getAllBrands().then((value) async {
+      if (value != null) {
+      } else {
+        CarDataModel carBrand = await _repository.requestCarBrand();
+        _carBrand.sink.add(carBrand);
+        for (int i = 0; i < _carBrand.value.carData.data.length; i++) {
+          BrandsDBProvider.newBrand(
+              ColorModelDetails(name: _carBrand.value.carData.data[i].name));
+          BrandsDBProvider.getAllBrands()
+              .then((value) => matches.add(value[i].name));
+        }
+        list.add(matches);
+      }
+    });
   }
 
   fetchAllCarModels() async {
@@ -133,7 +143,6 @@ class NewVehicleBloc {
 
   getCountries() async {
     _countries.add(countryBloc.getCity());
-    _selectedCountriesName.add(_countries.value.data.first.nameEN);
   }
 
   fetchAllCarColor() async {
@@ -145,7 +154,7 @@ class NewVehicleBloc {
     final storage = new FlutterSecureStorage();
     String id = await storage.read(key: "id");
     String auth = await storage.read(key: "accessToken");
-    final request = await _repository.newVehicle( id,
+    final request = await _repository.newVehicle(id,
         auth,
 
         _insuranceFront.value.path,
@@ -153,19 +162,27 @@ class NewVehicleBloc {
         _vehicleLicenseFront.value.path,
         _vehicleLicenseBack.value.path);
     approvedCaptainBloc.captainCars();
-
   }
-  setSelectedCar(int id)
-  async {  final storage = new FlutterSecureStorage();
-  String auth = await storage.read(key: "accessToken");
 
-    var response=_repository.selectVehicle(id.toString(), auth);
+  getCarBrandId() {
+    return _carBrandId.value;
+  }
 
+  setSelectedCar(int id) async {
+    final storage = new FlutterSecureStorage();
+    String auth = await storage.read(key: "accessToken");
 
+    var response = _repository.selectVehicle(id.toString(), auth);
   }
 
   setSelectedColor(String value) {
     _carColorSelected.add(value);
+    ColorsDBProvider.db.getAllColors().then((value) {
+      _carColorSelectedId.add(
+          value[value.indexWhere((element) =>
+          element.name ==
+              _carColorSelected.value)].id);
+    });
   }
 
   getSelectedColor() {
@@ -173,41 +190,45 @@ class NewVehicleBloc {
         .indexWhere((element) => _carColorSelected.value == element.name);
   }
   getSelectedColorId() {
-    return _carColor.value.carData.data[_carColor.value.carData.data
-        .indexWhere((element) => _carColorSelected.value == element.name)].id;
+    return _carColorSelectedId.value;
   }
 
   Future<List<String>> getSuggestions(String query) async {
-    if (query == null) query = "a";
-    CarDataModel carBrand = await _repository.carBrandList(query);
-    _carBrand.sink.add(carBrand);
-    for (int i = 0; i < _carBrand.value.carData.data.length; i++) {
-      matches.add(" " + _carBrand.value.carData.data[i].name);
+    // if (query == null) query = "a";
+    if (_lastQuery.value != query) {
+      _lastQuery.add(query);
+      CarDataModel carBrand = await _repository.carBrandList(query);
+      _carBrand.sink.add(carBrand);
+      BrandsDBProvider.deleteAll();
+      for (int i = 0; i < _carBrand.value.carData.data.length; i++) {
+        BrandsDBProvider.newBrand(
+            ColorModelDetails(name: _carBrand.value.carData.data[i].name));
+        BrandsDBProvider.getAllBrands()
+            .then((value) => matches.add(value[i].name));
+      }
+      list.add(matches.toSet().toList());
+
+      list.value
+          .retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
+      return list.value;
+    } else {
+      list.value
+          .retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
+      return list.value.toSet().toList();
     }
-    list.add(matches.toSet().toList());
-
-    list.value
-        .retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
-    return list.value;
-  }
-
-  getCarBrandId() {
-    return _carBrandId.value;
-  }
-
-  List<String> distinct(List<String> i) {
-    var set = new Set();
-    return i.where((e) {
-      var isNew = !set.contains(e);
-      set.add(e);
-      return isNew;
-    });
   }
 
   setCarBrand(String value) {
-    _selectedCarBrand.add(value);
+    if (value == _selectedCarBrand.value) {} else {
+      _selectedCarBrand.add(value);
+      int index = list.value
+          .indexWhere((element) => _selectedCarBrand.value == element);
+      _carBrandId.add(_carBrand.value.carData.data[index].id.toString());
+      print(_carBrandId.value);
+      fetchAllCarModels();
+    }
     int index =
-        list.value.indexWhere((element) => _selectedCarBrand.value == element);
+    list.value.indexWhere((element) => _selectedCarBrand.value == element);
     _carBrandId.add(_carBrand.value.carData.data[index].id.toString());
   }
 
@@ -220,6 +241,7 @@ class NewVehicleBloc {
   }
 
   getSelectedCountries() {
+
     return _countries.value.data[ _countries.value.data.indexWhere((element) => _selectedCountriesName.value==element.nameEN)].id;
   }
 
@@ -283,17 +305,6 @@ class NewVehicleBloc {
     _registrationExpireDateValidation.add(value);
   }
 
-  createVehicle() async {
-    final storage = new FlutterSecureStorage();
-    String id = await storage.read(key: "id");
-    String auth = await storage.read(key: "accessToken");
-    var response = await _repository.vehicle(id, auth);
-    _captainRegistered.sink.add(response);
-    await storage.write(
-        key: "accessToken", value: _captainRegistered.value.data.accessToken);
-    await storage.write(
-        key: "id", value: _captainRegistered.value.data.id.toString());
-  }
 
   updateInsuranceFront(File file) {
     _insuranceFront.add(file);
@@ -376,12 +387,28 @@ class NewVehicleBloc {
     });
   }
 
-  Stream<bool> get submitValid2 => Observable.combineLatest4(
-      vehicleLicenseFront,
-      vehicleLicenseBack,
-      insuranceFront,
-      insuranceBack,
-      (vehicleLicenseFront, vehicleLicenseBack, insuranceFront,
+  resetData() {
+    _registrationExpireDate.add(null);
+    _carColorSelected.add(null);
+    _manufacturingYearSelected.add(null);
+    _selectedCarBrand.add(null);
+    getSuggestions(" ");
+    _carModelSelected.add(null);
+    _carBrandModels.add(null);
+    _selectedCountriesName.add(null);
+    _vehicleLicenseBack.add(null);
+    _vehicleLicenseFront.add(null);
+    _insuranceBack.add(null);
+    _insuranceFront.add(null);
+  }
+
+  Stream<bool> get submitValid2 =>
+      Observable.combineLatest4(
+          vehicleLicenseFront,
+          vehicleLicenseBack,
+          insuranceFront,
+          insuranceBack,
+              (vehicleLicenseFront, vehicleLicenseBack, insuranceFront,
               insuranceBack) =>
           true);
 

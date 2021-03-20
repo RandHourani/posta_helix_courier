@@ -51,7 +51,5 @@ class ReportProblemProvider {
         },
         body: json.encode(body));
 
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.clear();
   }
 }

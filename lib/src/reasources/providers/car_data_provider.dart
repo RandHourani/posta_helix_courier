@@ -16,11 +16,11 @@ class CarDataProvide {
   }
 
   Future<CarDataModel> carBrandList(String query) async {
-
-    var response = await client.get(carBrandListUrl+query,  headers: {
-    "Accept": "application/json"
-    });
-    return CarDataModel.fromJson(jsonDecode(response.body));
+    var response = await client
+        .get(carBrandListUrl + query, headers: {"Accept": "application/json"});
+    if (response.statusCode == 200) {
+      return CarDataModel.fromJson(jsonDecode(response.body));
+    } else {}
   }
 
   Future<CarDataModel> carColorRequest() async {

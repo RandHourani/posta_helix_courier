@@ -12,10 +12,9 @@ import 'package:posta_courier/src/constants/application_colors_value.dart';
 import 'package:posta_courier/src/constants/fonts_size.dart';
 import 'package:posta_courier/src/ui/signIn_and_createAccount_screens/signIn_screen.dart';
 import 'package:posta_courier/src/ui/signIn_and_createAccount_screens/sign_up_screen.dart';
-
+import 'package:posta_courier/src/utils/util.dart';
 
 class WelcomeScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     // FlutterStatusbarcolor.setStatusBarColor(Colors.white);
@@ -25,6 +24,7 @@ class WelcomeScreen extends StatelessWidget {
     // countryBloc.getCountry();
     vehicleBloc.fetchAllCarColor();
     vehicleBloc.fetchAllCarBrand();
+    Utils.setScreen('/');
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -134,6 +134,7 @@ class WelcomeScreen extends StatelessWidget {
                         top: MediaQuery.of(context).size.width * 0.05),
                     child: InkWell(
                         onTap: () {
+                          phoneBloc.resetPhone();
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) {

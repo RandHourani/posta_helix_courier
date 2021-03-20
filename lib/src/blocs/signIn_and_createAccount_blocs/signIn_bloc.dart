@@ -56,7 +56,6 @@ class SignInBloc {
     _countryCode.sink.add(countryCode.toString());
     _countryFlag.add(flag);
     print(_countryFlag.value);
-    countryBloc.getCities(flag);
     phoneBloc.setCountryCode(countryCode, flag);
     forgotPassBloc.setCountryCode(countryCode, flag);
 

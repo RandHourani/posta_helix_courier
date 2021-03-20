@@ -9,6 +9,8 @@ import 'package:posta_courier/src/reasources/repository.dart';
 import 'package:posta_courier/validation/text_field_validation.dart';
 import 'package:posta_courier/db/providers/nationalities_provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/signIn_bloc.dart';
+import 'package:posta_courier/src/utils/util.dart';
 
 class PersonalDetailsBloc {
   final _firstNameController = BehaviorSubject<String>();
@@ -152,6 +154,19 @@ class PersonalDetailsBloc {
     }
   }
 
+  checkEditPersonalDetailsValidation() {
+    if (_invalidEmailError.value == null &&
+        _issueDateValidation.value == null &&
+        _expiredDateValidation.value == null &&
+        _birthdayValidation.value == null) {
+      _personalDetailsValidation.add(true);
+      return true;
+    } else {
+      _personalDetailsValidation.add(false);
+      return false;
+    }
+  }
+
   setGenderMale() {
     _male.add(true);
     _female.add(false);
@@ -277,24 +292,22 @@ class PersonalDetailsBloc {
   }
 
   fetchAllNationality() async {
-    NationalitiesDBProvider.db.getAllNationalities().then((value) async {
-      if (value.length > 0) {
-      } else {
-        NationalityModel nationality = await _repository.requestNationality();
-        _nationality.sink.add(nationality);
-        for (int i = 0; i < _nationality.value.personalData.data.length; i++) {
-          NationalitiesDBProvider.newNationality(NationalityDetails(
-              name: _nationality.value.personalData.data[i].name));
-        }
+    if (_nationality.value == null) {
+      NationalityModel nationality = await _repository.requestNationality();
+      _nationality.sink.add(nationality);
+      for (int i = 0; i < _nationality.value.personalData.data.length; i++) {
+        NationalitiesDBProvider.newNationality(NationalityDetails(
+            name: _nationality.value.personalData.data[i].name));
       }
-    });
+    } else {}
   }
 
   setSelectedNationality(String value) {
     _selectedNationality.add(value);
     NationalitiesDBProvider.db.getAllNationalities().then((value) {
-      _selectedNationalityID.add(value
-          .indexWhere((element) => element.name == _selectedNationality.value));
+      _selectedNationalityID.add(value[value.indexWhere(
+              (element) => element.name == _selectedNationality.value)]
+          .id);
     });
   }
 
@@ -309,8 +322,9 @@ class PersonalDetailsBloc {
   }
 
   getNationalityId() {
-    return _selectedNationalityID.value==null?1:
-     _selectedNationalityID.value + 1;
+    return _selectedNationalityID.value == null
+        ? 1
+        : _selectedNationalityID.value;
   }
 
   createAccount() async {
@@ -342,27 +356,72 @@ class PersonalDetailsBloc {
     print(_captainRegistered.value.message);
   }
 
+  editAccount() async {
+    _invalidEmailError.add(null);
+    var response = await _repository.editAccount({
+      "captain": {
+        "first_name": getFirstName().toString(),
+        "last_name": getLastName().toString(),
+        "birthday": Utils.dateFormat2(getBirthday().toString()),
+        "driving_certificate_end_date":
+            Utils.dateFormat2(getDriverExpiredDate().toString()),
+        "driving_certificate_start_date":
+            Utils.dateFormat2(getDriverIssueDate().toString()),
+        "email": getEmail().toString(),
+        "gender": getGender(),
+        "nationality_id": getNationalityId(),
+      },
+      "car": [],
+    });
+    _captainRegistered.sink.add(response);
+    print(_captainRegistered.value.message);
+    _captainRegistered.value.data != null
+        ? _message.add("success")
+        : _message.add("The captain.email has already been taken.");
+
+    print("_message.value");
+    print(_message.value);
+
+    if (_message.value == "The captain.email has already been taken.") {
+      setEmailValidation("The email address has already been taken");
+    } else {
+      setEmailValidation(null);
+      _message.add("success");
+      // print("_message.value");
+      // print(_message.value);
+      // final storage = new FlutterSecureStorage();
+      // await storage.write(
+      //     key: "accessToken", value: _captainRegistered.value.data.accessToken);
+      // await storage.write(
+      //     key: "id", value: _captainRegistered.value.data.id.toString());
+    }
+  }
+
   setCaptainData(CaptainData model) {
     _firstNameController.add(model.data.firstName);
     _lastNameController.add(model.data.lastName);
     _email.add(model.data.email);
     _birthdayController.add(model.data.birthday);
-    _selectedNationality.add(_nationality
-        .value
-        .personalData
-        .data[_nationality.value.personalData.data
-            .indexWhere((element) => model.data.nationalityId == element.id)]
-        .name);
+    _selectedNationality.add(model.data.nationality.name);
+    _selectedNationalityID.add(model.data.nationality.id);
     _driverLicenseIssueDate.add(model.data.drivingCertificateSD);
     _driverLicenseExpiredOn.add(model.data.drivingCertificateED);
   }
 
   setNationality(int index) {
-    _selectedNationality.add(_nationality.value.personalData.data[index].name);
+    NationalitiesDBProvider.db.getAllNationalities().then((value) {
+      _selectedNationality.add(value[index - 1].name);
+    });
   }
 
   getMessage() {
     return _message.value;
+  }
+
+  resetData() {
+    _birthdayController.add(null);
+    _driverLicenseIssueDate.add(null);
+    _driverLicenseExpiredOn.add(null);
   }
 
   void dispose() {

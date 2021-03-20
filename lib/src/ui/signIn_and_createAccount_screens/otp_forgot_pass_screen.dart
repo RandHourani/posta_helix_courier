@@ -38,7 +38,7 @@ class OtpForgotPassScreen extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                        Navigator.pop(context);
+                          Navigator.pop(context);
                         },
                         child: Text(
                           " BACK",
@@ -46,9 +46,9 @@ class OtpForgotPassScreen extends StatelessWidget {
                               color: AppColors.TITLE_TEXT_COLOR,
                               fontFamily: FontFamilies.POPPINS,
                               fontSize:
-                              (MediaQuery.of(context).size.width * 0.04) +
-                                  FontSize.HEADING_FONT -
-                                  7,
+                                  (MediaQuery.of(context).size.width * 0.04) +
+                                      FontSize.HEADING_FONT -
+                                      7,
                               fontWeight: FontWeight.bold),
                         ),
                       )
@@ -63,72 +63,122 @@ class OtpForgotPassScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-
                       Text(
                         "Enter Your OTP Code",
                         style: TextStyle(
                             color: AppColors.TITLE_TEXT_COLOR,
                             fontFamily: FontFamilies.POPPINS,
-                            fontSize: (MediaQuery.of(context).size.width * 0.04) +
+                            fontSize:
+                            (MediaQuery
+                                .of(context)
+                                .size
+                                .width * 0.04) +
                                 FontSize.HEADING_FONT,
                             fontWeight: FontWeight.w700),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 10),
-                        child: Text("Enter the 6-digit code sent to you on",
+                        child: Text(
+                          "Enter the 6-digit code sent to you on",
                           style: TextStyle(
                             color: AppColors.TITLE_TEXT_COLOR,
                             fontFamily: FontFamilies.POPPINS,
-                            fontSize: (MediaQuery.of(context).size.height * 0.02),
-                          ),),
+                            fontSize:
+                            (MediaQuery
+                                .of(context)
+                                .size
+                                .height * 0.02),
+                          ),
+                        ),
                       ),
-                      Text(forgotPassBloc.getEmail().toString(),  style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.TITLE_TEXT_COLOR,
-                        fontFamily: FontFamilies.POPPINS,
-                        fontSize: (MediaQuery.of(context).size.height * 0.02),
-                      ),),
+                      Text(
+                        forgotPassBloc.getEmail().toString(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.TITLE_TEXT_COLOR,
+                          fontFamily: FontFamilies.POPPINS,
+                          fontSize: (MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.02),
+                        ),
+                      ),
                       Container(
                           margin: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width < 450
-                                ? MediaQuery.of(context).size.width * 0.01
-                                : MediaQuery.of(context).size.width * 0.07,
-                            right:MediaQuery.of(context).size.width < 450
-                                ? MediaQuery.of(context).size.width * 0.01
-                                : MediaQuery.of(context).size.width * 0.07,
-                            top: MediaQuery.of(context).size.height * 0.04,
-                            bottom: MediaQuery.of(context).size.height * 0.003,
+                            left: MediaQuery
+                                .of(context)
+                                .size
+                                .width < 450
+                                ? MediaQuery
+                                .of(context)
+                                .size
+                                .width * 0.01
+                                : MediaQuery
+                                .of(context)
+                                .size
+                                .width * 0.07,
+                            right: MediaQuery
+                                .of(context)
+                                .size
+                                .width < 450
+                                ? MediaQuery
+                                .of(context)
+                                .size
+                                .width * 0.01
+                                : MediaQuery
+                                .of(context)
+                                .size
+                                .width * 0.07,
+                            top: MediaQuery
+                                .of(context)
+                                .size
+                                .height * 0.04,
+                            bottom: MediaQuery
+                                .of(context)
+                                .size
+                                .height * 0.003,
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Container(
                                 alignment: Alignment.center,
-                                width: MediaQuery.of(context).size.width <
-                                    450
-                                    ? MediaQuery.of(context).size.width /
-                                    7.5
-                                    : MediaQuery.of(context).size.width /
-                                    8,
-                                height: MediaQuery.of(context).size.width  <
-                                    450
-                                    ? MediaQuery.of(context).size.width  /
-                                    9
-                                    : MediaQuery.of(context).size.width  /
-                                    9.9,
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width < 450
+                                    ? MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 7.5
+                                    : MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 8,
+                                height: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width < 450
+                                    ? MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 9
+                                    : MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 9.9,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius:
                                   BorderRadius.all(Radius.circular(12)),
                                   border: Border.all(
-                                    color:  AppColors.LIGHT_GREY,
-
+                                    color: AppColors.LIGHT_GREY,
                                     width: 0.7,
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: AppColors
-                                          .completedInfoBoxUnderLine,
+                                      color:
+                                      AppColors.completedInfoBoxUnderLine,
                                       spreadRadius: 2,
                                       blurRadius: 2,
                                       offset: Offset(1, 1.5),
@@ -139,31 +189,42 @@ class OtpForgotPassScreen extends StatelessWidget {
                               ),
                               Container(
                                 alignment: Alignment.center,
-                                width: MediaQuery.of(context).size.width <
-                                    450
-                                    ? MediaQuery.of(context).size.width /
-                                    7.5
-                                    : MediaQuery.of(context).size.width /
-                                    8,
-                                height: MediaQuery.of(context).size.width  <
-                                    450
-                                    ? MediaQuery.of(context).size.width  /
-                                    9
-                                    : MediaQuery.of(context).size.width  /
-                                    9.9,
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width < 450
+                                    ? MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 7.5
+                                    : MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 8,
+                                height: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width < 450
+                                    ? MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 9
+                                    : MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 9.9,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius:
                                   BorderRadius.all(Radius.circular(12)),
                                   border: Border.all(
-                                    color:  AppColors.LIGHT_GREY,
-
+                                    color: AppColors.LIGHT_GREY,
                                     width: 0.7,
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: AppColors
-                                          .completedInfoBoxUnderLine,
+                                      color:
+                                      AppColors.completedInfoBoxUnderLine,
                                       spreadRadius: 2,
                                       blurRadius: 2,
                                       offset: Offset(1, 1.5),
@@ -174,31 +235,42 @@ class OtpForgotPassScreen extends StatelessWidget {
                               ),
                               Container(
                                 alignment: Alignment.center,
-                                width: MediaQuery.of(context).size.width <
-                                    450
-                                    ? MediaQuery.of(context).size.width /
-                                    7.5
-                                    : MediaQuery.of(context).size.width /
-                                    8,
-                                height: MediaQuery.of(context).size.width  <
-                                    450
-                                    ? MediaQuery.of(context).size.width  /
-                                    9
-                                    : MediaQuery.of(context).size.width  /
-                                    9.9,
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width < 450
+                                    ? MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 7.5
+                                    : MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 8,
+                                height: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width < 450
+                                    ? MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 9
+                                    : MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 9.9,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius:
                                   BorderRadius.all(Radius.circular(12)),
                                   border: Border.all(
-                                    color:  AppColors.LIGHT_GREY,
-
+                                    color: AppColors.LIGHT_GREY,
                                     width: 0.7,
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: AppColors
-                                          .completedInfoBoxUnderLine,
+                                      color:
+                                      AppColors.completedInfoBoxUnderLine,
                                       spreadRadius: 2,
                                       blurRadius: 2,
                                       offset: Offset(1, 1.5),
@@ -209,31 +281,42 @@ class OtpForgotPassScreen extends StatelessWidget {
                               ),
                               Container(
                                 alignment: Alignment.center,
-                                width: MediaQuery.of(context).size.width <
-                                    450
-                                    ? MediaQuery.of(context).size.width /
-                                    7.5
-                                    : MediaQuery.of(context).size.width /
-                                    8,
-                                height: MediaQuery.of(context).size.width  <
-                                    450
-                                    ? MediaQuery.of(context).size.width  /
-                                    9
-                                    : MediaQuery.of(context).size.width  /
-                                    9.9,
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width < 450
+                                    ? MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 7.5
+                                    : MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 8,
+                                height: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width < 450
+                                    ? MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 9
+                                    : MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 9.9,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius:
                                   BorderRadius.all(Radius.circular(12)),
                                   border: Border.all(
-                                    color:  AppColors.LIGHT_GREY,
-
+                                    color: AppColors.LIGHT_GREY,
                                     width: 0.7,
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: AppColors
-                                          .completedInfoBoxUnderLine,
+                                      color:
+                                      AppColors.completedInfoBoxUnderLine,
                                       spreadRadius: 2,
                                       blurRadius: 2,
                                       offset: Offset(1, 1.5),
@@ -244,31 +327,42 @@ class OtpForgotPassScreen extends StatelessWidget {
                               ),
                               Container(
                                 alignment: Alignment.center,
-                                width: MediaQuery.of(context).size.width <
-                                    450
-                                    ? MediaQuery.of(context).size.width /
-                                    7.5
-                                    : MediaQuery.of(context).size.width /
-                                    8,
-                                height: MediaQuery.of(context).size.width  <
-                                    450
-                                    ? MediaQuery.of(context).size.width  /
-                                    9
-                                    : MediaQuery.of(context).size.width  /
-                                    9.9,
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width < 450
+                                    ? MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 7.5
+                                    : MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 8,
+                                height: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width < 450
+                                    ? MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 9
+                                    : MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 9.9,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius:
                                   BorderRadius.all(Radius.circular(12)),
                                   border: Border.all(
-                                    color:  AppColors.LIGHT_GREY,
-
+                                    color: AppColors.LIGHT_GREY,
                                     width: 0.7,
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: AppColors
-                                          .completedInfoBoxUnderLine,
+                                      color:
+                                      AppColors.completedInfoBoxUnderLine,
                                       spreadRadius: 2,
                                       blurRadius: 2,
                                       offset: Offset(1, 1.5),
@@ -279,31 +373,42 @@ class OtpForgotPassScreen extends StatelessWidget {
                               ),
                               Container(
                                 alignment: Alignment.center,
-                                width: MediaQuery.of(context).size.width <
-                                    450
-                                    ? MediaQuery.of(context).size.width /
-                                    7.5
-                                    : MediaQuery.of(context).size.width /
-                                    8,
-                                height: MediaQuery.of(context).size.width  <
-                                    450
-                                    ? MediaQuery.of(context).size.width  /
-                                    9
-                                    : MediaQuery.of(context).size.width  /
-                                    9.9,
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width < 450
+                                    ? MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 7.5
+                                    : MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 8,
+                                height: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width < 450
+                                    ? MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 9
+                                    : MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 9.9,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius:
                                   BorderRadius.all(Radius.circular(12)),
                                   border: Border.all(
-                                    color:  AppColors.LIGHT_GREY,
-
+                                    color: AppColors.LIGHT_GREY,
                                     width: 0.7,
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: AppColors
-                                          .completedInfoBoxUnderLine,
+                                      color:
+                                      AppColors.completedInfoBoxUnderLine,
                                       spreadRadius: 2,
                                       blurRadius: 2,
                                       offset: Offset(1, 1.5),
@@ -316,7 +421,7 @@ class OtpForgotPassScreen extends StatelessWidget {
                           )),
                       Container(
                         padding: EdgeInsets.only(bottom: 5),
-                        margin: EdgeInsets.only(left: 12,top: 8),
+                        margin: EdgeInsets.only(left: 12, top: 8),
                         decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
@@ -329,7 +434,10 @@ class OtpForgotPassScreen extends StatelessWidget {
                             style: TextStyle(
                               fontFamily: FontFamilies.POPPINS,
                               fontSize:
-                              (MediaQuery.of(context).size.height * 0.02),
+                              (MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height * 0.02),
                               color: AppColors.MAIN_COLOR,
                             ),
                           ),

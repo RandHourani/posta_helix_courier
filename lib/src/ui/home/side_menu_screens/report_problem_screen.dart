@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:posta_courier/src/ui/widgets/dialog.dart';
 import 'package:posta_courier/src/ui/widgets/dialog_loading.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ReportProblem extends StatelessWidget {
   List<String> list = List();
@@ -179,7 +180,9 @@ class ReportProblem extends StatelessWidget {
                                     shrinkWrap: true,
                                   );
                                 } else {
-                                  return LoadingDialogWidget();
+                                  return SpinKitCircle(
+                                    color: AppColors.MAIN_COLOR,
+                                  );
                                 }
                               },
                             );

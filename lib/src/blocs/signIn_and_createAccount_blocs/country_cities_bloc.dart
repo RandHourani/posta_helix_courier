@@ -10,6 +10,7 @@ class CountryBloc {
   final _repository = Repository();
   final _cities = BehaviorSubject<CityModel>();
   final _country = BehaviorSubject<CountryModel>();
+  final _selectedCountryCode = BehaviorSubject<String>();
   final _countryCode = BehaviorSubject<List<String>>();
   final _prevCountryCode = BehaviorSubject<String>();
 
@@ -20,20 +21,17 @@ class CountryBloc {
   Observable<List<String>> get countryDetails => _countryCode.stream;
 
   getCities(String countryCode) async {
-    if(countryCode==_prevCountryCode.value)
-      {}
-    else
-      {
-        _prevCountryCode.add(countryCode);
-        CitiesDBProvider.deleteAll();
+    if (_selectedCountryCode.value == countryCode) {
+    } else {
+      CitiesDBProvider.deleteAll();
+
+      _selectedCountryCode.add(countryCode);
       CityModel response = await _repository.getCities(countryCode);
       _cities.add(response);
       for (int i = 0; i < _cities.value.data.length; i++) {
-        CitiesDBProvider.newCity(
-            City(nameEN: _cities.value.data[i].nameEN));
+        CitiesDBProvider.newCity(City(nameEN: _cities.value.data[i].nameEN));
       }
-      }
-
+    }
   }
 
   getCity() {
@@ -54,6 +52,20 @@ class CountryBloc {
       }
     }
     _countryCode.add(list);
+  }
+
+  getCountryName(int countryId) {
+    getCities(_country
+        .value
+        .data
+        .data[_country.value.data.data
+        .indexWhere((element) => element.id == countryId)]
+        .countryCode);
+  }
+
+  getCityById(int id) {
+    return _cities.value.data[_cities.value.data.indexWhere((element) =>
+    element.id == id)].nameEN;
   }
 
   getCountryDetails(int index) {

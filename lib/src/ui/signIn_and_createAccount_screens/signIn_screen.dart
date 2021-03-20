@@ -428,6 +428,7 @@ class SignInScreen extends StatelessWidget {
                               onTap: () {
                                 signInBloc.resetPhone();
                                 phoneController.clear();
+                                phoneBloc.resetPhone();
 
                                 Navigator.push(
                                   context,

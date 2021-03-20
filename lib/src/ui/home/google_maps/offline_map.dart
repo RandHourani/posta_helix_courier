@@ -17,6 +17,7 @@ class OfflineMap extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
         if(snapshot.hasData)
           {return GoogleMap(
+            liteModeEnabled: true,
             onMapCreated: (GoogleMapController controller) {
               rootBundle.loadString('assets/map_style').then((string) {
                 _controller.setMapStyle(string);
@@ -33,6 +34,7 @@ class OfflineMap extends StatelessWidget {
           ); }
         else
           {return GoogleMap(
+            liteModeEnabled: true,
             onMapCreated: (GoogleMapController controller) {
               rootBundle.loadString('assets/map_style').then((string) {
                 _controller.setMapStyle(string);
@@ -41,7 +43,7 @@ class OfflineMap extends StatelessWidget {
               _controller = controller;
             },
             myLocationButtonEnabled: true,
-            zoomControlsEnabled: false,
+            zoomControlsEnabled: true,
             initialCameraPosition: CameraPosition(
               target: locationPoints,
               zoom: 11.0,

@@ -31,6 +31,7 @@ class LoadingDialogWidget extends StatelessWidget {
 
                 SpinKitCircle(
                   color: AppColors.MAIN_COLOR,
+                  // duration: Duration(seconds: 7),
                 ),
               ],
             )),

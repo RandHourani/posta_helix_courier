@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -21,12 +21,13 @@ import 'package:posta_courier/src/constants/constants.dart';
 import 'package:posta_courier/src/constants/fonts_size.dart';
 import 'package:posta_courier/src/ui/home/side_menu_screens/vehicale_details.dart';
 import 'package:posta_courier/src/ui/widgets/dialog.dart';
+import 'package:posta_courier/src/ui/home/google_maps/home_screen.dart';
 import 'add_new_car.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    approvedCaptainBloc.checkUserAuth();
+    // approvedCaptainBloc.checkUserAuth();
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     //      statusBarColor: Colors.transparent));
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
@@ -72,7 +73,12 @@ class ProfileScreen extends StatelessWidget {
                     children: <Widget>[
                       InkWell(
                         onTap: () {
-                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) {
+                              return HomeScreen();
+                            }),
+                          );
                         },
                         child: Icon(
                           Icons.arrow_back,
@@ -114,161 +120,7 @@ class ProfileScreen extends StatelessWidget {
                     if (snapshot.hasData) {
                       return InkWell(
                           onTap: () {
-                            showMaterialModalBottomSheet(
-                              expand: false,
-                              context: context,
-                              backgroundColor: Colors.transparent,
-                              builder: (context) {
-                                return ListView(
-                                  shrinkWrap: true,
-                                  children: [
-                                    InkWell(
-                                      onTap: () async {
-                                        Navigator.pop(context);
-
-                                        await showDialog(
-                                            barrierDismissible: true,
-                                            context: context,
-                                            builder: (_) {
-                                              return AlertDialog(
-                                                contentPadding: EdgeInsets.all(
-                                                    0),
-                                                content: Image.file(
-                                                    snapshot.data),
-                                              );
-                                            });
-                                      },
-                                      child: Container(
-                                        color: Colors.white,
-                                        height: 60,
-                                        width: MediaQuery
-                                            .of(context)
-                                            .size
-                                            .width,
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .start,
-                                          children: [
-
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  right: 10, left: 10),
-                                              child: SvgPicture.asset(
-                                                "assets/images/view_img.svg",
-                                                width: 30,
-                                                height: 30,
-                                                color: Colors.black,),
-                                            ),
-
-                                            Container(child: Text(
-                                              "View Profile Picture",
-                                              style: TextStyle(
-                                                  fontFamily: FontFamilies
-                                                      .POPPINS,
-                                                  fontSize: 16
-
-                                              ),),
-                                            )
-                                          ],),
-                                      ),),
-                                    Container(
-                                      color: Colors.white,
-                                      width: MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width,
-                                      child: Divider(
-                                          thickness: 1,
-                                          color: AppColors.LIGHT_BLUE
-                                      ),
-
-                                    ),
-                                    InkWell(
-                                        onTap: () async {
-                                          Navigator.pop(context);
-                                          showDialog<void>(
-                                              context: context,
-                                              barrierDismissible: false,
-                                              // user must tap button!
-                                              builder:
-                                                  (BuildContext context) {
-                                                return WillPopScope(
-                                                    onWillPop: () {
-                                                      return Future.value(
-                                                          true);
-                                                    },
-                                                    child: AlertDialog(
-                                                      contentPadding:
-                                                      EdgeInsets.all(
-                                                          8),
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius
-                                                              .all(Radius
-                                                              .circular(
-                                                              15.0))),
-                                                      content: Container(
-                                                        height: 50,
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceAround,
-                                                          children: <
-                                                              Widget>[
-                                                            cameraNew(
-                                                                'PROFILE_IMAGE'),
-                                                            VerticalDivider(
-                                                              color: AppColors
-                                                                  .labelColor,
-                                                            ),
-                                                            galleryNew(
-                                                                'VEHICLE_License_FRONT'),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ));
-                                              });
-                                        },
-                                        child:
-                                        Container(
-                                            color: Colors.white,
-                                            height: 60,
-                                            width: MediaQuery
-                                                .of(context)
-                                                .size
-                                                .width,
-                                            child:
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .start,
-
-                                              children: [
-
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      right: 10, left: 10),
-                                                  child: Image.asset(
-                                                    "assets/images/gallery.png",
-                                                    width: 35,
-                                                    height: 30,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-
-
-                                                Container(child: Text(
-                                                  "Select Profile Picture",
-                                                  style: TextStyle(
-                                                      fontFamily: FontFamilies
-                                                          .POPPINS,
-                                                      fontSize: 16
-
-                                                  ),),
-                                                )
-                                              ],)))
-                                  ],
-                                );
-                              },
-                            );
+                            showChangeImg(context, snapshot.data);
                           },
                           child: Align(
                             alignment: Alignment.bottomCenter,
@@ -296,171 +148,173 @@ class ProfileScreen extends StatelessWidget {
                           if (snapshot.hasData) {
                             return InkWell(
                                 onTap: () {
-                                  showMaterialModalBottomSheet(
-                                    expand: false,
-                                    context: context,
-                                    backgroundColor: Colors.transparent,
-                                    builder: (context) {
-                                      return ListView(
-                                        shrinkWrap: true,
-                                        children: [
-                                          InkWell(
-                                            onTap: () async {
-                                              Navigator.pop(context);
+                                  showChangeImg2(context, snapshot.data);
 
-                                              await showDialog(
-                                                  barrierDismissible: true,
-                                                  context: context,
-                                                  builder: (_) {
-                                                    return AlertDialog(
-                                                        contentPadding: EdgeInsets
-                                                            .all(0),
-                                                        content: FadeInImage(
-                                                          fit: BoxFit.cover,
-
-                                                          image: NetworkImage(
-                                                              Constants
-                                                                  .MAIN_URL_FOR_DOCUMENTS +
-                                                                  snapshot
-                                                                      .data),
-                                                          placeholder: AssetImage(
-                                                              "assets/images/profile_img.png"),
-                                                        )
-                                                    );
-                                                  });
-                                            },
-                                            child: Container(
-                                              color: Colors.white,
-                                              height: 60,
-                                              width: MediaQuery
-                                                  .of(context)
-                                                  .size
-                                                  .width,
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment
-                                                    .start,
-                                                children: [
-
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        right: 10, left: 10),
-                                                    child: SvgPicture.asset(
-                                                      "assets/images/view_img.svg",
-                                                      width: 30,
-                                                      height: 30,
-                                                      color: Colors.black,),
-                                                  ),
-
-                                                  Container(child: Text(
-                                                    "View Profile Picture",
-                                                    style: TextStyle(
-                                                        fontFamily: FontFamilies
-                                                            .POPPINS,
-                                                        fontSize: 16
-
-                                                    ),),
-                                                  )
-                                                ],),
-                                            ),),
-                                          Container(
-                                            color: Colors.white,
-                                            width: MediaQuery
-                                                .of(context)
-                                                .size
-                                                .width,
-                                            child: Divider(
-                                                thickness: 1,
-                                                color: AppColors.LIGHT_BLUE
-                                            ),
-
-                                          ),
-                                          InkWell(
-                                              onTap: () async {
-                                                Navigator.pop(context);
-                                                showDialog<void>(
-                                                    context: context,
-                                                    barrierDismissible: false,
-                                                    // user must tap button!
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return WillPopScope(
-                                                          onWillPop: () {
-                                                            return Future.value(
-                                                                true);
-                                                          },
-                                                          child: AlertDialog(
-                                                            contentPadding:
-                                                            EdgeInsets.all(
-                                                                8),
-                                                            shape: RoundedRectangleBorder(
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                    .circular(
-                                                                    15.0))),
-                                                            content: Container(
-                                                              height: 50,
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceAround,
-                                                                children: <
-                                                                    Widget>[
-                                                                  cameraNew(
-                                                                      'PROFILE_IMAGE'),
-                                                                  VerticalDivider(
-                                                                    color: AppColors
-                                                                        .labelColor,
-                                                                  ),
-                                                                  galleryNew(
-                                                                      'VEHICLE_License_FRONT'),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ));
-                                                    });
-                                              },
-                                              child:
-                                              Container(
-                                                  color: Colors.white,
-                                                  height: 60,
-                                                  width: MediaQuery
-                                                      .of(context)
-                                                      .size
-                                                      .width,
-                                                  child:
-                                                  Row(
-                                                    mainAxisAlignment: MainAxisAlignment
-                                                        .start,
-
-                                                    children: [
-
-                                                      Padding(
-                                                        padding: EdgeInsets
-                                                            .only(right: 10,
-                                                            left: 10),
-                                                        child: Image.asset(
-                                                          "assets/images/gallery.png",
-                                                          width: 35,
-                                                          height: 30,
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
-
-
-                                                      Container(child: Text(
-                                                        "Select Profile Picture",
-                                                        style: TextStyle(
-                                                            fontFamily: FontFamilies
-                                                                .POPPINS,
-                                                            fontSize: 16
-
-                                                        ),),
-                                                      )
-                                                    ],)))
-                                        ],
-                                      );
-                                    },
-                                  );
+                                  // showMaterialModalBottomSheet(
+                                  //   expand: false,
+                                  //   context: context,
+                                  //   backgroundColor: Colors.transparent,
+                                  //   builder: (context) {
+                                  //     return ListView(
+                                  //       shrinkWrap: true,
+                                  //       children: [
+                                  //         InkWell(
+                                  //           onTap: () async {
+                                  //             Navigator.pop(context);
+                                  //
+                                  //             await showDialog(
+                                  //                 barrierDismissible: true,
+                                  //                 context: context,
+                                  //                 builder: (_) {
+                                  //                   return AlertDialog(
+                                  //                       contentPadding: EdgeInsets
+                                  //                           .all(0),
+                                  //                       content: FadeInImage(
+                                  //                         fit: BoxFit.cover,
+                                  //
+                                  //                         image: NetworkImage(
+                                  //                             Constants
+                                  //                                 .MAIN_URL_FOR_DOCUMENTS +
+                                  //                                 snapshot
+                                  //                                     .data),
+                                  //                         placeholder: AssetImage(
+                                  //                             "assets/images/profile_img.png"),
+                                  //                       )
+                                  //                   );
+                                  //                 });
+                                  //           },
+                                  //           child: Container(
+                                  //             color: Colors.white,
+                                  //             height: 60,
+                                  //             width: MediaQuery
+                                  //                 .of(context)
+                                  //                 .size
+                                  //                 .width,
+                                  //             child: Row(
+                                  //               mainAxisAlignment: MainAxisAlignment
+                                  //                   .start,
+                                  //               children: [
+                                  //
+                                  //                 Padding(
+                                  //                   padding: EdgeInsets.only(
+                                  //                       right: 10, left: 10),
+                                  //                   child: SvgPicture.asset(
+                                  //                     "assets/images/view_img.svg",
+                                  //                     width: 30,
+                                  //                     height: 30,
+                                  //                     color: Colors.black,),
+                                  //                 ),
+                                  //
+                                  //                 Container(child: Text(
+                                  //                   "View Profile Picture",
+                                  //                   style: TextStyle(
+                                  //                       fontFamily: FontFamilies
+                                  //                           .POPPINS,
+                                  //                       fontSize: 16
+                                  //
+                                  //                   ),),
+                                  //                 )
+                                  //               ],),
+                                  //           ),),
+                                  //         Container(
+                                  //           color: Colors.white,
+                                  //           width: MediaQuery
+                                  //               .of(context)
+                                  //               .size
+                                  //               .width,
+                                  //           child: Divider(
+                                  //               thickness: 1,
+                                  //               color: AppColors.LIGHT_BLUE
+                                  //           ),
+                                  //
+                                  //         ),
+                                  //         InkWell(
+                                  //             onTap: () async {
+                                  //               Navigator.pop(context);
+                                  //               showDialog<void>(
+                                  //                   context: context,
+                                  //                   barrierDismissible: false,
+                                  //                   // user must tap button!
+                                  //                   builder:
+                                  //                       (BuildContext context) {
+                                  //                     return WillPopScope(
+                                  //                         onWillPop: () {
+                                  //                           return Future.value(
+                                  //                               true);
+                                  //                         },
+                                  //                         child: AlertDialog(
+                                  //                           contentPadding:
+                                  //                           EdgeInsets.all(
+                                  //                               8),
+                                  //                           shape: RoundedRectangleBorder(
+                                  //                               borderRadius: BorderRadius
+                                  //                                   .all(Radius
+                                  //                                   .circular(
+                                  //                                   15.0))),
+                                  //                           content: Container(
+                                  //                             height: 50,
+                                  //                             child: Row(
+                                  //                               mainAxisAlignment:
+                                  //                               MainAxisAlignment
+                                  //                                   .spaceAround,
+                                  //                               children: <
+                                  //                                   Widget>[
+                                  //                                 cameraNew(
+                                  //                                     'PROFILE_IMAGE'),
+                                  //                                 VerticalDivider(
+                                  //                                   color: AppColors
+                                  //                                       .labelColor,
+                                  //                                 ),
+                                  //                                 galleryNew(
+                                  //                                     'VEHICLE_License_FRONT'),
+                                  //                               ],
+                                  //                             ),
+                                  //                           ),
+                                  //                         ));
+                                  //                   });
+                                  //             },
+                                  //             child:
+                                  //             Container(
+                                  //                 color: Colors.white,
+                                  //                 height: 60,
+                                  //                 width: MediaQuery
+                                  //                     .of(context)
+                                  //                     .size
+                                  //                     .width,
+                                  //                 child:
+                                  //                 Row(
+                                  //                   mainAxisAlignment: MainAxisAlignment
+                                  //                       .start,
+                                  //
+                                  //                   children: [
+                                  //
+                                  //                     Padding(
+                                  //                       padding: EdgeInsets
+                                  //                           .only(right: 10,
+                                  //                           left: 10),
+                                  //                       child: Image.asset(
+                                  //                         "assets/images/gallery.png",
+                                  //                         width: 35,
+                                  //                         height: 30,
+                                  //                         color: Colors.black,
+                                  //                       ),
+                                  //                     ),
+                                  //
+                                  //
+                                  //                     Container(child: Text(
+                                  //                       "Select Profile Picture",
+                                  //                       style: TextStyle(
+                                  //                           fontFamily: FontFamilies
+                                  //                               .POPPINS,
+                                  //                           fontSize: 16
+                                  //
+                                  //                       ),),
+                                  //                     )
+                                  //                   ],)))
+                                  //       ],
+                                  //     );
+                                  //   },
+                                  // );
                                 },
                                 child: Align(
                                     alignment: Alignment.bottomCenter,
@@ -562,9 +416,7 @@ class ProfileScreen extends StatelessWidget {
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment
                                                       .start,
-
                                                   children: [
-
                                                     Padding(
                                                       padding: EdgeInsets.only(
                                                           right: 10, left: 10),
@@ -951,7 +803,7 @@ class ProfileScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(18.0),
                                   ),
                                   onPressed: () {
-                                    if (snapshot.data.cars.length == 3) {
+                                    if (snapshot.data.cars.length >= 3) {
                                       showDialog(
                                           barrierDismissible: false,
                                           context: context,
@@ -961,6 +813,7 @@ class ProfileScreen extends StatelessWidget {
                                             );
                                           });
                                     } else {
+                                      newVehicleBloc.resetData();
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(builder: (context) {
@@ -990,7 +843,14 @@ class ProfileScreen extends StatelessWidget {
                   stream: approvedCaptainBloc.carList,
                   builder: (BuildContext context,
                       AsyncSnapshot<CaptainCarsData> snapshot) {
-                    return _carsListView(context, snapshot.data);
+                    if (snapshot.hasData) {
+                      return _carsListView(context, snapshot.data);
+                    }
+                    else {
+                      return Container(child: SpinKitCircle(
+                        color: AppColors.MAIN_COLOR,
+                      ),);
+                    }
                   },
                 ),
               ]),
@@ -1175,6 +1035,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             onPressed: () {
               approvedCaptainBloc.updateImage(ImageSource.camera, img);
+
               Navigator.of(context).pop();
             },
           );
@@ -1206,4 +1067,377 @@ class ProfileScreen extends StatelessWidget {
           );
         },
       );
+
+
+  showChangeImg(context, File img) {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return WillPopScope(
+              onWillPop: () {
+                return Future.value(
+                    true);
+              },
+              child: AlertDialog(
+                  contentPadding:
+                  EdgeInsets.all(
+                      8),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius
+                          .all(Radius
+                          .circular(
+                          15.0))),
+                  content: Container(
+                    height: 137,
+                    child: Column(
+                      children: <
+                          Widget>[
+                        InkWell(
+                          onTap: () async {
+                            Navigator.pop(context);
+
+                            await showDialog(
+                                barrierDismissible: true,
+                                context: context,
+                                builder: (_) {
+                                  return AlertDialog(
+                                      contentPadding: EdgeInsets
+                                          .all(0),
+                                      content: FadeInImage(
+                                        fit: BoxFit.cover,
+                                        image: FileImage(
+                                            img),
+                                        placeholder: AssetImage(
+                                            "assets/images/profile_img.png"),
+                                      )
+                                  );
+                                });
+                          },
+                          child: Container(
+                            color: Colors.white,
+                            height: 60,
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment
+                                  .start,
+                              children: [
+
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      right: 10, left: 10),
+                                  child: SvgPicture.asset(
+                                    "assets/images/view_img.svg",
+                                    width: 30,
+                                    height: 30,
+                                    color: AppColors.MAIN_COLOR,),
+                                ),
+
+                                Container(child: Text(
+                                  "View Profile Picture",
+                                  style: TextStyle(
+                                      fontFamily: FontFamilies
+                                          .POPPINS,
+                                      fontSize: 16,
+                                      color: AppColors.LIGHT_GREY
+
+                                  ),),
+                                )
+                              ],),
+                          ),),
+                        Container(
+                          color: Colors.white,
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width,
+                          child: Divider(
+                              thickness: 1,
+                              color: AppColors.LIGHT_BLUE
+                          ),
+
+                        ),
+                        InkWell(
+                            onTap: () async {
+                              Navigator.pop(context);
+                              showDialog<void>(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  // user must tap button!
+                                  builder:
+                                      (BuildContext context) {
+                                    return WillPopScope(
+                                        onWillPop: () {
+                                          return Future.value(
+                                              true);
+                                        },
+                                        child: AlertDialog(
+                                          contentPadding:
+                                          EdgeInsets.all(
+                                              8),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius
+                                                  .all(Radius
+                                                  .circular(
+                                                  15.0))),
+                                          content: Container(
+                                            height: 50,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment
+                                                  .spaceAround,
+                                              children: <
+                                                  Widget>[
+                                                cameraNew(
+                                                    'PROFILE_IMAGE'),
+                                                VerticalDivider(
+                                                  color: AppColors
+                                                      .labelColor,
+                                                ),
+                                                galleryNew(
+                                                    'VEHICLE_License_FRONT'),
+                                              ],
+                                            ),
+                                          ),
+                                        ));
+                                  });
+                            },
+                            child:
+                            Container(
+                                color: Colors.white,
+                                height: 60,
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width,
+                                child:
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .start,
+
+                                  children: [
+
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          right: 10, left: 10),
+                                      child: SvgPicture.asset(
+                                        "assets/images/new_gallery.svg",
+                                        width: 27,
+                                        height: 27,
+                                        color: AppColors.MAIN_COLOR,
+                                      ),
+                                    ),
+
+
+                                    Container(child: Text(
+                                      "Select Profile Picture",
+                                      style: TextStyle(
+                                          fontFamily: FontFamilies
+                                              .POPPINS,
+                                          fontSize: 16,
+                                          color: AppColors.LIGHT_GREY
+
+
+                                      ),),
+                                    )
+                                  ],)))
+                      ],
+                    ),
+                  )
+              ));
+        });
+  }
+
+  Future<void> showChangeImg2(context, String img) {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return WillPopScope(
+              onWillPop: () {
+                return Future.value(
+                    true);
+              },
+              child: AlertDialog(
+                  contentPadding:
+                  EdgeInsets.all(
+                      8),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius
+                          .all(Radius
+                          .circular(
+                          15.0))),
+                  content: Container(
+                    height: 137,
+                    child: Column(
+                      // mainAxisAlignment:
+                      // MainAxisAlignment
+                      //     .spaceAround,
+                      children: <
+                          Widget>[
+                        InkWell(
+                          onTap: () async {
+                            Navigator.pop(context);
+
+                            await showDialog(
+                                barrierDismissible: true,
+                                context: context,
+                                builder: (_) {
+                                  return AlertDialog(
+                                      contentPadding: EdgeInsets
+                                          .all(0),
+                                      content: FadeInImage(
+                                        fit: BoxFit.cover,
+
+                                        image: NetworkImage(
+                                            Constants
+                                                .MAIN_URL_FOR_DOCUMENTS +
+
+                                                img),
+                                        placeholder: AssetImage(
+                                            "assets/images/profile_img.png"),
+                                      )
+                                  );
+                                });
+                          },
+                          child: Container(
+                            color: Colors.white,
+                            height: 60,
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment
+                                  .start,
+                              children: [
+
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      right: 10, left: 10),
+                                  child: SvgPicture.asset(
+                                    "assets/images/view_img.svg",
+                                    width: 30,
+                                    height: 30,
+                                    color: AppColors.MAIN_COLOR,),
+                                ),
+
+                                Container(child: Text(
+                                  "View Profile Picture",
+                                  style: TextStyle(
+                                      fontFamily: FontFamilies
+                                          .POPPINS,
+                                      fontSize: 16,
+                                      color: AppColors.LIGHT_GREY
+
+                                  ),),
+                                )
+                              ],),
+                          ),),
+                        Container(
+                          color: Colors.white,
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width,
+                          child: Divider(
+                              thickness: 1,
+                              color: AppColors.LIGHT_BLUE
+                          ),
+
+                        ),
+                        InkWell(
+                            onTap: () async {
+                              Navigator.pop(context);
+                              showDialog<void>(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  // user must tap button!
+                                  builder:
+                                      (BuildContext context) {
+                                    return WillPopScope(
+                                        onWillPop: () {
+                                          return Future.value(
+                                              true);
+                                        },
+                                        child: AlertDialog(
+                                          contentPadding:
+                                          EdgeInsets.all(
+                                              8),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius
+                                                  .all(Radius
+                                                  .circular(
+                                                  15.0))),
+                                          content: Container(
+                                            height: 50,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment
+                                                  .spaceAround,
+                                              children: <
+                                                  Widget>[
+                                                cameraNew(
+                                                    'PROFILE_IMAGE'),
+                                                VerticalDivider(
+                                                  color: AppColors
+                                                      .labelColor,
+                                                ),
+                                                galleryNew(
+                                                    'VEHICLE_License_FRONT'),
+                                              ],
+                                            ),
+                                          ),
+                                        ));
+                                  });
+                            },
+                            child:
+                            Container(
+                                color: Colors.white,
+                                height: 60,
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width,
+                                child:
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .start,
+
+                                  children: [
+
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          right: 10, left: 10),
+                                      child: SvgPicture.asset(
+                                        "assets/images/new_gallery.svg",
+                                        width: 27,
+                                        height: 27,
+                                        color: AppColors.MAIN_COLOR,
+                                      ),
+                                    ),
+
+
+                                    Container(child: Text(
+                                      "Select Profile Picture",
+                                      style: TextStyle(
+                                          fontFamily: FontFamilies
+                                              .POPPINS,
+                                          fontSize: 16,
+                                          color: AppColors.LIGHT_GREY
+
+
+                                      ),),
+                                    )
+                                  ],)))
+                      ],
+                    ),
+                  )
+              ));
+        });
+  }
+
 }

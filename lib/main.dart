@@ -5,12 +5,15 @@ import 'package:posta_courier/src/notifications/notification.dart';
 import 'app.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/rout_sceen.dart';
 
-Future<void> main()  async {
-  SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent));
+main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+  SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   await CountryCodes.init();
+  screensBloc.getStringValuesSF();
+
   runApp(App());
 }

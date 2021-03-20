@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/forgot_pass_bloc.dart';
 import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/personal_details_bloc.dart';
 import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/vehicle_bloc.dart';
+import 'package:posta_courier/src/blocs/home_blocs/new_vehicle_bloc.dart';
 import 'package:posta_courier/src/utils/util.dart';
 import 'package:regexed_validator/regexed_validator.dart';
 
@@ -155,6 +156,20 @@ class TextFieldValidation {
       vehicleBloc.setRegistrationExpireDateValidation(null);
     } else {
       vehicleBloc.setRegistrationExpireDateValidation(
+          "Registration expired date must be after " +
+              Utils.dateFormat1(date.toString()));
+    }
+  }
+
+  checkNewCarRegistrationExpiredDateValidation(String date) {
+    DateFormat format = DateFormat("yyyy-MM-dd");
+
+    final difference1 = DateTime.now().difference(format.parse(date)).inDays;
+
+    if (difference1 < 0) {
+      newVehicleBloc.setRegistrationExpireDateValidation(null);
+    } else {
+      newVehicleBloc.setRegistrationExpireDateValidation(
           "Registration expired date must be after " +
               Utils.dateFormat1(date.toString()));
     }

@@ -36,7 +36,8 @@ class IncompleteBloc {
     });
     _checkAuth.add(user);
 
-    _fullName.add(_checkAuth.value.data.firstName+" "+_checkAuth.value.data.firstName);
+    _fullName.add(
+        _checkAuth.value.data.firstName + " " + _checkAuth.value.data.lastName);
     if (_checkAuth.value.data.car.car.isEmpty) {
       _vehicleDataCheck.add(false);
     } else {
@@ -57,21 +58,27 @@ class IncompleteBloc {
     } else {
       _personalDataCheck.add(false);
     }
-
   }
 
-  checkCaptainData()
-  async {
+  checkCaptainData() async {
     final storage = new FlutterSecureStorage();
     String id = await storage.read(key: "id");
-    CaptainData data= await _repository.getCaptainData(id.toString());
+    CaptainData data = await _repository.getCaptainData(id.toString());
     _captainDataCheck.add(data);
-
   }
-  getUserData()
-  {return _checkAuth.value.data.firstName+" "+_checkAuth.value.data.firstName;}
+
+  getUserData() {
+    return _checkAuth.value.data.firstName +
+        " " +
+        _checkAuth.value.data.firstName;
+  }
+
   checkPersonalDetails(bool value) {
     _personalDataCheck.add(value);
+  }
+
+  getData() {
+    return _checkAuth.value;
   }
 
   checkVehicleDetails(bool value) {

@@ -216,28 +216,36 @@ class DocumentsBloc {
     String auth = await storage.read(key: "accessToken");
     String id = await storage.read(key: "id");
     _repository.uploadDocuments(
-        _idFront.value.path,
-        _idBack.value.path,
-        _driverLicenseFront.value.path,
-        _driverLicenseBack.value.path,
-        _insuranceFront.value.path,
-        _insuranceBack.value.path,
-        _vehicleLicenseFront.value.path,
-        _vehicleLicenseBack.value.path,
+        _idFront.value != null ? _idFront.value.path : null,
+        _idBack.value != null ? _idBack.value.path : null,
+        _driverLicenseFront.value != null
+            ? _driverLicenseFront.value.path
+            : null,
+        _driverLicenseBack.value != null ? _driverLicenseBack.value.path : null,
         id.toString(),
         auth.toString());
     _repository.uploadDocuments2(
-        _idFront.value.path,
-        _idBack.value.path,
-        _driverLicenseFront.value.path,
-        _driverLicenseBack.value.path,
-        _insuranceFront.value.path,
-        _insuranceBack.value.path,
-        _vehicleLicenseFront.value.path,
-        _vehicleLicenseBack.value.path,
+        _insuranceFront.value != null ? _insuranceFront.value.path : null,
+        _insuranceBack.value != null ? _insuranceBack.value.path : null,
+        _vehicleLicenseFront.value != null
+            ? _vehicleLicenseFront.value.path
+            : null,
+        _vehicleLicenseBack.value != null
+            ? _vehicleLicenseBack.value.path
+            : null,
         id.toString(),
         auth.toString());
+  }
 
+  resetDocuments() {
+    _idFront.add(null);
+    _idBack.add(null);
+    _insuranceFront.add(null);
+    _insuranceBack.add(null);
+    _vehicleLicenseFront.add(null);
+    _vehicleLicenseBack.add(null);
+    _driverLicenseFront.add(null);
+    _driverLicenseBack.add(null);
   }
 
   dispose() {

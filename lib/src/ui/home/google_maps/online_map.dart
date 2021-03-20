@@ -27,32 +27,34 @@ class OnlineMap extends StatelessWidget{
           if (snap.data == null) {
             return
               Center(child:    GoogleMap(
-              onMapCreated: (GoogleMapController controller) {
-                rootBundle.loadString('assets/map_style').then((string) {
-                  _controller.setMapStyle(string);
-                });
+            liteModeEnabled: true,
+            onMapCreated: (GoogleMapController controller) {
+              rootBundle.loadString('assets/map_style').then((string) {
+                _controller.setMapStyle(string);
+              });
 
-
-                _controller = controller;
-              },
-              myLocationButtonEnabled: true,
-              zoomControlsEnabled: false,
-              initialCameraPosition: CameraPosition(
-                target: locationPoints,
-                zoom: 17.0,
-                bearing:15.0, // 1
-                tilt: 59.0, // 2
-              ),
-            ));
+              _controller = controller;
+            },
+            myLocationButtonEnabled: true,
+            zoomControlsEnabled: false,
+            initialCameraPosition: CameraPosition(
+              target: locationPoints,
+              zoom: 17.0,
+              bearing: 15.0, // 1
+              tilt: 59.0, // 2
+            ),
+          ));
           }
           else{
           return GoogleMap(
-            polylines:orderBloc.getPolyLine(),
+            liteModeEnabled: true,
+
+            polylines: orderBloc.getPolyLine(),
             mapType: MapType.normal,
             initialCameraPosition: CameraPosition(
               target: LatLng(snap.data.latitude, snap.data.longitude),
               zoom: 17,
-              bearing:15.0, // 1
+              bearing: 15.0, // 1
               tilt: 59.0, // 2
             ),
             onMapCreated: (GoogleMapController controller) {

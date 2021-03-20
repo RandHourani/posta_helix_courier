@@ -120,7 +120,7 @@ class Repository {
   }
    setProfileImage(File img) {
     return accountDatProvide.setProfileImage(img);
-  }
+   }
 
 
   Future<InterviewDataModel> requestInterViewData(String date) {
@@ -131,6 +131,10 @@ class Repository {
     return captainProvider.request(body);
   }
 
+  Future<CaptainModel> editAccount(Map<String, dynamic> body) {
+    return captainProvider.editPersonalData(body);
+  }
+
   Future<CaptainData> getCaptainData(String id) {
     return captainProvider.getCaptainData(id);
   }
@@ -139,63 +143,47 @@ class Repository {
     return logInProvider.request(body);
   }
 
-  newVehicle(
-    String id,
-    auth,
-    String insuranceFront,
-    String insuranceBack,
-    String vehicleFront,
-    String vehicleBack,
-  ) {
+  newVehicle(String id,
+      auth,
+      String insuranceFront,
+      String insuranceBack,
+      String vehicleFront,
+      String vehicleBack,) {
     return captainProvider.newVehicleRequest(
         id, auth, insuranceFront, insuranceBack, vehicleFront, vehicleBack);
   }
 
-  Future<CaptainModel> vehicle(String id, auth) {
-    return captainProvider.vehicleRequest(id, auth);
+  Future<CaptainModel> vehicle(String id, auth, Map<String, dynamic>body) {
+    return captainProvider.vehicleRequest(id, auth, body);
   }
-selectVehicle(String id, String auth) {
+
+  selectVehicle(String id, String auth) {
     return captainProvider.selectCar(id, auth);
   }
 
-  Future<void> uploadDocuments(
-      String idFront,
+  Future<void> uploadDocuments(String idFront,
       String idBack,
       String licenseFront,
       String licenseBack,
-      String insuranceFront,
-      String insuranceBack,
-      String vehicleFront,
-      String vehicleBack,
+
       String id,
       String auth) {
     return documentProvider.uploadDocumentImages(
         idFront,
         idBack,
         licenseFront,
-        licenseBack,
-        insuranceFront,
-        insuranceBack,
-        vehicleFront,
-        vehicleBack,
-        id,
+        licenseBack, id,
         auth);
-  }  Future<void> uploadDocuments2(
-      String idFront,
-      String idBack,
-      String licenseFront,
-      String licenseBack,
-      String insuranceFront,
+  }
+
+  Future<void> uploadDocuments2(String insuranceFront,
       String insuranceBack,
       String vehicleFront,
       String vehicleBack,
       String id,
       String auth) {
     return documentProvider.uploadDocumentImages2(
-        idFront,
-        idBack,
-        licenseFront,
-        licenseBack,
+
         insuranceFront,
         insuranceBack,
         vehicleFront,

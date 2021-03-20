@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:posta_courier/models/captain_store_model.dart';
 import 'package:posta_courier/models/get_captain_model.dart';
 import 'package:posta_courier/models/vehicle_model.dart';
+import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/get_captain_data_bloc.dart';
 import 'package:posta_courier/src/constants/constants.dart';
 import 'package:posta_courier/src/blocs/home_blocs/new_vehicle_bloc.dart';
 import 'package:posta_courier/src/utils/util.dart';
@@ -39,17 +40,18 @@ class CaptainProvider {
               personalDetailsBloc.getDriverIssueDate().toString()),
           "email": personalDetailsBloc.getEmail().toString(),
           "gender": personalDetailsBloc.getGender(),
-          "nationality_id": personalDetailsBloc.getNationalityId(),
-          "password": personalDetailsBloc.getPassword().toString(),
-          "password_confirmation":
-          personalDetailsBloc.getConfirmPassword().toString(),
-          "username": phoneBloc
-              .getPhoneNumber()
-              .replaceAll(RegExp(r'[^\d]+'), '')
-              .toString(),
-        },
+            "nationality_id": personalDetailsBloc.getNationalityId(),
+            "password": personalDetailsBloc.getPassword().toString(),
+            "password_confirmation":
+                personalDetailsBloc.getConfirmPassword().toString(),
+            "username": phoneBloc
+                .getPhoneNumber()
+                .replaceAll(RegExp(r'[^\d]+'), '')
+                .toString(),
+          },
           "car": [],
-          "country_code": phoneBloc.getCountryCode().toString()}),
+          "country_code": phoneBloc.getCountryCode().toString()
+        }),
         headers: {
           "content-type": "application/json",
           "Accept": "application/json"
@@ -59,16 +61,36 @@ class CaptainProvider {
     return CaptainModel.fromJson(jsonDecode(response.body));
   }
 
-  Future<CaptainModel> vehicleRequest(String id, auth) async {
-    var response = await client.put(vehicleUrl + id.toString(),
-        body: json.encode(Captain.car),
-        headers: {
-          "Authorization": "Bearer " + auth,
-          "content-type": "application/json",
-          "Accept": "application/json"
-        });
+  Future<CaptainModel> editPersonalData(Map<String, dynamic> body) async {
+    final storage = new FlutterSecureStorage();
+    String id = await storage.read(key: "id");
+    String auth = await storage.read(key: "accessToken");
+    var response = await client
+        .put(vehicleUrl + id.toString(), body: json.encode(body), headers: {
+      "Authorization": "Bearer " + auth,
+      "content-type": "application/json",
+      "Accept": "application/json"
+    });
     print(response.statusCode.toString());
     print(response.body);
+    checkCaptainDataBloc.checkCaptainData();
+
+    return CaptainModel.fromJson(jsonDecode(response.body));
+  }
+
+  Future<CaptainModel> vehicleRequest(
+      String id, auth, Map<String, dynamic> body) async {
+    print(VehicleModel.carData);
+    var response = await client
+        .put(vehicleUrl + id.toString(), body: json.encode(body), headers: {
+      "Authorization": "Bearer " + auth,
+      "content-type": "application/json",
+      "Accept": "application/json"
+    });
+    print(response.statusCode.toString());
+    print(response.body);
+    checkCaptainDataBloc.checkCaptainData();
+
     return CaptainModel.fromJson(jsonDecode(response.body));
   }
 
@@ -84,9 +106,9 @@ class CaptainProvider {
     var request = http.MultipartRequest(
         'POST', Uri.parse('http://development.postahelix.com/api/car'));
     request.fields.addAll({
-      "color_id": newVehicleBloc.getSelectedColorId()!= null
-          ?(newVehicleBloc.getSelectedColorId() + 1).toString()
-          : 1,
+      "color_id": newVehicleBloc.getSelectedColorId() != null
+          ? (newVehicleBloc.getSelectedColorId()).toString()
+          : "1",
       "brand_model_id": (newVehicleBloc.getSelectedModelId().toString()),
       "number": newVehicleBloc.getVehicleNumber().toString(),
       "insurance_expired_date": Utils.dateFormat2(
@@ -94,7 +116,7 @@ class CaptainProvider {
           .toString(),
       "car_manufacture_year":
       newVehicleBloc.getManufacturingYearSelected().toString(),
-      "city_id": (newVehicleBloc.getSelectedCountries()+1).toString(),
+      "city_id": (newVehicleBloc.getSelectedCountries()).toString(),
       "brand_id": newVehicleBloc.getCarBrandId() != null
           ? (int.parse(newVehicleBloc.getCarBrandId()) + 1).toString()
           : 1,

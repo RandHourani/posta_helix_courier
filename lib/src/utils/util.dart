@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:maps_launcher/maps_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/rout_sceen.dart';
 
 class Utils {
   static Future<bool> isInternetConnected() async {
@@ -14,6 +16,11 @@ class Utils {
       return false;
     }
     return true;
+  }
+
+  static setScreen(String screen) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('last_screen', screen);
   }
 
   static launchWhatsApp({@required String phone, message}) async {
@@ -103,6 +110,7 @@ class Utils {
     final String formatted = serverFormater.format(displayDate);
     return formatted;
   }
+
   static String dateTimeFormat6(String time) {
     final DateFormat displayFormater = DateFormat('yyyy-MM-dd HH:mm:ss');
     final DateFormat serverFormater = DateFormat('yyyy-MM-dd , HH:mm');

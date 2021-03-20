@@ -93,6 +93,7 @@ class OnlineOfflineSheet extends StatelessWidget {
                 googleMapBloc.setZoomMap(17.0);
                 approvedCaptainBloc.checkCaptainStatus();
                 orderBloc.setOrderSheet("null");
+                approvedCaptainBloc.checkUserAuth();
               },
               child: Text(
                 "Go Online ",

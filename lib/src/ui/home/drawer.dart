@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'dart:io';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
@@ -38,9 +38,9 @@ class NavDrawer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     StreamBuilder(
-                        stream: approvedCaptainBloc.profileImg,
+                        stream: approvedCaptainBloc.profileImage,
                         builder: (BuildContext context,
-                            AsyncSnapshot<String> snapshot) {
+                            AsyncSnapshot<File> snapshot) {
                           if (snapshot.hasData) {
                             return Container(
                                 // margin: EdgeInsets.only(top: 110),
@@ -53,14 +53,39 @@ class NavDrawer extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(25.0),
                                     child: FadeInImage(
                                       fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                          Constants.MAIN_URL_FOR_DOCUMENTS +
-                                              snapshot.data),
+                                      image: FileImage(snapshot.data),
                                       placeholder: AssetImage(
                                           "assets/images/profile.png"),
                                     )));
                           } else {
-                            return SvgPicture.asset("assets/images/user.svg");
+                            return StreamBuilder(
+                                stream: approvedCaptainBloc.profileImg,
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<String> snapshot) {
+                                  if (snapshot.hasData) {
+                                    return Container(
+                                        // margin: EdgeInsets.only(top: 110),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                        ),
+                                        width: 50,
+                                        height: 50,
+                                        child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(25.0),
+                                            child: FadeInImage(
+                                              fit: BoxFit.cover,
+                                              image: NetworkImage(Constants
+                                                      .MAIN_URL_FOR_DOCUMENTS +
+                                                  snapshot.data),
+                                              placeholder: AssetImage(
+                                                  "assets/images/profile.png"),
+                                            )));
+                                  } else {
+                                    return SvgPicture.asset(
+                                        "assets/images/user.svg");
+                                  }
+                                });
                           }
                         }),
                     Container(
@@ -232,7 +257,7 @@ class NavDrawer extends StatelessWidget {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Text(
-                  "version 4.0.0",
+                  "version 1.0.0",
                   style: TextStyle(
                       fontSize: 10,
                       fontFamily: FontFamilies.POPPINS,

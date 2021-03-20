@@ -16,6 +16,8 @@ import 'package:posta_courier/src/utils/util.dart';
 import 'package:posta_courier/validation/text_field_validation.dart';
 import 'package:posta_courier/src/ui/widgets/dialog_loading.dart';
 import 'package:posta_courier/db/providers/nationalities_provider.dart';
+import 'package:posta_courier/src/ui/signIn_and_createAccount_screens/completed_info_screen.dart';
+import 'package:posta_courier/src/ui/signIn_and_createAccount_screens/incompleted_info_screen.dart';
 
 class PersonalDetailsScreen extends StatelessWidget {
   String screen;
@@ -34,7 +36,7 @@ class PersonalDetailsScreen extends StatelessWidget {
     FlutterStatusbarcolor.setStatusBarColor(Colors.white);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     personalDetailsBloc.setInitDate(DateTime.now());
-    personalDetailsBloc.setGenderMale();
+    captainPersonalData == null ? personalDetailsBloc.setGenderMale() : null;
     personalDetailsBloc.fetchAllNationality();
     // vehicleBloc.fetchAllCarBrand();
     personalDetailsBloc.setCalendarColor(false);
@@ -96,8 +98,12 @@ class PersonalDetailsScreen extends StatelessWidget {
                       firstNameTextField(),
                       lastNameTextField(),
                       emailTextField(),
-                      passTextField(),
-                      confirmPassTextField(),
+                      captainPersonalData != null
+                          ? Container()
+                          : passTextField(),
+                      captainPersonalData != null
+                          ? Container()
+                          : confirmPassTextField(),
                       Container(
                         margin: EdgeInsets.only(
                             top: MediaQuery.of(context).size.height * 0.04),
@@ -209,246 +215,255 @@ class PersonalDetailsScreen extends StatelessWidget {
                                 style: TextStyle(
                                   fontFamily: FontFamilies.POPPINS,
                                   fontSize:
-                                      (MediaQuery.of(context).size.height *
-                                          0.02),
+                                  (MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height *
+                                      0.02),
                                   color: AppColors.labelColor,
                                 ),
                               ),
-                              // StreamBuilder(
-                              //   stream: personalDetailsBloc.nationality,
-                              //   builder: (context,
-                              //       AsyncSnapshot<NationalityModel> snap) {
-                              //     if (snap.hasData) {
-                              //       List<String> list = List();
-                              //       for (int i = 0;
-                              //           i < snap.data.personalData.data.length;
-                              //           i++) {
-                              //         list.add(snap
-                              //             .data.personalData.data[i].name
-                              //             .toString());
-                              //       }
-                              //
-                              //       return PopupMenuButton<String>(
-                              //         padding: EdgeInsets.all(0),
-                              //         itemBuilder: (context) {
-                              //           return list.map((value) {
-                              //             return PopupMenuItem(
-                              //               value: value,
-                              //               child:Container(
-                              //                   alignment: Alignment.center,
-                              //                   child: Text(
-                              //                 value,
-                              //                 style: TextStyle(
-                              //                   fontFamily:
-                              //                       FontFamilies.POPPINS,
-                              //                   fontSize:
-                              //                       (MediaQuery.of(context)
-                              //                               .size
-                              //                               .height *
-                              //                           0.02),
-                              //                 ),
-                              //               )),
-                              //             );
-                              //           }).toList();
-                              //         },
-                              //         child: StreamBuilder(
-                              //           stream: personalDetailsBloc
-                              //               .selectedNationality,
-                              //           builder: (context, snap) {
-                              //             if (snap.hasData) {
-                              //               return Row(
-                              //                 mainAxisSize: MainAxisSize.min,
-                              //                 children: <Widget>[
-                              //                   Text(
-                              //                     snap.data.toString(),
-                              //                     style: TextStyle(
-                              //                       fontFamily:
-                              //                           FontFamilies.POPPINS,
-                              //                       fontSize:
-                              //                           (MediaQuery.of(context)
-                              //                                   .size
-                              //                                   .height *
-                              //                               0.02),
-                              //                     ),
-                              //                   ),
-                              //                   Container(
-                              //                     child: Icon(
-                              //                       Icons.keyboard_arrow_down,
-                              //                       size: 15,
-                              //                     ),
-                              //                     alignment: Alignment.center,
-                              //                     padding: EdgeInsets.only(
-                              //                         bottom: 3),
-                              //                   ),
-                              //                 ],
-                              //               );
-                              //             } else {
-                              //               return Row(
-                              //                 mainAxisSize: MainAxisSize.min,
-                              //                 children: <Widget>[
-                              //                   Text(
-                              //                     captainPersonalData == null
-                              //                         ? personalDetailsBloc
-                              //                             .setSelectedNationality(
-                              //                                 list[0])
-                              //                         : list[0],
-                              //                     style: TextStyle(
-                              //                       fontFamily:
-                              //                           FontFamilies.POPPINS,
-                              //                       fontSize:
-                              //                           (MediaQuery.of(context)
-                              //                                   .size
-                              //                                   .height *
-                              //                               0.02),
-                              //                       color: AppColors.labelColor,
-                              //                     ),
-                              //                   ),
-                              //                   Container(
-                              //                     child: Icon(
-                              //                       Icons.keyboard_arrow_down,
-                              //                       size:
-                              //                           (MediaQuery.of(context)
-                              //                                   .size
-                              //                                   .height *
-                              //                               0.02),
-                              //                     ),
-                              //                     alignment: Alignment.center,
-                              //                     padding: EdgeInsets.only(
-                              //                         bottom: 3),
-                              //                   ),
-                              //                 ],
-                              //               );
-                              //             }
-                              //           },
-                              //         ),
-                              //         onSelected: (value) {
-                              //           personalDetailsBloc
-                              //               .setSelectedNationality(value);
-                              //         },
-                              //       );
-                              //     } else {
-                              //       return Text("");
-                              //     }
-                              //   },
-                              // ),
-                              FutureBuilder<List<NationalityDetails>>(
-                                  future: NationalitiesDBProvider.db
-                                      .getAllNationalities(),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<List<NationalityDetails>>
-                                          snapshot) {
-                                    if (snapshot.hasData) {
-                                      List<String> list = List();
-                                      for (int i = 0;
-                                          i < snapshot.data.length;
-                                          i++) {
-                                        list.add(
-                                            snapshot.data[i].name.toString());
-                                      }
-
-                                      return PopupMenuButton<String>(
-                                        padding: EdgeInsets.all(0),
-                                        itemBuilder: (context) {
-                                          return list.map((value) {
-                                            return PopupMenuItem(
-                                              value: value,
-                                              child: Container(
-                                                  alignment: Alignment.center,
-                                                  child: Text(
-                                                    value,
-                                                    style: TextStyle(
-                                                      fontFamily:
-                                                          FontFamilies.POPPINS,
-                                                      fontSize: (MediaQuery.of(
-                                                                  context)
-                                                              .size
-                                                              .height *
-                                                          0.02),
-                                                      color:
-                                                          AppColors.labelColor,
-                                                    ),
-                                                  )),
-                                            );
-                                          }).toList();
-                                        },
-                                        child: StreamBuilder(
-                                          stream: personalDetailsBloc
-                                              .selectedNationality,
-                                          builder: (context, snap) {
-                                            if (snap.hasData) {
-                                              return Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: <Widget>[
-                                                  Text(
-                                                    snap.data.toString(),
-                                                    style: TextStyle(
-                                                      fontFamily:
-                                                          FontFamilies.POPPINS,
-                                                      fontSize: (MediaQuery.of(
-                                                                  context)
-                                                              .size
-                                                              .height *
-                                                          0.02),
-                                                      color:
-                                                          AppColors.labelColor,
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    child: Icon(
-                                                      Icons.keyboard_arrow_down,
-                                                      size: 15,
-                                                    ),
-                                                    alignment: Alignment.center,
-                                                    padding: EdgeInsets.only(
-                                                        bottom: 3),
-                                                  ),
-                                                ],
-                                              );
-                                            } else {
-                                              return Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: <Widget>[
-                                                  Text(
-                                                    captainPersonalData == null
-                                                        ? snapshot
-                                                        .data.first.name
-                                                        : snapshot
-                                                            .data[captainPersonalData.data.nationalityId-1],
-                                                    style: TextStyle(
-                                                      fontFamily:
-                                                          FontFamilies.POPPINS,
-                                                      fontSize: (MediaQuery.of(
-                                                                  context)
-                                                              .size
-                                                              .height *
-                                                          0.02),
-                                                      color:
-                                                          AppColors.labelColor,
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    child: Icon(
-                                                      Icons.keyboard_arrow_down,
-                                                      size: 15,
-                                                    ),
-                                                    alignment: Alignment.center,
-                                                    padding: EdgeInsets.only(
-                                                        bottom: 3),
-                                                  ),
-                                                ],
-                                              );
-                                            }
-                                          },
-                                        ),
-                                        onSelected: (value) {
-                                          personalDetailsBloc
-                                              .setSelectedNationality(value);
-                                        },
-                                      );
-                                    } else {
-                                      return Text("");
+                              StreamBuilder(
+                                stream: personalDetailsBloc.nationality,
+                                builder: (context,
+                                    AsyncSnapshot<NationalityModel> snap) {
+                                  if (snap.hasData) {
+                                    List<String> list = List();
+                                    for (int i = 0;
+                                    i < snap.data.personalData.data.length;
+                                    i++) {
+                                      list.add(snap
+                                          .data.personalData.data[i].name
+                                          .toString());
                                     }
-                                  })
+
+                                    return PopupMenuButton<String>(
+                                      padding: EdgeInsets.all(0),
+                                      itemBuilder: (context) {
+                                        return list.map((value) {
+                                          return PopupMenuItem(
+                                            value: value,
+                                            child: Container(
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  value,
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                    FontFamilies.POPPINS,
+                                                    fontSize:
+                                                    (MediaQuery
+                                                        .of(context)
+                                                        .size
+                                                        .height *
+                                                        0.02),
+                                                  ),
+                                                )),
+                                          );
+                                        }).toList();
+                                      },
+                                      child: StreamBuilder(
+                                        stream: personalDetailsBloc
+                                            .selectedNationality,
+                                        builder: (context, snap) {
+                                          if (snap.hasData) {
+                                            return Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: <Widget>[
+                                                Text(
+                                                  snap.data.toString(),
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                    FontFamilies.POPPINS,
+                                                    fontSize:
+                                                    (MediaQuery
+                                                        .of(context)
+                                                        .size
+                                                        .height *
+                                                        0.02),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  child: Icon(
+                                                    Icons.keyboard_arrow_down,
+                                                    size: 15,
+                                                  ),
+                                                  alignment: Alignment.center,
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 3),
+                                                ),
+                                              ],
+                                            );
+                                          } else {
+                                            return Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: <Widget>[
+                                                Text(
+                                                  captainPersonalData == null
+                                                      ? personalDetailsBloc
+                                                      .setSelectedNationality(
+                                                      list[0])
+                                                      : list[0],
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                    FontFamilies.POPPINS,
+                                                    fontSize:
+                                                    (MediaQuery
+                                                        .of(context)
+                                                        .size
+                                                        .height *
+                                                        0.02),
+                                                    color: AppColors.labelColor,
+                                                  ),
+                                                ),
+                                                Container(
+                                                  child: Icon(
+                                                    Icons.keyboard_arrow_down,
+                                                    size:
+                                                    (MediaQuery
+                                                        .of(context)
+                                                        .size
+                                                        .height *
+                                                        0.02),
+                                                  ),
+                                                  alignment: Alignment.center,
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 3),
+                                                ),
+                                              ],
+                                            );
+                                          }
+                                        },
+                                      ),
+                                      onSelected: (value) {
+                                        personalDetailsBloc
+                                            .setSelectedNationality(value);
+                                      },
+                                    );
+                                  } else {
+                                    return Text("");
+                                  }
+                                },
+                              ),
+                              // FutureBuilder<List<NationalityDetails>>(
+                              //     future: NationalitiesDBProvider.db
+                              //         .getAllNationalities(),
+                              //     builder: (BuildContext context,
+                              //         AsyncSnapshot<List<NationalityDetails>>
+                              //             snapshot) {
+                              //       personalDetailsBloc.fetchAllNationality();
+                              //
+                              //       if (snapshot.hasData) {
+                              //         List<String> list = List();
+                              //         for (int i = 0;
+                              //             i < snapshot.data.length;
+                              //             i++) {
+                              //           list.add(
+                              //               snapshot.data[i].name.toString());
+                              //         }
+                              //
+                              //         return PopupMenuButton<String>(
+                              //           padding: EdgeInsets.all(0),
+                              //           itemBuilder: (context) {
+                              //             return list.map((value) {
+                              //               return PopupMenuItem(
+                              //                 value: value,
+                              //                 child: Container(
+                              //                     alignment: Alignment.center,
+                              //                     child: Text(
+                              //                       value,
+                              //                       style: TextStyle(
+                              //                         fontFamily:
+                              //                             FontFamilies.POPPINS,
+                              //                         fontSize: (MediaQuery.of(
+                              //                                     context)
+                              //                                 .size
+                              //                                 .height *
+                              //                             0.02),
+                              //                         color:
+                              //                             AppColors.labelColor,
+                              //                       ),
+                              //                     )),
+                              //               );
+                              //             }).toList();
+                              //           },
+                              //           child: StreamBuilder(
+                              //             stream: personalDetailsBloc
+                              //                 .selectedNationality,
+                              //             builder: (context, snap) {
+                              //               if (snap.hasData) {
+                              //                 return Row(
+                              //                   mainAxisSize: MainAxisSize.min,
+                              //                   children: <Widget>[
+                              //                     Text(
+                              //                       snap.data.toString(),
+                              //                       style: TextStyle(
+                              //                         fontFamily:
+                              //                             FontFamilies.POPPINS,
+                              //                         fontSize: (MediaQuery.of(
+                              //                                     context)
+                              //                                 .size
+                              //                                 .height *
+                              //                             0.02),
+                              //                         color:
+                              //                             AppColors.labelColor,
+                              //                       ),
+                              //                     ),
+                              //                     Container(
+                              //                       child: Icon(
+                              //                         Icons.keyboard_arrow_down,
+                              //                         size: 15,
+                              //                       ),
+                              //                       alignment: Alignment.center,
+                              //                       padding: EdgeInsets.only(
+                              //                           bottom: 3),
+                              //                     ),
+                              //                   ],
+                              //                 );
+                              //               } else {
+                              //                 return Row(
+                              //                   mainAxisSize: MainAxisSize.min,
+                              //                   children: <Widget>[
+                              //                     Text(
+                              //                       captainPersonalData == null
+                              //                           ? snapshot
+                              //                           .data.first.name
+                              //                           : snapshot
+                              //                               .data[captainPersonalData.data.nationalityId-1].name,
+                              //                       style: TextStyle(
+                              //                         fontFamily:
+                              //                             FontFamilies.POPPINS,
+                              //                         fontSize: (MediaQuery.of(
+                              //                                     context)
+                              //                                 .size
+                              //                                 .height *
+                              //                             0.02),
+                              //                         color:
+                              //                             AppColors.labelColor,
+                              //                       ),
+                              //                     ),
+                              //                     Container(
+                              //                       child: Icon(
+                              //                         Icons.keyboard_arrow_down,
+                              //                         size: 15,
+                              //                       ),
+                              //                       alignment: Alignment.center,
+                              //                       padding: EdgeInsets.only(
+                              //                           bottom: 3),
+                              //                     ),
+                              //                   ],
+                              //                 );
+                              //               }
+                              //             },
+                              //           ),
+                              //           onSelected: (value) {
+                              //             personalDetailsBloc
+                              //                 .setSelectedNationality(value);
+                              //           },
+                              //         );
+                              //       } else {
+                              //         return Text("");
+                              //       }
+                              //     })
                             ]),
                       ),
                       Container(
@@ -665,88 +680,102 @@ class PersonalDetailsScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5),
                       ),
                       buttonColor: Colors.white,
-                      child: StreamBuilder(
+                      child: captainPersonalData == null
+                          ? StreamBuilder(
                         stream: personalDetailsBloc.submitValid,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             return StreamBuilder(
-                              stream: personalDetailsBloc.birthdayValidation,
+                              stream:
+                              personalDetailsBloc.birthdayValidation,
                               builder: (context, snap) {
                                 if (snap.hasData) {
                                   return RaisedButton(
                                     onPressed: () {
                                       showDialog<void>(
-                                              context: context,
-                                              barrierDismissible: true,
-                                              // user must tap button!
-                                              builder: (BuildContext context) {
-                                                Future.delayed(
-                                                    Duration(seconds: 5), () {
-                                                  Navigator.of(context).pop();
+                                          context: context,
+                                          barrierDismissible: true,
+                                          // user must tap button!
+                                          builder:
+                                              (BuildContext context) {
+                                            Future.delayed(
+                                                Duration(seconds: 5),
+                                                    () {
+                                                  Navigator.of(context)
+                                                      .pop();
                                                 });
-                                                return ErrorDialogWidget(
-                                                  text: snap.data,
-                                                );
-                                              })
-                                          .then((value) => FlutterStatusbarcolor
-                                              .setStatusBarColor(Colors.white));
-                                      TextFieldValidation().checkPassValidation(
+                                            return ErrorDialogWidget(
+                                              text: snap.data,
+                                            );
+                                          })
+                                          .then((value) =>
+                                          FlutterStatusbarcolor
+                                              .setStatusBarColor(
+                                              Colors.white));
+                                      TextFieldValidation()
+                                          .checkPassValidation(
                                           personalDetailsBloc
                                               .getPassword()
                                               .toString(),
                                           'PERSONAL_DETAILS');
                                       TextFieldValidation()
                                           .checkEmailValidation(
-                                              personalDetailsBloc
-                                                  .getEmail()
-                                                  .toString(),
-                                              'PERSONAL_DETAILS');
+                                          personalDetailsBloc
+                                              .getEmail()
+                                              .toString(),
+                                          'PERSONAL_DETAILS');
                                       TextFieldValidation()
                                           .checkPasswordMatching(
-                                              personalDetailsBloc
-                                                  .getPassword()
-                                                  .toString(),
-                                              personalDetailsBloc
-                                                  .getConfirmPassword()
-                                                  .toString());
+                                          personalDetailsBloc
+                                              .getPassword()
+                                              .toString(),
+                                          personalDetailsBloc
+                                              .getConfirmPassword()
+                                              .toString());
                                       TextFieldValidation()
                                           .checkDriverLicenseIssueDateValidation(
-                                              personalDetailsBloc
-                                                  .getDriverIssueDate());
+                                          personalDetailsBloc
+                                              .getDriverIssueDate());
                                       TextFieldValidation()
                                           .checkDriverLicenseExpiredDateValidation(
-                                              personalDetailsBloc
-                                                  .getDriverExpiredDate());
+                                          personalDetailsBloc
+                                              .getDriverExpiredDate());
 
                                       if (personalDetailsBloc
                                           .checkPersonalDetailsValidation()) {
-                                        personalDetailsBloc.createAccount();
+                                        personalDetailsBloc
+                                            .createAccount();
                                         _showDialog(context);
                                       } else {}
                                     },
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Text(
                                           "Continue ",
                                           style: TextStyle(
-                                            fontFamily: FontFamilies.POPPINS,
-                                            fontSize: (MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.008) +
-                                                FontSize.BUTTON_FONT_L,
+                                            fontFamily:
+                                            FontFamilies.POPPINS,
+                                            fontSize:
+                                            (MediaQuery
+                                                .of(context)
+                                                .size
+                                                .width *
+                                                0.008) +
+                                                FontSize
+                                                    .BUTTON_FONT_L,
                                             color: Colors.black,
                                           ),
                                         ),
                                         Icon(
                                           Icons.arrow_forward,
                                           color: Colors.black,
-                                          size: (MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.008) +
+                                          size: (MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width *
+                                              0.008) +
                                               18,
                                         ),
                                       ],
@@ -755,63 +784,70 @@ class PersonalDetailsScreen extends StatelessWidget {
                                 } else {
                                   return RaisedButton(
                                     onPressed: () {
-                                      TextFieldValidation().checkPassValidation(
+                                      TextFieldValidation()
+                                          .checkPassValidation(
                                           personalDetailsBloc
                                               .getPassword()
                                               .toString(),
                                           'PERSONAL_DETAILS');
                                       TextFieldValidation()
                                           .checkEmailValidation(
-                                              personalDetailsBloc
-                                                  .getEmail()
-                                                  .toString(),
-                                              'PERSONAL_DETAILS');
+                                          personalDetailsBloc
+                                              .getEmail()
+                                              .toString(),
+                                          'PERSONAL_DETAILS');
                                       TextFieldValidation()
                                           .checkPasswordMatching(
-                                              personalDetailsBloc
-                                                  .getPassword()
-                                                  .toString(),
-                                              personalDetailsBloc
-                                                  .getConfirmPassword()
-                                                  .toString());
+                                          personalDetailsBloc
+                                              .getPassword()
+                                              .toString(),
+                                          personalDetailsBloc
+                                              .getConfirmPassword()
+                                              .toString());
                                       TextFieldValidation()
                                           .checkDriverLicenseIssueDateValidation(
-                                              personalDetailsBloc
-                                                  .getDriverIssueDate());
+                                          personalDetailsBloc
+                                              .getDriverIssueDate());
                                       TextFieldValidation()
                                           .checkDriverLicenseExpiredDateValidation(
-                                              personalDetailsBloc
-                                                  .getDriverExpiredDate());
+                                          personalDetailsBloc
+                                              .getDriverExpiredDate());
                                       if (personalDetailsBloc
                                           .checkPersonalDetailsValidation()) {
-                                        personalDetailsBloc.createAccount();
+                                        personalDetailsBloc
+                                            .createAccount();
 
                                         _showDialog(context);
                                       } else {}
                                     },
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Text(
                                           "Continue ",
                                           style: TextStyle(
-                                            fontFamily: FontFamilies.POPPINS,
-                                            fontSize: (MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.008) +
-                                                FontSize.BUTTON_FONT_L,
+                                            fontFamily:
+                                            FontFamilies.POPPINS,
+                                            fontSize:
+                                            (MediaQuery
+                                                .of(context)
+                                                .size
+                                                .width *
+                                                0.008) +
+                                                FontSize
+                                                    .BUTTON_FONT_L,
                                             color: Colors.black,
                                           ),
                                         ),
                                         Icon(
                                           Icons.arrow_forward,
                                           color: Colors.black,
-                                          size: (MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.008) +
+                                          size: (MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width *
+                                              0.008) +
                                               18,
                                         ),
                                       ],
@@ -825,24 +861,29 @@ class PersonalDetailsScreen extends StatelessWidget {
                               onPressed: () {},
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Text(
                                     "Continue ",
                                     style: TextStyle(
                                       fontFamily: FontFamilies.POPPINS,
-                                      fontSize:
-                                          (MediaQuery.of(context).size.width *
-                                                  0.008) +
-                                              FontSize.BUTTON_FONT_L,
+                                      fontSize: (MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width *
+                                          0.008) +
+                                          FontSize.BUTTON_FONT_L,
                                       color: AppColors.LIGHT_GREY,
                                     ),
                                   ),
                                   Icon(
                                     Icons.arrow_forward,
                                     color: AppColors.LIGHT_GREY,
-                                    size: (MediaQuery.of(context).size.width *
-                                            0.008) +
+                                    size: (MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width *
+                                        0.008) +
                                         18,
                                   ),
                                 ],
@@ -850,7 +891,161 @@ class PersonalDetailsScreen extends StatelessWidget {
                             );
                           }
                         },
-                      )),
+                      )
+                          : StreamBuilder(
+                          stream: personalDetailsBloc.birthdayValidation,
+                          builder: (context, snap) {
+                            if (snap.hasData) {
+                              return RaisedButton(
+                                onPressed: () {
+                                  showDialog<void>(
+                                      context: context,
+                                      barrierDismissible: true,
+                                      // user must tap button!
+                                      builder: (BuildContext context) {
+                                        Future.delayed(
+                                            Duration(seconds: 5), () {
+                                          Navigator.of(context).pop();
+                                        });
+                                        return ErrorDialogWidget(
+                                          text: snap.data,
+                                        );
+                                      })
+                                      .then((value) =>
+                                      FlutterStatusbarcolor
+                                          .setStatusBarColor(Colors.white));
+
+                                  TextFieldValidation()
+                                      .checkEmailValidation(
+                                      personalDetailsBloc
+                                          .getEmail()
+                                          .toString(),
+                                      'PERSONAL_DETAILS');
+
+                                  TextFieldValidation()
+                                      .checkDriverLicenseIssueDateValidation(
+                                      personalDetailsBloc
+                                          .getDriverIssueDate());
+                                  TextFieldValidation()
+                                      .checkDriverLicenseExpiredDateValidation(
+                                      personalDetailsBloc
+                                          .getDriverExpiredDate());
+                                },
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      "Continue ",
+                                      style: TextStyle(
+                                        fontFamily: FontFamilies.POPPINS,
+                                        fontSize: (MediaQuery
+                                            .of(context)
+                                            .size
+                                            .width *
+                                            0.008) +
+                                            FontSize.BUTTON_FONT_L,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward,
+                                      color: Colors.black,
+                                      size: (MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width *
+                                          0.008) +
+                                          18,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            } else {
+                              return RaisedButton(
+                                onPressed: () {
+                                  // TextFieldValidation().checkPassValidation(
+                                  //     personalDetailsBloc
+                                  //         .getPassword()
+                                  //         .toString(),
+                                  //     'PERSONAL_DETAILS');
+                                  TextFieldValidation()
+                                      .checkEmailValidation(
+                                      personalDetailsBloc
+                                          .getEmail()
+                                          .toString(),
+                                      'PERSONAL_DETAILS');
+                                  // TextFieldValidation().checkPasswordMatching(
+                                  //     personalDetailsBloc
+                                  //         .getPassword()
+                                  //         .toString(),
+                                  //     personalDetailsBloc
+                                  //         .getConfirmPassword()
+                                  //         .toString());
+                                  TextFieldValidation()
+                                      .checkDriverLicenseIssueDateValidation(
+                                      personalDetailsBloc
+                                          .getDriverIssueDate());
+                                  TextFieldValidation()
+                                      .checkDriverLicenseExpiredDateValidation(
+                                      personalDetailsBloc
+                                          .getDriverExpiredDate());
+
+                                  if (personalDetailsBloc
+                                      .checkEditPersonalDetailsValidation()) {
+                                    personalDetailsBloc.editAccount();
+                                    captainPersonalData.data.car != null &&
+                                        captainPersonalData.data
+                                            .drivingCertificateF !=
+                                            null
+                                        ? Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) {
+                                            return CompletedInfoScreen();
+                                          }),
+                                    )
+                                        : Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) {
+                                            return InCompletedInfoScreen();
+                                          }),
+                                    );
+                                  } else {}
+                                },
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      "Continue ",
+                                      style: TextStyle(
+                                        fontFamily: FontFamilies.POPPINS,
+                                        fontSize: (MediaQuery
+                                            .of(context)
+                                            .size
+                                            .width *
+                                            0.008) +
+                                            FontSize.BUTTON_FONT_L,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward,
+                                      color: Colors.black,
+                                      size: (MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width *
+                                          0.008) +
+                                          18,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                          })),
                 ),
               ],
             ),

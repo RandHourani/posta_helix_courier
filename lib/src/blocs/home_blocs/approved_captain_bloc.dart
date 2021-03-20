@@ -48,7 +48,10 @@ class ApprovedCaptainBloc {
   }
 
   setNotificationToken(String value) {
-    _notificationToken.add(value);
+    if (value == _notificationToken.value) {
+    } else {
+      _notificationToken.add(value);
+    }
     notificationToken();
   }
 
@@ -72,7 +75,6 @@ _repository.logout();
     _fullName.add(
         _checkAuth.value.data.firstName + " " + _checkAuth.value.data.lastName);
     _profileImage.add(_checkAuth.value.data.profileImage);
-    // orderBloc.getOrders("NOT_PAID");
   }
 
   captainCars() async {

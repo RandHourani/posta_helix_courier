@@ -51,6 +51,8 @@ class CountryState extends State<CountryCode> {
                 builder:
                     (BuildContext context, AsyncSnapshot<String> snapshot) {
                   if (snapshot.hasData) {
+                    countryBloc.getCities(snapshot.data);
+
                     return Flag(
                       snapshot.data,
                       width: 45,

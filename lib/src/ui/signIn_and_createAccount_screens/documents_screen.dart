@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'file:///C:/Users/r.horani/AndroidStudioProjects/helix_courier_project/helix_courier_project/lib/src/constants/application_colors_value.dart';
-
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,6 +13,8 @@ import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/documents
 import 'package:posta_courier/src/constants/constants.dart';
 import 'package:posta_courier/src/constants/fonts_size.dart';
 import 'package:posta_courier/src/ui/signIn_and_createAccount_screens/interview_screen.dart';
+import 'package:posta_courier/src/ui/signIn_and_createAccount_screens/completed_info_screen.dart';
+import 'package:posta_courier/src/ui/signIn_and_createAccount_screens/incompleted_info_screen.dart';
 
 class DocumentsScreen extends StatelessWidget {
   CaptainData captainPersonalData;
@@ -3945,36 +3946,38 @@ class DocumentsScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5),
                       ),
                       buttonColor: Colors.white,
-                      child: StreamBuilder(
-                        stream: documentsBloc.submitValid,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return RaisedButton(
-                              onPressed: () {
-                                documentsBloc.uploadDocumentImages();
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) {
-                                    return InterviewScreen();
-                                  }),
-                                );
-                              },
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 20),
-                                    child: Text(
-                                      "Continue",
-                                      style: TextStyle(
-                                        fontFamily: FontFamilies.POPPINS,
-                                        fontSize:
-                                            (MediaQuery.of(context).size.width *
-                                                    0.008) +
-                                                FontSize.BUTTON_FONT_L,
-                                        color: Colors.black,
-                                      ),
+                      child: captainPersonalData == null
+                          ? StreamBuilder(
+                              stream: documentsBloc.submitValid,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return RaisedButton(
+                                    onPressed: () {
+                                      documentsBloc.uploadDocumentImages();
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) {
+                                          return InterviewScreen();
+                                        }),
+                                      );
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 20),
+                                          child: Text(
+                                            "Continue",
+                                            style: TextStyle(
+                                              fontFamily: FontFamilies.POPPINS,
+                                              fontSize: (MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.008) +
+                                                  FontSize.BUTTON_FONT_L,
+                                              color: Colors.black,
+                                            ),
                                     ),
                                   ),
                                   Padding(
@@ -3982,8 +3985,11 @@ class DocumentsScreen extends StatelessWidget {
                                     child: Icon(
                                       Icons.arrow_forward,
                                       color: Colors.black,
-                                      size: (MediaQuery.of(context).size.width *
-                                              0.008) +
+                                      size: (MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width *
+                                          0.008) +
                                           18,
                                     ),
                                   ),
@@ -3995,7 +4001,7 @@ class DocumentsScreen extends StatelessWidget {
                               onPressed: () {},
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Padding(
                                     padding: EdgeInsets.only(left: 20),
@@ -4004,9 +4010,12 @@ class DocumentsScreen extends StatelessWidget {
                                       style: TextStyle(
                                         fontFamily: FontFamilies.POPPINS,
                                         fontSize:
-                                            (MediaQuery.of(context).size.width *
-                                                    0.008) +
-                                                FontSize.BUTTON_FONT_L,
+                                        (MediaQuery
+                                            .of(context)
+                                            .size
+                                            .width *
+                                            0.008) +
+                                            FontSize.BUTTON_FONT_L,
                                         color: AppColors.LIGHT_GREY,
                                       ),
                                     ),
@@ -4016,8 +4025,11 @@ class DocumentsScreen extends StatelessWidget {
                                     child: Icon(
                                       Icons.arrow_forward,
                                       color: AppColors.LIGHT_GREY,
-                                      size: (MediaQuery.of(context).size.width *
-                                              0.008) +
+                                      size: (MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width *
+                                          0.008) +
                                           18,
                                     ),
                                   ),
@@ -4026,6 +4038,63 @@ class DocumentsScreen extends StatelessWidget {
                             );
                           }
                         },
+                      ) :
+                      RaisedButton(
+                        onPressed: () {
+                          documentsBloc.uploadDocumentImages();
+                          if (captainPersonalData.data.car != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) {
+                                return CompletedInfoScreen();
+                              }),
+                            );
+                          }
+                          else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) {
+                                return InCompletedInfoScreen();
+                              }),
+                            );
+                          }
+                        },
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(left: 20),
+                              child: Text(
+                                "Continue",
+                                style: TextStyle(
+                                  fontFamily: FontFamilies.POPPINS,
+                                  fontSize:
+                                  (MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width *
+                                      0.008) +
+                                      FontSize.BUTTON_FONT_L,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(right: 10),
+                              child: Icon(
+                                Icons.arrow_forward,
+                                color: Colors.black,
+                                size: (MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width *
+                                    0.008) +
+                                    18,
+                              ),
+                            ),
+                          ],
+                        ),
                       )),
                 ),
               ],

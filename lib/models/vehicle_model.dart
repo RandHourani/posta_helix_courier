@@ -5,26 +5,24 @@ class VehicleModel {
   static Map<String, dynamic> carData = {
     "captain": {},
     "car": {
-
       "color_id": vehicleBloc.getSelectedColor() != null
-          ? vehicleBloc.getSelectedColor() + 1
-          :1,
+          ? vehicleBloc.getSelectedColor()
+          : 1,
       "brand_model_id": vehicleBloc.getSelectedModelId() != null
           ? vehicleBloc.getSelectedModelId()
           : null,
       "number": vehicleBloc.getPlateNumber().toString(),
-      "state": vehicleBloc.getSelectedCity().toString(),
+      "state": vehicleBloc.getSelectedCity(),
       "insurance_expired_date": vehicleBloc.getRegistrationExpireDate() != null
           ? Utils.dateFormat2(
               vehicleBloc.getRegistrationExpireDate().toString())
           : null,
       "car_manufacture_year":
           vehicleBloc.getManufacturingYearSelected().toString(),
-      "city_id": vehicleBloc.getSelectedCityId()+1,
+      "city_id": vehicleBloc.getSelectedCityId(),
       "brand_id": vehicleBloc.getCarBrand() != null
           ? int.parse(vehicleBloc.getSelectedBrandId())
           : null,
-
     }
   };
 

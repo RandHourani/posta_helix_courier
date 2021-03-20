@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'file:///C:/Users/r.horani/AndroidStudioProjects/helix_courier_project/helix_courier_project/lib/src/constants/application_colors_value.dart';
-
 import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:posta_courier/models/activation_code_model.dart';
 import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/vehicle_bloc.dart';
 import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/sign_up_bloc.dart';
+import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/personal_details_bloc.dart';
+import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/documents_bloc.dart';
+import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/interview_bloc.dart';
 import 'package:posta_courier/src/constants/fonts_size.dart';
 import 'package:posta_courier/src/ui/signIn_and_createAccount_screens/welcome_screen.dart';
 import 'package:posta_courier/src/ui/widgets/country_code.dart';
@@ -24,8 +26,6 @@ class SignUpScreen extends StatelessWidget {
   var globalPhoneType = PhoneNumberType.mobile;
   var globalPhoneFormat = PhoneNumberFormat.national;
   final initFuture = FlutterLibphonenumber().init();
-  String currentCountryCode = "";
-  CountryDetails countryDetails = CountryCodes.detailsForLocale();
 
   @override
   Widget build(BuildContext context) {
@@ -232,7 +232,6 @@ class SignUpScreen extends StatelessWidget {
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
                                   phoneBloc.internetChecked();
-
                                   return StreamBuilder(
                                     stream: phoneBloc.checkInternet,
                                     builder: (context, snap) {
@@ -248,6 +247,13 @@ class SignUpScreen extends StatelessWidget {
                                               } else {
                                                 if (snap.data == true) {
                                                   phoneBloc.getActivationCode();
+                                                  vehicleBloc.resetData();
+                                                  personalDetailsBloc
+                                                      .resetData();
+                                                  documentsBloc
+                                                      .resetDocuments();
+                                                  interviewBloc
+                                                      .resetInterview();
                                                   _showDialog(context);
                                                   // countryBloc.getCities(phoneBloc.getCountryCode().toString());
                                                 } else {
@@ -473,6 +479,7 @@ class SignUpScreen extends StatelessWidget {
         FlutterStatusbarcolor.setStatusBarColor(AppColors.dialogStatusBar);
         Future.delayed(Duration(seconds: 3), () {
           if (phoneBloc.userValidationII() == "success") {
+            Navigator.pop(context);
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) {
