@@ -41,7 +41,7 @@ class HorizontalProgressIndicatorState
   void initState() {
     super.initState();
     controller =
-        AnimationController(duration: const Duration(seconds: 60), vsync: this);
+        AnimationController(duration: const Duration(seconds: 60), value: this);
     animation = Tween(begin: beginAnim, end: endAnim).animate(controller)
       ..addListener(() {
         setState(() {});
