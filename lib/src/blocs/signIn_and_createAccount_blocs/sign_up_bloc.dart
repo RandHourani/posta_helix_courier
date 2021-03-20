@@ -92,6 +92,9 @@ class PhoneBloc {
   }
 
   userValidationII() {
+    if (_activationCode.value == null) {
+      getActivationCode();
+    } else {}
     return _activationCode.value.message;
   }
 

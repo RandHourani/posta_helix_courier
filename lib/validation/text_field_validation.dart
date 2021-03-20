@@ -157,7 +157,7 @@ class TextFieldValidation {
     } else {
       vehicleBloc.setRegistrationExpireDateValidation(
           "Registration expired date must be after " +
-              Utils.dateFormat1(date.toString()));
+              Utils.dateFormat1(DateTime.now().toString()));
     }
   }
   checkNewCarRegistrationExpiredDateValidation(String date) {

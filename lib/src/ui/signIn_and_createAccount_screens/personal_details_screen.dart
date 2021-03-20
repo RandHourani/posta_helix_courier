@@ -227,8 +227,8 @@ class PersonalDetailsScreen extends StatelessWidget {
                                   if (snap.hasData) {
                                     List<String> list = List();
                                     for (int i = 0;
-                                    i < snap.data.personalData.data.length;
-                                    i++) {
+                                        i < snap.data.personalData.data.length;
+                                        i++) {
                                       list.add(snap
                                           .data.personalData.data[i].name
                                           .toString());
@@ -295,11 +295,7 @@ class PersonalDetailsScreen extends StatelessWidget {
                                               mainAxisSize: MainAxisSize.min,
                                               children: <Widget>[
                                                 Text(
-                                                  captainPersonalData == null
-                                                      ? personalDetailsBloc
-                                                      .setSelectedNationality(
-                                                      list[0])
-                                                      : list[0],
+                                                  list[0],
                                                   style: TextStyle(
                                                     fontFamily:
                                                     FontFamilies.POPPINS,
@@ -677,146 +673,342 @@ class PersonalDetailsScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5),
                       ),
                       buttonColor: Colors.white,
-                      child: captainPersonalData == null
-                          ? StreamBuilder(
-                        stream: personalDetailsBloc.submitValid,
-                        builder: (context, snapshot) {
+                      child: StreamBuilder(
+                        stream: personalDetailsBloc.message,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<String> snapshot) {
                           if (snapshot.hasData) {
                             return StreamBuilder(
-                              stream:
-                              personalDetailsBloc.birthdayValidation,
-                              builder: (context, snap) {
-                                if (snap.hasData) {
-                                  return RaisedButton(
-                                    onPressed: () {
-                                      showDialog<void>(
-                                          context: context,
-                                          barrierDismissible: true,
-                                          // user must tap button!
-                                          builder:
-                                              (BuildContext context) {
-                                            Future.delayed(
-                                                Duration(seconds: 5),
-                                                    () {
-                                                  Navigator.of(context)
-                                                      .pop();
-                                                });
-                                            return ErrorDialogWidget(
-                                              text: snap.data,
-                                            );
-                                          })
-                                          .then((value) =>
-                                          FlutterStatusbarcolor
-                                              .setStatusBarColor(
-                                              Colors.white));
-                                      TextFieldValidation()
-                                          .checkPassValidation(
-                                          personalDetailsBloc
-                                              .getPassword()
-                                              .toString(),
-                                          'PERSONAL_DETAILS');
-                                      TextFieldValidation()
-                                          .checkEmailValidation(
-                                          personalDetailsBloc
-                                              .getEmail()
-                                              .toString(),
-                                          'PERSONAL_DETAILS');
-                                      TextFieldValidation()
-                                          .checkPasswordMatching(
-                                          personalDetailsBloc
-                                              .getPassword()
-                                              .toString(),
-                                          personalDetailsBloc
-                                              .getConfirmPassword()
-                                              .toString());
-                                      TextFieldValidation()
-                                          .checkDriverLicenseIssueDateValidation(
-                                          personalDetailsBloc
-                                              .getDriverIssueDate());
-                                      TextFieldValidation()
-                                          .checkDriverLicenseExpiredDateValidation(
-                                          personalDetailsBloc
-                                              .getDriverExpiredDate());
+                                stream: personalDetailsBloc.birthdayValidation,
+                                builder: (context, snap) {
+                                  if (snap.hasData) {
+                                    return RaisedButton(
+                                      onPressed: () {
+                                        showDialog<void>(
+                                            context: context,
+                                            barrierDismissible: true,
+                                            // user must tap button!
+                                            builder: (BuildContext context) {
+                                              Future.delayed(
+                                                  Duration(seconds: 5), () {
+                                                Navigator.of(context).pop();
+                                              });
+                                              return ErrorDialogWidget(
+                                                text: snap.data,
+                                              );
+                                            })
+                                            .then((value) =>
+                                            FlutterStatusbarcolor
+                                                .setStatusBarColor(
+                                                Colors.white));
 
-                                      if (personalDetailsBloc
-                                          .checkPersonalDetailsValidation()) {
-                                        personalDetailsBloc
-                                            .createAccount();
-                                        _showDialog(context);
-                                      } else {}
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Text(
-                                          "Continue ",
-                                          style: TextStyle(
-                                            fontFamily:
-                                            FontFamilies.POPPINS,
-                                            fontSize:
-                                            (MediaQuery
+                                        TextFieldValidation()
+                                            .checkEmailValidation(
+                                            personalDetailsBloc
+                                                .getEmail()
+                                                .toString(),
+                                            'PERSONAL_DETAILS');
+
+                                        TextFieldValidation()
+                                            .checkDriverLicenseIssueDateValidation(
+                                            personalDetailsBloc
+                                                .getDriverIssueDate());
+                                        TextFieldValidation()
+                                            .checkDriverLicenseExpiredDateValidation(
+                                            personalDetailsBloc
+                                                .getDriverExpiredDate());
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Text(
+                                            "Continue ",
+                                            style: TextStyle(
+                                              fontFamily: FontFamilies.POPPINS,
+                                              fontSize: (MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width *
+                                                  0.008) +
+                                                  FontSize.BUTTON_FONT_L,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Icon(
+                                            Icons.arrow_forward,
+                                            color: Colors.black,
+                                            size: (MediaQuery
                                                 .of(context)
                                                 .size
                                                 .width *
                                                 0.008) +
-                                                FontSize
-                                                    .BUTTON_FONT_L,
-                                            color: Colors.black,
+                                                18,
                                           ),
-                                        ),
-                                        Icon(
-                                          Icons.arrow_forward,
-                                          color: Colors.black,
-                                          size: (MediaQuery
-                                              .of(context)
-                                              .size
-                                              .width *
-                                              0.008) +
-                                              18,
-                                        ),
-                                      ],
-                                    ),
+                                        ],
+                                      ),
+                                    );
+                                  } else {
+                                    return RaisedButton(
+                                      onPressed: () {
+                                        // TextFieldValidation().checkPassValidation(
+                                        //     personalDetailsBloc
+                                        //         .getPassword()
+                                        //         .toString(),
+                                        //     'PERSONAL_DETAILS');
+                                        TextFieldValidation()
+                                            .checkEmailValidation(
+                                            personalDetailsBloc
+                                                .getEmail()
+                                                .toString(),
+                                            'PERSONAL_DETAILS');
+                                        // TextFieldValidation().checkPasswordMatching(
+                                        //     personalDetailsBloc
+                                        //         .getPassword()
+                                        //         .toString(),
+                                        //     personalDetailsBloc
+                                        //         .getConfirmPassword()
+                                        //         .toString());
+                                        TextFieldValidation()
+                                            .checkDriverLicenseIssueDateValidation(
+                                            personalDetailsBloc
+                                                .getDriverIssueDate());
+                                        TextFieldValidation()
+                                            .checkDriverLicenseExpiredDateValidation(
+                                            personalDetailsBloc
+                                                .getDriverExpiredDate());
+
+                                        if (personalDetailsBloc
+                                            .checkEditPersonalDetailsValidation()) {
+                                          personalDetailsBloc.editAccount();
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                                  return VehicleDetailsScreen();
+                                                }),
+                                          );
+                                        } else {}
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Text(
+                                            "Continue ",
+                                            style: TextStyle(
+                                              fontFamily: FontFamilies.POPPINS,
+                                              fontSize: (MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width *
+                                                  0.008) +
+                                                  FontSize.BUTTON_FONT_L,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Icon(
+                                            Icons.arrow_forward,
+                                            color: Colors.black,
+                                            size: (MediaQuery
+                                                .of(context)
+                                                .size
+                                                .width *
+                                                0.008) +
+                                                18,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }
+                                });
+                          } else {
+                            return captainPersonalData == null
+                                ? StreamBuilder(
+                              stream: personalDetailsBloc.submitValid,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return StreamBuilder(
+                                    stream: personalDetailsBloc
+                                        .birthdayValidation,
+                                    builder: (context, snap) {
+                                      if (snap.hasData) {
+                                        return RaisedButton(
+                                          onPressed: () {
+                                            showDialog<void>(
+                                                context: context,
+                                                barrierDismissible: true,
+                                                // user must tap button!
+                                                builder: (BuildContext
+                                                context) {
+                                                  Future.delayed(
+                                                      Duration(
+                                                          seconds: 5),
+                                                          () {
+                                                        Navigator.of(
+                                                            context)
+                                                            .pop();
+                                                      });
+                                                  return ErrorDialogWidget(
+                                                    text: snap.data,
+                                                  );
+                                                })
+                                                .then((value) =>
+                                                FlutterStatusbarcolor
+                                                    .setStatusBarColor(
+                                                    Colors
+                                                        .white));
+                                            TextFieldValidation()
+                                                .checkPassValidation(
+                                                personalDetailsBloc
+                                                    .getPassword()
+                                                    .toString(),
+                                                'PERSONAL_DETAILS');
+                                            TextFieldValidation()
+                                                .checkEmailValidation(
+                                                personalDetailsBloc
+                                                    .getEmail()
+                                                    .toString(),
+                                                'PERSONAL_DETAILS');
+                                            TextFieldValidation()
+                                                .checkPasswordMatching(
+                                                personalDetailsBloc
+                                                    .getPassword()
+                                                    .toString(),
+                                                personalDetailsBloc
+                                                    .getConfirmPassword()
+                                                    .toString());
+                                            TextFieldValidation()
+                                                .checkDriverLicenseIssueDateValidation(
+                                                personalDetailsBloc
+                                                    .getDriverIssueDate());
+                                            TextFieldValidation()
+                                                .checkDriverLicenseExpiredDateValidation(
+                                                personalDetailsBloc
+                                                    .getDriverExpiredDate());
+
+                                            if (personalDetailsBloc
+                                                .checkPersonalDetailsValidation()) {
+                                              personalDetailsBloc
+                                                  .createAccount();
+                                              _showDialog(context);
+                                            } else {}
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment
+                                                .spaceBetween,
+                                            children: <Widget>[
+                                              Text(
+                                                "Continue ",
+                                                style: TextStyle(
+                                                  fontFamily: FontFamilies
+                                                      .POPPINS,
+                                                  fontSize: (MediaQuery
+                                                      .of(
+                                                      context)
+                                                      .size
+                                                      .width *
+                                                      0.008) +
+                                                      FontSize
+                                                          .BUTTON_FONT_L,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              Icon(
+                                                Icons.arrow_forward,
+                                                color: Colors.black,
+                                                size: (MediaQuery
+                                                    .of(
+                                                    context)
+                                                    .size
+                                                    .width *
+                                                    0.008) +
+                                                    18,
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      } else {
+                                        return RaisedButton(
+                                          onPressed: () {
+                                            TextFieldValidation()
+                                                .checkPassValidation(
+                                                personalDetailsBloc
+                                                    .getPassword()
+                                                    .toString(),
+                                                'PERSONAL_DETAILS');
+                                            TextFieldValidation()
+                                                .checkEmailValidation(
+                                                personalDetailsBloc
+                                                    .getEmail()
+                                                    .toString(),
+                                                'PERSONAL_DETAILS');
+                                            TextFieldValidation()
+                                                .checkPasswordMatching(
+                                                personalDetailsBloc
+                                                    .getPassword()
+                                                    .toString(),
+                                                personalDetailsBloc
+                                                    .getConfirmPassword()
+                                                    .toString());
+                                            TextFieldValidation()
+                                                .checkDriverLicenseIssueDateValidation(
+                                                personalDetailsBloc
+                                                    .getDriverIssueDate());
+                                            TextFieldValidation()
+                                                .checkDriverLicenseExpiredDateValidation(
+                                                personalDetailsBloc
+                                                    .getDriverExpiredDate());
+                                            if (personalDetailsBloc
+                                                .checkPersonalDetailsValidation()) {
+                                              personalDetailsBloc
+                                                  .createAccount();
+
+                                              _showDialog(context);
+                                            } else {}
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment
+                                                .spaceBetween,
+                                            children: <Widget>[
+                                              Text(
+                                                "Continue ",
+                                                style: TextStyle(
+                                                  fontFamily: FontFamilies
+                                                      .POPPINS,
+                                                  fontSize: (MediaQuery
+                                                      .of(
+                                                      context)
+                                                      .size
+                                                      .width *
+                                                      0.008) +
+                                                      FontSize
+                                                          .BUTTON_FONT_L,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              Icon(
+                                                Icons.arrow_forward,
+                                                color: Colors.black,
+                                                size: (MediaQuery
+                                                    .of(
+                                                    context)
+                                                    .size
+                                                    .width *
+                                                    0.008) +
+                                                    18,
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }
+                                    },
                                   );
                                 } else {
                                   return RaisedButton(
-                                    onPressed: () {
-                                      TextFieldValidation()
-                                          .checkPassValidation(
-                                          personalDetailsBloc
-                                              .getPassword()
-                                              .toString(),
-                                          'PERSONAL_DETAILS');
-                                      TextFieldValidation()
-                                          .checkEmailValidation(
-                                          personalDetailsBloc
-                                              .getEmail()
-                                              .toString(),
-                                          'PERSONAL_DETAILS');
-                                      TextFieldValidation()
-                                          .checkPasswordMatching(
-                                          personalDetailsBloc
-                                              .getPassword()
-                                              .toString(),
-                                          personalDetailsBloc
-                                              .getConfirmPassword()
-                                              .toString());
-                                      TextFieldValidation()
-                                          .checkDriverLicenseIssueDateValidation(
-                                          personalDetailsBloc
-                                              .getDriverIssueDate());
-                                      TextFieldValidation()
-                                          .checkDriverLicenseExpiredDateValidation(
-                                          personalDetailsBloc
-                                              .getDriverExpiredDate());
-                                      if (personalDetailsBloc
-                                          .checkPersonalDetailsValidation()) {
-                                        personalDetailsBloc
-                                            .createAccount();
-
-                                        _showDialog(context);
-                                      } else {}
-                                    },
+                                    onPressed: () {},
                                     child: Row(
                                       mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -834,12 +1026,12 @@ class PersonalDetailsScreen extends StatelessWidget {
                                                 0.008) +
                                                 FontSize
                                                     .BUTTON_FONT_L,
-                                            color: Colors.black,
+                                            color: AppColors.LIGHT_GREY,
                                           ),
                                         ),
                                         Icon(
                                           Icons.arrow_forward,
-                                          color: Colors.black,
+                                          color: AppColors.LIGHT_GREY,
                                           size: (MediaQuery
                                               .of(context)
                                               .size
@@ -852,197 +1044,176 @@ class PersonalDetailsScreen extends StatelessWidget {
                                   );
                                 }
                               },
-                            );
-                          } else {
-                            return RaisedButton(
-                              onPressed: () {},
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "Continue ",
-                                    style: TextStyle(
-                                      fontFamily: FontFamilies.POPPINS,
-                                      fontSize: (MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width *
-                                          0.008) +
-                                          FontSize.BUTTON_FONT_L,
-                                      color: AppColors.LIGHT_GREY,
-                                    ),
-                                  ),
-                                  Icon(
-                                    Icons.arrow_forward,
-                                    color: AppColors.LIGHT_GREY,
-                                    size: (MediaQuery
-                                        .of(context)
-                                        .size
-                                        .width *
-                                        0.008) +
-                                        18,
-                                  ),
-                                ],
-                              ),
-                            );
+                            )
+                                : StreamBuilder(
+                                stream:
+                                personalDetailsBloc.birthdayValidation,
+                                builder: (context, snap) {
+                                  if (snap.hasData) {
+                                    return RaisedButton(
+                                      onPressed: () {
+                                        showDialog<void>(
+                                            context: context,
+                                            barrierDismissible: true,
+                                            // user must tap button!
+                                            builder:
+                                                (BuildContext context) {
+                                              Future.delayed(
+                                                  Duration(seconds: 5),
+                                                      () {
+                                                    Navigator.of(context)
+                                                        .pop();
+                                                  });
+                                              return ErrorDialogWidget(
+                                                text: snap.data,
+                                              );
+                                            })
+                                            .then((value) =>
+                                            FlutterStatusbarcolor
+                                                .setStatusBarColor(
+                                                Colors.white));
+
+                                        TextFieldValidation()
+                                            .checkEmailValidation(
+                                            personalDetailsBloc
+                                                .getEmail()
+                                                .toString(),
+                                            'PERSONAL_DETAILS');
+
+                                        TextFieldValidation()
+                                            .checkDriverLicenseIssueDateValidation(
+                                            personalDetailsBloc
+                                                .getDriverIssueDate());
+                                        TextFieldValidation()
+                                            .checkDriverLicenseExpiredDateValidation(
+                                            personalDetailsBloc
+                                                .getDriverExpiredDate());
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Text(
+                                            "Continue ",
+                                            style: TextStyle(
+                                              fontFamily:
+                                              FontFamilies.POPPINS,
+                                              fontSize:
+                                              (MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width *
+                                                  0.008) +
+                                                  FontSize
+                                                      .BUTTON_FONT_L,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Icon(
+                                            Icons.arrow_forward,
+                                            color: Colors.black,
+                                            size: (MediaQuery
+                                                .of(context)
+                                                .size
+                                                .width *
+                                                0.008) +
+                                                18,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  } else {
+                                    return RaisedButton(
+                                      onPressed: () {
+                                        // TextFieldValidation().checkPassValidation(
+                                        //     personalDetailsBloc
+                                        //         .getPassword()
+                                        //         .toString(),
+                                        //     'PERSONAL_DETAILS');
+                                        TextFieldValidation()
+                                            .checkEmailValidation(
+                                            personalDetailsBloc
+                                                .getEmail()
+                                                .toString(),
+                                            'PERSONAL_DETAILS');
+                                        // TextFieldValidation().checkPasswordMatching(
+                                        //     personalDetailsBloc
+                                        //         .getPassword()
+                                        //         .toString(),
+                                        //     personalDetailsBloc
+                                        //         .getConfirmPassword()
+                                        //         .toString());
+                                        TextFieldValidation()
+                                            .checkDriverLicenseIssueDateValidation(
+                                            personalDetailsBloc
+                                                .getDriverIssueDate());
+                                        TextFieldValidation()
+                                            .checkDriverLicenseExpiredDateValidation(
+                                            personalDetailsBloc
+                                                .getDriverExpiredDate());
+
+                                        if (personalDetailsBloc
+                                            .checkEditPersonalDetailsValidation()) {
+                                          personalDetailsBloc.editAccount();
+                                          captainPersonalData.data.car !=
+                                              null &&
+                                              captainPersonalData.data
+                                                  .drivingCertificateF !=
+                                                  null
+                                              ? Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                                  return CompletedInfoScreen();
+                                                }),
+                                          )
+                                              : Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                                  return InCompletedInfoScreen();
+                                                }),
+                                          );
+                                        } else {}
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Text(
+                                            "Continue ",
+                                            style: TextStyle(
+                                              fontFamily:
+                                              FontFamilies.POPPINS,
+                                              fontSize:
+                                              (MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width *
+                                                  0.008) +
+                                                  FontSize
+                                                      .BUTTON_FONT_L,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Icon(
+                                            Icons.arrow_forward,
+                                            color: Colors.black,
+                                            size: (MediaQuery
+                                                .of(context)
+                                                .size
+                                                .width *
+                                                0.008) +
+                                                18,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }
+                                });
                           }
                         },
-                      )
-                          : StreamBuilder(
-                          stream: personalDetailsBloc.birthdayValidation,
-                          builder: (context, snap) {
-                            if (snap.hasData) {
-                              return RaisedButton(
-                                onPressed: () {
-                                  showDialog<void>(
-                                      context: context,
-                                      barrierDismissible: true,
-                                      // user must tap button!
-                                      builder: (BuildContext context) {
-                                        Future.delayed(
-                                            Duration(seconds: 5), () {
-                                          Navigator.of(context).pop();
-                                        });
-                                        return ErrorDialogWidget(
-                                          text: snap.data,
-                                        );
-                                      })
-                                      .then((value) =>
-                                      FlutterStatusbarcolor
-                                          .setStatusBarColor(Colors.white));
-
-                                  TextFieldValidation()
-                                      .checkEmailValidation(
-                                      personalDetailsBloc
-                                          .getEmail()
-                                          .toString(),
-                                      'PERSONAL_DETAILS');
-
-                                  TextFieldValidation()
-                                      .checkDriverLicenseIssueDateValidation(
-                                      personalDetailsBloc
-                                          .getDriverIssueDate());
-                                  TextFieldValidation()
-                                      .checkDriverLicenseExpiredDateValidation(
-                                      personalDetailsBloc
-                                          .getDriverExpiredDate());
-                                },
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      "Continue ",
-                                      style: TextStyle(
-                                        fontFamily: FontFamilies.POPPINS,
-                                        fontSize: (MediaQuery
-                                            .of(context)
-                                            .size
-                                            .width *
-                                            0.008) +
-                                            FontSize.BUTTON_FONT_L,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.arrow_forward,
-                                      color: Colors.black,
-                                      size: (MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width *
-                                          0.008) +
-                                          18,
-                                    ),
-                                  ],
-                                ),
-                              );
-                            } else {
-                              return RaisedButton(
-                                onPressed: () {
-                                  // TextFieldValidation().checkPassValidation(
-                                  //     personalDetailsBloc
-                                  //         .getPassword()
-                                  //         .toString(),
-                                  //     'PERSONAL_DETAILS');
-                                  TextFieldValidation()
-                                      .checkEmailValidation(
-                                      personalDetailsBloc
-                                          .getEmail()
-                                          .toString(),
-                                      'PERSONAL_DETAILS');
-                                  // TextFieldValidation().checkPasswordMatching(
-                                  //     personalDetailsBloc
-                                  //         .getPassword()
-                                  //         .toString(),
-                                  //     personalDetailsBloc
-                                  //         .getConfirmPassword()
-                                  //         .toString());
-                                  TextFieldValidation()
-                                      .checkDriverLicenseIssueDateValidation(
-                                      personalDetailsBloc
-                                          .getDriverIssueDate());
-                                  TextFieldValidation()
-                                      .checkDriverLicenseExpiredDateValidation(
-                                      personalDetailsBloc
-                                          .getDriverExpiredDate());
-
-                                  if (personalDetailsBloc
-                                      .checkEditPersonalDetailsValidation()) {
-                                    personalDetailsBloc.editAccount();
-                                    captainPersonalData.data.car != null &&
-                                        captainPersonalData.data
-                                            .drivingCertificateF !=
-                                            null
-                                        ? Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) {
-                                            return CompletedInfoScreen();
-                                          }),
-                                    )
-                                        : Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) {
-                                            return InCompletedInfoScreen();
-                                          }),
-                                    );
-                                  } else {}
-                                },
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      "Continue ",
-                                      style: TextStyle(
-                                        fontFamily: FontFamilies.POPPINS,
-                                        fontSize: (MediaQuery
-                                            .of(context)
-                                            .size
-                                            .width *
-                                            0.008) +
-                                            FontSize.BUTTON_FONT_L,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.arrow_forward,
-                                      color: Colors.black,
-                                      size: (MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width *
-                                          0.008) +
-                                          18,
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }
-                          })),
+                      )),
                 ),
               ],
             ),
@@ -1753,7 +1924,7 @@ class PersonalDetailsScreen extends StatelessWidget {
         Future.delayed(Duration(seconds: 3), () {
           if (personalDetailsBloc.getMessage() == "success") {
             print(personalDetailsBloc.getMessage());
-
+            Navigator.pop(context);
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) {

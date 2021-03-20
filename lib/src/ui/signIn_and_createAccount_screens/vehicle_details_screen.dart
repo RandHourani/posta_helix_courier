@@ -813,132 +813,6 @@ class VehicleDetailsScreen extends StatelessWidget {
                                           }
                                         },
                                       )
-                                      // FutureBuilder<List<City>>(
-                                      //     future: CitiesDBProvider.db
-                                      //         .getAllCities(),
-                                      //     builder: (BuildContext context,
-                                      //         AsyncSnapshot<List<City>>
-                                      //             snapshot) {
-                                      //       if (snapshot.hasData) {
-                                      //         List<String> list = List();
-                                      //         for (int i = 0;
-                                      //             i < snapshot.data.length;
-                                      //             i++) {
-                                      //           list.add(snapshot.data[i].nameEN
-                                      //               .toString());
-                                      //         }
-                                      //
-                                      //         return PopupMenuButton<String>(
-                                      //           padding: EdgeInsets.all(0),
-                                      //           itemBuilder: (context) {
-                                      //             return list.map((value) {
-                                      //               return PopupMenuItem(
-                                      //                 value: value,
-                                      //                 child: Text(
-                                      //                   value,
-                                      //                   style: TextStyle(
-                                      //                     fontFamily:
-                                      //                         FontFamilies
-                                      //                             .POPPINS,
-                                      //                     fontSize:
-                                      //                         (MediaQuery.of(
-                                      //                                     context)
-                                      //                                 .size
-                                      //                                 .height *
-                                      //                             0.02),
-                                      //                     color: AppColors
-                                      //                         .labelColor,
-                                      //                   ),
-                                      //                 ),
-                                      //               );
-                                      //             }).toList();
-                                      //           },
-                                      //           child: StreamBuilder(
-                                      //             stream: vehicleBloc
-                                      //                 .selectedCountries,
-                                      //             builder: (context, snap) {
-                                      //               if (snap.hasData) {
-                                      //                 return Row(
-                                      //                   mainAxisSize:
-                                      //                       MainAxisSize.min,
-                                      //                   children: <Widget>[
-                                      //                     Text(
-                                      //                       snap.data
-                                      //                           .toString(),
-                                      //                       style: TextStyle(
-                                      //                         fontFamily:
-                                      //                             FontFamilies
-                                      //                                 .POPPINS,
-                                      //                         fontSize: (MediaQuery.of(
-                                      //                                     context)
-                                      //                                 .size
-                                      //                                 .height *
-                                      //                             0.02),
-                                      //                         color: AppColors
-                                      //                             .labelColor,
-                                      //                       ),
-                                      //                     ),
-                                      //                     Container(
-                                      //                       child: Icon(
-                                      //                         Icons
-                                      //                             .keyboard_arrow_down,
-                                      //                         size: 15,
-                                      //                       ),
-                                      //                       alignment: Alignment
-                                      //                           .center,
-                                      //                       padding:
-                                      //                           EdgeInsets.only(
-                                      //                               bottom: 3),
-                                      //                     ),
-                                      //                   ],
-                                      //                 );
-                                      //               } else {
-                                      //                 return Row(
-                                      //                   mainAxisSize:
-                                      //                       MainAxisSize.min,
-                                      //                   children: <Widget>[
-                                      //                     Text(
-                                      //                       list[0],
-                                      //                       style: TextStyle(
-                                      //                         fontFamily:
-                                      //                             FontFamilies
-                                      //                                 .POPPINS,
-                                      //                         fontSize: (MediaQuery.of(
-                                      //                                     context)
-                                      //                                 .size
-                                      //                                 .height *
-                                      //                             0.02),
-                                      //                         color: AppColors
-                                      //                             .labelColor,
-                                      //                       ),
-                                      //                     ),
-                                      //                     Container(
-                                      //                       child: Icon(
-                                      //                         Icons
-                                      //                             .keyboard_arrow_down,
-                                      //                         size: 15,
-                                      //                       ),
-                                      //                       alignment: Alignment
-                                      //                           .center,
-                                      //                       padding:
-                                      //                           EdgeInsets.only(
-                                      //                               bottom: 3),
-                                      //                     ),
-                                      //                   ],
-                                      //                 );
-                                      //               }
-                                      //             },
-                                      //           ),
-                                      //           onSelected: (value) {
-                                      //             vehicleBloc
-                                      //                 .setSelectedCountries(
-                                      //                     value);
-                                      //           },
-                                      //         );
-                                      //       } else {
-                                      //         return Text("");
-                                      //       }
-                                      //     }),
                                     ]),
                               ),
                               plateNumberTextField(),
@@ -971,6 +845,9 @@ class VehicleDetailsScreen extends StatelessWidget {
                                         if (snap.hasData) {
                                           return InkWell(
                                             onTap: () {
+                                              vehicleBloc
+                                                  .setRegistrationExpireDateValidation(
+                                                  null);
                                               showDialog(
                                                   barrierDismissible: false,
                                                   context: context,
@@ -978,7 +855,7 @@ class VehicleDetailsScreen extends StatelessWidget {
                                                       (BuildContext context) {
                                                     return CalendarWidget(
                                                       screen:
-                                                          "REGISTRATION_EXPIRY_DATE",
+                                                      "REGISTRATION_EXPIRY_DATE",
                                                     );
                                                   });
                                             },
@@ -1274,6 +1151,8 @@ class VehicleDetailsScreen extends StatelessWidget {
   InkWell calendarDialog(BuildContext context) {
     return InkWell(
       onTap: () {
+        vehicleBloc.setRegistrationExpireDateValidation(null);
+
         vehicleBloc.setCalendarColor(true);
         showDialog(
             barrierDismissible: false,

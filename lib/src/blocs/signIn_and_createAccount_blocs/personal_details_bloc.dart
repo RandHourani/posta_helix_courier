@@ -344,7 +344,6 @@ class PersonalDetailsBloc {
     } else {
       setEmailValidation(null);
       _message.add("success");
-      print("_message.value");
       print(_message.value);
       final storage = new FlutterSecureStorage();
       await storage.write(
