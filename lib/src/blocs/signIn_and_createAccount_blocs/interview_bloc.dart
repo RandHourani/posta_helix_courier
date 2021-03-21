@@ -13,6 +13,7 @@ class InterviewBloc {
   final _interviewMintes = BehaviorSubject<String>();
   final _interviewMins = BehaviorSubject<List<String>>();
   final _selectedTime = BehaviorSubject<String>();
+  final _scheduleInterview = BehaviorSubject<bool>();
   final _repository = Repository();
 
   Observable<String> get interviewDate => _interviewDate.stream;
@@ -25,11 +26,17 @@ class InterviewBloc {
 
   Observable<String> get selectedTime => _selectedTime.stream;
 
+  Observable<bool> get scheduleInterview => _scheduleInterview.stream;
+
   Stream<bool> get submitValid => Observable.combineLatest2(
       selectedTime, interviewDate, (selectedTime, interviewDate) => true);
 
   addInterviewDate(String date) {
     _interviewDate.add(date);
+  }
+
+  setScheduled(bool date) {
+    _scheduleInterview.add(date);
   }
 
   fetchAllAvailableTime() async {

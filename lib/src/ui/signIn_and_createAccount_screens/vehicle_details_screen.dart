@@ -69,31 +69,31 @@ class VehicleDetailsScreen extends StatelessWidget {
                           ),
                           child: Row(
                             children: <Widget>[
-                              Icon(
-                                Icons.arrow_back,
-                                color: AppColors.TITLE_TEXT_COLOR,
-                                size:
-                                    (MediaQuery.of(context).size.width * 0.04) +
-                                        FontSize.HEADING_FONT -
-                                        3,
-                              ),
                               InkWell(
                                 onTap: () {
                                   Navigator.pop(context);
                                 },
-                                child: Text(
-                                  "   VEHICLE  DETAILS",
-                                  style: TextStyle(
-                                      color: AppColors.TITLE_TEXT_COLOR,
-                                      fontFamily: FontFamilies.POPPINS,
-                                      fontSize:
-                                          (MediaQuery.of(context).size.width *
-                                                  0.04) +
-                                              FontSize.HEADING_FONT -
-                                              7,
-                                      fontWeight: FontWeight.bold),
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  color: AppColors.TITLE_TEXT_COLOR,
+                                  size: (MediaQuery.of(context).size.width *
+                                          0.04) +
+                                      FontSize.HEADING_FONT -
+                                      3,
                                 ),
-                              )
+                              ),
+                              Text(
+                                "   VEHICLE  DETAILS",
+                                style: TextStyle(
+                                    color: AppColors.TITLE_TEXT_COLOR,
+                                    fontFamily: FontFamilies.POPPINS,
+                                    fontSize:
+                                        (MediaQuery.of(context).size.width *
+                                                0.04) +
+                                            FontSize.HEADING_FONT -
+                                            7,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ],
                           ),
                         ),

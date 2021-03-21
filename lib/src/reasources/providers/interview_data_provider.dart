@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:posta_courier/models/interview_model.dart';
 import '../../constants/constants.dart';
+import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/interview_bloc.dart';
 
 class InterviewDataProvider{
   Client client=Client();
@@ -23,17 +24,23 @@ class InterviewDataProvider{
   async {
     final storage = new FlutterSecureStorage();
     String accessToken = await storage.read(key:"accessToken");
-    String interviewUrl=Constants.MAIN_URL+"interview";
+    String interviewUrl = Constants.MAIN_URL + "interview";
     var request = http.MultipartRequest('POST', Uri.parse(interviewUrl));
     request.headers.addAll({
-      "Authorization":"Bearer "+accessToken   ,
-      "Accept":"application/json",
+      "Authorization": "Bearer " + accessToken,
+      "Accept": "application/json",
     });
     request.files.add
-      ( http.MultipartFile.fromString('datetime',body ));
+      (http.MultipartFile.fromString('datetime', body));
     var res = await request.send();
     print(res.statusCode);
-    print("interview");
+    if (res.statusCode == 200) {
+      interviewBloc.setScheduled(true);
+    }
+    else {
+      interviewBloc.setScheduled(false);
+    }
+
     print(res.reasonPhrase);
 
   }

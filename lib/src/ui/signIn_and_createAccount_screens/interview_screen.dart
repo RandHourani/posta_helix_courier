@@ -17,6 +17,7 @@ import 'package:posta_courier/models/registered_captain_model.dart';
 import 'package:posta_courier/src/ui/home/google_maps/home_screen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:posta_courier/src/ui/widgets/dialog_loading.dart';
+
 class InterviewScreen extends StatelessWidget {
   double itemExtent = 60.0;
   FixedExtentScrollController scrollController;
@@ -45,29 +46,29 @@ class InterviewScreen extends StatelessWidget {
                   ),
                   child: Row(
                     children: <Widget>[
-                      Icon(
-                        Icons.arrow_back,
-                        color: AppColors.TITLE_TEXT_COLOR,
-                        size: (MediaQuery.of(context).size.width * 0.04) +
-                            FontSize.HEADING_FONT -
-                            3,
-                      ),
                       InkWell(
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: Text(
-                          "   SCHEDULE INTERVIEW",
-                          style: TextStyle(
-                              color: AppColors.TITLE_TEXT_COLOR,
-                              fontFamily: FontFamilies.POPPINS,
-                              fontSize:
-                                  (MediaQuery.of(context).size.width * 0.04) +
-                                      FontSize.HEADING_FONT -
-                                      7,
-                              fontWeight: FontWeight.bold),
+                        child: Icon(
+                          Icons.arrow_back,
+                          color: AppColors.TITLE_TEXT_COLOR,
+                          size: (MediaQuery.of(context).size.width * 0.04) +
+                              FontSize.HEADING_FONT -
+                              3,
                         ),
-                      )
+                      ),
+                      Text(
+                        "   SCHEDULE INTERVIEW",
+                        style: TextStyle(
+                            color: AppColors.TITLE_TEXT_COLOR,
+                            fontFamily: FontFamilies.POPPINS,
+                            fontSize:
+                                (MediaQuery.of(context).size.width * 0.04) +
+                                    FontSize.HEADING_FONT -
+                                    7,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ],
                   ),
                 ),
@@ -241,106 +242,215 @@ class InterviewScreen extends StatelessWidget {
                       child: StreamBuilder(
                         stream: interviewBloc.submitValid,
                         builder: (context, snapshot) {
-                          if (snapshot.hasData)  {
-                              return RaisedButton(
-                                color: AppColors.MAIN_COLOR,
-
-                                onPressed: () {
-                                  interviewBloc.sendInterviewData();
-                                  checkCaptainDataBloc.checkUserAuth();
-                                  checkCaptainDataBloc.checkCaptainData();
-
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) {
-                                      return StreamBuilder(
-                                        stream: checkCaptainDataBloc.checkUser,
-                                        builder: (BuildContext context,
-                                            AsyncSnapshot<LogInModel> snapshot) {
-                                        if (snapshot.hasData) {
-                                          if (snapshot.data.data.approvedAt !=
-                                              null) {
-                                            return HomeScreen();
-                                          } else if (snapshot
-                                                  .data.data.car.car.isEmpty ||
-                                              snapshot.data.data.idCardBack ==
-                                                  null ||
-                                              snapshot.data.data.idCardFront ==
-                                                  null ||
-                                              snapshot.data.data
-                                                      .drivingCertificateFront ==
-                                                  null ||
-                                              snapshot.data.data
-                                                      .drivingCertificateBack ==
-                                                  null) {
-                                            return InCompletedInfoScreen();
-                                          } else {
+                          if (snapshot.hasData) {
+                            return StreamBuilder(
+                              stream: interviewBloc.scheduleInterview,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<bool> snapshot) {
+                                if (snapshot.hasData) {
+                                  if (snapshot.data) {
+                                    return RaisedButton(
+                                      color: AppColors.MAIN_COLOR,
+                                      onPressed: () {
+                                        checkCaptainDataBloc.checkUserAuth();
+                                        checkCaptainDataBloc.checkCaptainData();
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) {
                                             return CompletedInfoScreen();
-                                          }
-                                        } else {
-                                          return CompletedInfoScreen();
-                                        }
+                                          }),
+                                        );
                                       },
-                                    );
-                                  }),
-                                  );
-                                },
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.05),
-                                      child: Text(
-                                        "Complete ",
-                                        style: TextStyle(
-                                          fontFamily: FontFamilies.POPPINS,
-                                          fontSize: (MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.008) +
-                                              FontSize.BUTTON_FONT_L,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          right: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.025),
-                                      child: Icon(
-                                        Icons.arrow_forward,
-                                        color: Colors.white,
-                                        size:
-                                            (MediaQuery.of(context).size.width *
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                left: MediaQuery
+                                                    .of(context)
+                                                    .size
+                                                    .width *
+                                                    0.05),
+                                            child: Text(
+                                              "Complete ",
+                                              style: TextStyle(
+                                                fontFamily:
+                                                FontFamilies.POPPINS,
+                                                fontSize:
+                                                (MediaQuery
+                                                    .of(context)
+                                                    .size
+                                                    .width *
                                                     0.008) +
-                                                18,
+                                                    FontSize.BUTTON_FONT_L,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                right: MediaQuery
+                                                    .of(context)
+                                                    .size
+                                                    .width *
+                                                    0.025),
+                                            child: Icon(
+                                              Icons.arrow_forward,
+                                              color: Colors.white,
+                                              size: (MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width *
+                                                  0.008) +
+                                                  18,
+                                            ),
+                                          )
+                                        ],
                                       ),
-                                    )
-                                  ],
-                                ),
-                              );
-                            }
-                           else {
+                                    );
+                                  } else {
+                                    return RaisedButton(
+                                      color: AppColors.MAIN_COLOR,
+                                      onPressed: () {
+                                        interviewBloc.sendInterviewData();
+                                        checkCaptainDataBloc.checkUserAuth();
+                                        checkCaptainDataBloc.checkCaptainData();
+                                        // _showDialog(context);
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) {
+                                            return CompletedInfoScreen();
+                                          }),
+                                        );
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                left: MediaQuery
+                                                    .of(context)
+                                                    .size
+                                                    .width *
+                                                    0.05),
+                                            child: Text(
+                                              "Complete ",
+                                              style: TextStyle(
+                                                fontFamily:
+                                                FontFamilies.POPPINS,
+                                                fontSize:
+                                                (MediaQuery
+                                                    .of(context)
+                                                    .size
+                                                    .width *
+                                                    0.008) +
+                                                    FontSize.BUTTON_FONT_L,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                right: MediaQuery
+                                                    .of(context)
+                                                    .size
+                                                    .width *
+                                                    0.025),
+                                            child: Icon(
+                                              Icons.arrow_forward,
+                                              color: Colors.white,
+                                              size: (MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width *
+                                                  0.008) +
+                                                  18,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  }
+                                } else {
+                                  return RaisedButton(
+                                    color: AppColors.MAIN_COLOR,
+                                    onPressed: () {
+                                      interviewBloc.sendInterviewData();
+                                      checkCaptainDataBloc.checkUserAuth();
+                                      checkCaptainDataBloc.checkCaptainData();
+                                      // _showDialog(context);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) {
+                                          return CompletedInfoScreen();
+                                        }),
+                                      );
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width *
+                                                  0.05),
+                                          child: Text(
+                                            "Complete ",
+                                            style: TextStyle(
+                                              fontFamily: FontFamilies.POPPINS,
+                                              fontSize: (MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width *
+                                                  0.008) +
+                                                  FontSize.BUTTON_FONT_L,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              right: MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width *
+                                                  0.025),
+                                          child: Icon(
+                                            Icons.arrow_forward,
+                                            color: Colors.white,
+                                            size: (MediaQuery
+                                                .of(context)
+                                                .size
+                                                .width *
+                                                0.008) +
+                                                18,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }
+                              },
+                            );
+                          } else {
                             return RaisedButton(
                               color: AppColors.LIGHT_GREY,
-
-                              onPressed: () {
-
-                              },
+                              onPressed: () {},
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Padding(
                                     padding: EdgeInsets.only(
-                                      left: MediaQuery.of(context).size.width *
+                                      left: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width *
                                           0.05,
                                     ),
                                     child: Text(
@@ -384,45 +494,6 @@ class InterviewScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-  Future<void> _showDialog(context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-
-        Future.delayed(Duration(seconds: 2), () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) {
-              return StreamBuilder(
-                stream: checkCaptainDataBloc.checkUser,
-                builder: (BuildContext context,
-                    AsyncSnapshot<LogInModel> snapshot) {
-                  if (snapshot.data.data.approvedAt != null) {
-                    return HomeScreen();
-                  } else if (snapshot.data.data.car.car.isEmpty ||
-                      snapshot.data.data.idCardBack == null ||
-                      snapshot.data.data.idCardFront == null ||
-                      snapshot.data.data.drivingCertificateFront ==
-                          null ||
-                      snapshot.data.data.drivingCertificateBack ==
-                          null
-                  ) {
-                    return InCompletedInfoScreen();
-                  } else {
-                    return CompletedInfoScreen();
-                  }
-                },
-              );
-            }),
-          );
-          Navigator.of(context).pop(true);
-
-        });
-        return LoadingDialogWidget();
-      },
     );
   }
 
@@ -504,8 +575,7 @@ class InterviewScreen extends StatelessWidget {
                                       "  Set Your Appointment Time",
                                       style: TextStyle(
                                         fontFamily: FontFamilies.POPPINS,
-                                        fontSize:
-                                        (MediaQuery
+                                        fontSize: (MediaQuery
                                             .of(context)
                                             .size
                                             .height *
@@ -521,7 +591,8 @@ class InterviewScreen extends StatelessWidget {
                                   children: [
                                     Container(
                                       height: 180,
-                                      width: MediaQuery
+                                      width:
+                                      MediaQuery
                                           .of(context)
                                           .size
                                           .height *
@@ -583,7 +654,8 @@ class InterviewScreen extends StatelessWidget {
                                       ),
                                     ),
                                     Container(
-                                      width: MediaQuery
+                                      width:
+                                      MediaQuery
                                           .of(context)
                                           .size
                                           .height *
@@ -596,12 +668,12 @@ class InterviewScreen extends StatelessWidget {
                                           // print(snap.data);
 
                                           if (snap.hasData) {
-                                            interviewBloc
-                                                .setMins(
+                                            interviewBloc.setMins(
                                                 snap.data.first.toString());
 
                                             return CupertinoPicker(
-                                              scrollController: scrollController2,
+                                              scrollController:
+                                              scrollController2,
                                               itemExtent: itemExtent,
                                               children: <Widget>[
                                                 for (var j = 0;
@@ -619,8 +691,7 @@ class InterviewScreen extends StatelessWidget {
                                                             fontFamily:
                                                             FontFamilies
                                                                 .POPPINS,
-                                                            fontSize:
-                                                            (MediaQuery
+                                                            fontSize: (MediaQuery
                                                                 .of(
                                                                 context)
                                                                 .size
@@ -632,11 +703,11 @@ class InterviewScreen extends StatelessWidget {
                                                         ),
                                                       ]),
                                               ],
-                                              onSelectedItemChanged: (
-                                                  int index) {
-                                                interviewBloc.setMins(
-                                                    snap.data[index]
-                                                        .toString());
+                                              onSelectedItemChanged:
+                                                  (int index) {
+                                                interviewBloc.setMins(snap
+                                                    .data[index]
+                                                    .toString());
                                               },
                                               looping: false,
                                               backgroundColor: Colors.white,
@@ -660,7 +731,8 @@ class InterviewScreen extends StatelessWidget {
                           "Cancel",
                           style: TextStyle(
                             fontFamily: FontFamilies.POPPINS,
-                            fontSize: (MediaQuery
+                            fontSize:
+                            (MediaQuery
                                 .of(context)
                                 .size
                                 .height * 0.02),
@@ -683,7 +755,8 @@ class InterviewScreen extends StatelessWidget {
                               (MediaQuery
                                   .of(context)
                                   .size
-                                  .height * 0.02) + 5,
+                                  .height * 0.02) +
+                                  5,
                               color: AppColors.MAIN_COLOR,
                               fontWeight: FontWeight.w700),
                         ),
@@ -696,8 +769,7 @@ class InterviewScreen extends StatelessWidget {
                     ),
                   ],
                 ));
-          }
-          else {
+          } else {
             // print(snapshot.data);
             return StreamBuilder(
               stream: interviewBloc.interviewDate,
@@ -712,8 +784,7 @@ class InterviewScreen extends StatelessWidget {
               },
             );
           }
-        }
-        else {
+        } else {
           return SpinKitCircle(
             color: AppColors.MAIN_COLOR,
           );

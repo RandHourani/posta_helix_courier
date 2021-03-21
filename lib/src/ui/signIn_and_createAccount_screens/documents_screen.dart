@@ -44,29 +44,29 @@ class DocumentsScreen extends StatelessWidget {
                   ),
                   child: Row(
                     children: <Widget>[
-                      Icon(
-                        Icons.arrow_back,
-                        color: AppColors.TITLE_TEXT_COLOR,
-                        size: (MediaQuery.of(context).size.width * 0.04) +
-                            FontSize.HEADING_FONT -
-                            3,
-                      ),
                       InkWell(
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: Text(
-                          "   UPLOAD  DOCUMENTS",
-                          style: TextStyle(
-                              color: AppColors.TITLE_TEXT_COLOR,
-                              fontFamily: FontFamilies.POPPINS,
-                              fontSize:
-                                  (MediaQuery.of(context).size.width * 0.04) +
-                                      FontSize.HEADING_FONT -
-                                      7,
-                              fontWeight: FontWeight.bold),
+                        child: Icon(
+                          Icons.arrow_back,
+                          color: AppColors.TITLE_TEXT_COLOR,
+                          size: (MediaQuery.of(context).size.width * 0.04) +
+                              FontSize.HEADING_FONT -
+                              3,
                         ),
-                      )
+                      ),
+                      Text(
+                        "   UPLOAD  DOCUMENTS",
+                        style: TextStyle(
+                            color: AppColors.TITLE_TEXT_COLOR,
+                            fontFamily: FontFamilies.POPPINS,
+                            fontSize:
+                                (MediaQuery.of(context).size.width * 0.04) +
+                                    FontSize.HEADING_FONT -
+                                    7,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ],
                   ),
                 ),
@@ -3985,60 +3985,60 @@ class DocumentsScreen extends StatelessWidget {
                                           child: Icon(
                                             Icons.arrow_forward,
                                             color: Colors.black,
-                                            size: (MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.008) +
+                                            size: (MediaQuery
+                                                .of(context)
+                                                .size
+                                                .width *
+                                                0.008) +
                                                 18,
                                           ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          } else {
-                            return RaisedButton(
-                              onPressed: () {},
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 20),
-                                    child: Text(
-                                      "Continue",
-                                      style: TextStyle(
-                                        fontFamily: FontFamilies.POPPINS,
-                                        fontSize:
-                                        (MediaQuery
-                                            .of(context)
-                                            .size
-                                            .width *
-                                            0.008) +
-                                            FontSize.BUTTON_FONT_L,
-                                        color: AppColors.LIGHT_GREY,
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 10),
-                                    child: Icon(
-                                      Icons.arrow_forward,
-                                      color: AppColors.LIGHT_GREY,
-                                      size: (MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width *
-                                          0.008) +
-                                          18,
+                                  );
+                                } else {
+                                  return RaisedButton(
+                                    onPressed: () {},
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 20),
+                                          child: Text(
+                                            "Continue",
+                                            style: TextStyle(
+                                              fontFamily: FontFamilies.POPPINS,
+                                              fontSize: (MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width *
+                                                  0.008) +
+                                                  FontSize.BUTTON_FONT_L,
+                                              color: AppColors.LIGHT_GREY,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 10),
+                                          child: Icon(
+                                            Icons.arrow_forward,
+                                            color: AppColors.LIGHT_GREY,
+                                            size: (MediaQuery
+                                                .of(context)
+                                                .size
+                                                .width *
+                                                0.008) +
+                                                18,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
-                        },
-                      ) :
-                      RaisedButton(
+                                  );
+                                }
+                              },
+                      )
+                          : RaisedButton(
                         onPressed: () {
                           documentsBloc.uploadDocumentImages();
                           if (captainPersonalData.data.car != null) {
@@ -4048,8 +4048,7 @@ class DocumentsScreen extends StatelessWidget {
                                 return CompletedInfoScreen();
                               }),
                             );
-                          }
-                          else {
+                          } else {
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) {

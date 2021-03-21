@@ -24,7 +24,7 @@ class TextFieldValidation {
   }
 
   checkEmailValidation(String email, screen) {
-    if (validator.email(email)) {
+    if (validator.email(email.trim())) {
       personalDetailsBloc.setEmailValidation(null);
     } else {
       personalDetailsBloc.setEmailValidation('Please enter a valid email');
@@ -128,7 +128,7 @@ class TextFieldValidation {
     } else {
       personalDetailsBloc.setDriverIssueDateValidation(
           "Driver license issue date must be before " +
-              Utils.dateFormat1(issueDate).toString());
+              Utils.dateFormat1(DateTime.now().toString()).toString());
     }
   }
 
@@ -143,7 +143,7 @@ class TextFieldValidation {
     } else {
       personalDetailsBloc.setDriverExpiredDateValidation(
           "Driver license expired date must be after " +
-              Utils.dateFormat1(expiredDate.toString()));
+              Utils.dateFormat1(DateTime.now().toString()));
     }
   }
 
@@ -160,6 +160,7 @@ class TextFieldValidation {
               Utils.dateFormat1(DateTime.now().toString()));
     }
   }
+
   checkNewCarRegistrationExpiredDateValidation(String date) {
     DateFormat format = DateFormat("yyyy-MM-dd");
 
@@ -170,7 +171,7 @@ class TextFieldValidation {
     } else {
       newVehicleBloc.setRegistrationExpireDateValidation(
           "Registration expired date must be after " +
-              Utils.dateFormat1(date.toString()));
+              Utils.dateFormat1(DateTime.now().toString()));
     }
   }
 }

@@ -41,41 +41,41 @@ class OtpScreen extends StatelessWidget {
               Container(
                 child: Column(
                   children: [
-                    Container(
-                      margin: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.width / 6,
-                        left: MediaQuery.of(context).size.width * 0.05,
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.arrow_back,
-                            color: AppColors.TITLE_TEXT_COLOR,
-                            size: (MediaQuery.of(context).size.width * 0.04) +
-                                FontSize.HEADING_FONT -
-                                5,
+                    InkWell(
+                        onTap: () {
+                          FlutterStatusbarcolor.setStatusBarColor(Colors.white);
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.width / 6,
+                            left: MediaQuery.of(context).size.width * 0.05,
                           ),
-                          InkWell(
-                            onTap: () {
-                              FlutterStatusbarcolor.setStatusBarColor(
-                                  Colors.white);
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              " BACK",
-                              style: TextStyle(
-                                  color: AppColors.TITLE_TEXT_COLOR,
-                                  fontFamily: FontFamilies.POPPINS,
-                                  fontSize: (MediaQuery.of(context).size.width *
-                                          0.04) +
-                                      FontSize.HEADING_FONT -
-                                      7,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.arrow_back,
+                                color: AppColors.TITLE_TEXT_COLOR,
+                                size:
+                                    (MediaQuery.of(context).size.width * 0.04) +
+                                        FontSize.HEADING_FONT -
+                                        5,
+                              ),
+                              Text(
+                                " BACK",
+                                style: TextStyle(
+                                    color: AppColors.TITLE_TEXT_COLOR,
+                                    fontFamily: FontFamilies.POPPINS,
+                                    fontSize:
+                                        (MediaQuery.of(context).size.width *
+                                                0.04) +
+                                            FontSize.HEADING_FONT -
+                                            7,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        )),
                     Container(
                       margin: EdgeInsets.only(
                           left: MediaQuery.of(context).size.width * 0.05,
