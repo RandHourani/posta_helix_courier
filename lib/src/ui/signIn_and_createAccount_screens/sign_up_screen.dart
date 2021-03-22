@@ -11,6 +11,7 @@ import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/sign_up_b
 import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/personal_details_bloc.dart';
 import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/documents_bloc.dart';
 import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/interview_bloc.dart';
+import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/otp_signIn_bloc.dart';
 import 'package:posta_courier/src/constants/fonts_size.dart';
 import 'package:posta_courier/src/ui/signIn_and_createAccount_screens/welcome_screen.dart';
 import 'package:posta_courier/src/ui/widgets/country_code.dart';
@@ -248,6 +249,8 @@ class SignUpScreen extends StatelessWidget {
                                                 if (snap.data == true) {
                                                   phoneBloc.getActivationCode();
                                                   vehicleBloc.resetData();
+                                                  interviewBloc
+                                                      .setScheduled(null);
                                                   personalDetailsBloc
                                                       .resetData();
                                                   documentsBloc
@@ -480,6 +483,9 @@ class SignUpScreen extends StatelessWidget {
         Future.delayed(Duration(seconds: 3), () {
           if (phoneBloc.userValidationII() == "success") {
             Navigator.pop(context);
+            otpBloc.setPhone(phoneBloc.getPhoneNumber());
+            otpBloc.resetCode();
+
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) {

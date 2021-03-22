@@ -133,13 +133,13 @@ class VehicleBloc {
     print(_carBrandId.value);
 
     CarDataModel carModels =
-    await _repository.requestCarModels(_carBrandId.value);
+        await _repository.requestCarModels(_carBrandId.value);
     _carBrandModels.sink.add(carModels);
     _carModelSelected.add(_carBrandModels
         .value
         .carData
         .data[_carBrandModels.value.carData.data
-        .indexWhere((element) => element.id == id)]
+            .indexWhere((element) => element.id == id)]
         .name);
   }
 
@@ -367,6 +367,7 @@ class VehicleBloc {
   }
 
   resetData() {
+    _plateNumber.add(null);
     _registrationExpireDate.add(null);
     _carColorSelected.add(null);
     _manufacturingYearSelected.add(null);

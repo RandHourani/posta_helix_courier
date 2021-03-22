@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:posta_courier/models/activation_code_model.dart';
 import 'package:posta_courier/models/registered_captain_model.dart';
 import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/get_captain_data_bloc.dart';
 import 'package:posta_courier/src/constants/fonts_size.dart';
@@ -17,6 +18,7 @@ import 'package:posta_courier/src/utils/display_size_screen.dart';
 import 'completed_info_screen.dart';
 import 'incompleted_info_screen.dart';
 import 'new_pass_screen.dart';
+import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/personal_details_bloc.dart';
 
 class OtpScreen extends StatelessWidget {
   final screen;
@@ -29,7 +31,6 @@ class OtpScreen extends StatelessWidget {
     FlutterStatusbarcolor.setStatusBarColor(Colors.white);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     print(MediaQuery.of(context).size.width);
-    otpBloc.resetCode();
     phoneBloc.internetChecked();
 
     return Scaffold(
@@ -1108,59 +1109,128 @@ class OtpScreen extends StatelessWidget {
                               stream: otpBloc.sixthDigit,
                               builder: (context, snap) {
                                 if (snap.hasData) {
-                                  return RaisedButton(
-                                    onPressed: () {
-                                      otpBloc.getVerify(phoneNumber);
+                                  return StreamBuilder(
+                                    stream: otpBloc.verify,
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<ActivationCodeModel>
+                                            snapshot) {
+                                      if (snapshot.hasData) {
+                                        return RaisedButton(
+                                          onPressed: () {
+                                            FlutterStatusbarcolor
+                                                .setStatusBarColor(
+                                                    AppColors.dialogStatusBar);
+                                            _showMyDialog(context);
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: MediaQuery.of(context)
+                                                            .size
+                                                            .width *
+                                                        0.04),
+                                                child: Text(
+                                                  "Continue",
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        FontFamilies.POPPINS,
+                                                    fontSize:
+                                                        (MediaQuery.of(context)
+                                                                    .size
+                                                                    .width *
+                                                                0.008) +
+                                                            FontSize
+                                                                .BUTTON_FONT_L,
+                                                    color: AppColors
+                                                        .TITLE_TEXT_COLOR,
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    right:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.04),
+                                                child: Icon(
+                                                  Icons.arrow_forward,
+                                                  color: AppColors
+                                                      .TITLE_TEXT_COLOR,
+                                                  size: (MediaQuery.of(context)
+                                                              .size
+                                                              .width *
+                                                          0.008) +
+                                                      18,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      } else {
+                                        return RaisedButton(
+                                          onPressed: () {
+                                            otpBloc.getVerify(phoneNumber);
 
-                                      FlutterStatusbarcolor.setStatusBarColor(
-                                          AppColors.dialogStatusBar);
-                                      _showMyDialog(context);
+                                            FlutterStatusbarcolor
+                                                .setStatusBarColor(
+                                                    AppColors.dialogStatusBar);
+                                            personalDetailsBloc.setGenderMale();
+                                            _showMyDialog(context);
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: MediaQuery.of(context)
+                                                            .size
+                                                            .width *
+                                                        0.04),
+                                                child: Text(
+                                                  "Continue",
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        FontFamilies.POPPINS,
+                                                    fontSize:
+                                                        (MediaQuery.of(context)
+                                                                    .size
+                                                                    .width *
+                                                                0.008) +
+                                                            FontSize
+                                                                .BUTTON_FONT_L,
+                                                    color: AppColors
+                                                        .TITLE_TEXT_COLOR,
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    right:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.04),
+                                                child: Icon(
+                                                  Icons.arrow_forward,
+                                                  color: AppColors
+                                                      .TITLE_TEXT_COLOR,
+                                                  size: (MediaQuery.of(context)
+                                                              .size
+                                                              .width *
+                                                          0.008) +
+                                                      18,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }
                                     },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              left: MediaQuery
-                                                  .of(context)
-                                                  .size
-                                                  .width *
-                                                  0.04),
-                                          child: Text(
-                                            "Continue",
-                                            style: TextStyle(
-                                              fontFamily: FontFamilies.POPPINS,
-                                              fontSize: (MediaQuery
-                                                  .of(context)
-                                                  .size
-                                                  .width *
-                                                  0.008) +
-                                                  FontSize.BUTTON_FONT_L,
-                                              color: AppColors.TITLE_TEXT_COLOR,
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              right: MediaQuery
-                                                  .of(context)
-                                                  .size
-                                                  .width *
-                                                  0.04),
-                                          child: Icon(
-                                            Icons.arrow_forward,
-                                            color: AppColors.TITLE_TEXT_COLOR,
-                                            size: (MediaQuery
-                                                .of(context)
-                                                .size
-                                                .width *
-                                                0.008) +
-                                                18,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
                                   );
                                 } else {
                                   return RaisedButton(
@@ -1251,10 +1321,21 @@ class OtpScreen extends StatelessWidget {
               case "SIGN_UP":
                 {
                   Navigator.of(context).pop();
+                  print(personalDetailsBloc.getFirstName());
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) {
-                      return PersonalDetailsScreen();
+                      return PersonalDetailsScreen(
+                        firstName: personalDetailsBloc.getFirstName() != null
+                            ? personalDetailsBloc.getFirstName().toString()
+                            : null,
+                        lastName: personalDetailsBloc.getLastName() != null
+                            ? personalDetailsBloc.getLastName().toString()
+                            : null,
+                        email: personalDetailsBloc.getEmail() != null
+                            ? personalDetailsBloc.getEmail().toString()
+                            : null,
+                      );
                     }),
                   );
                 }

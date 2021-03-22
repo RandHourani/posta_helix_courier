@@ -9,7 +9,6 @@ import 'package:posta_courier/src/constants/fonts_size.dart';
 import 'package:posta_courier/src/ui/signIn_and_createAccount_screens/signIn_screen.dart';
 import 'package:posta_courier/src/ui/widgets/dialog_loading.dart';
 import 'package:posta_courier/validation/text_field_validation.dart';
-import 'otp_forgot_pass_screen.dart';
 
 class NewPassScreen extends StatelessWidget {
   var passNode = FocusNode();

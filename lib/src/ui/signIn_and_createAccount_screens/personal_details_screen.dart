@@ -17,13 +17,20 @@ import 'package:posta_courier/validation/text_field_validation.dart';
 import 'package:posta_courier/src/ui/widgets/dialog_loading.dart';
 import 'package:posta_courier/db/providers/nationalities_provider.dart';
 import 'package:posta_courier/src/ui/signIn_and_createAccount_screens/completed_info_screen.dart';
+import 'package:posta_courier/src/ui/signIn_and_createAccount_screens/completed_info_screen.dart';
 import 'package:posta_courier/src/ui/signIn_and_createAccount_screens/incompleted_info_screen.dart';
 
 class PersonalDetailsScreen extends StatelessWidget {
   String screen;
+  String firstName, lastName, email;
   CaptainData captainPersonalData;
 
-  PersonalDetailsScreen({this.screen, this.captainPersonalData});
+  PersonalDetailsScreen(
+      {this.screen,
+      this.captainPersonalData,
+      this.firstName,
+      this.lastName,
+      this.email});
 
   FocusNode firstNameNode = new FocusNode();
   FocusNode lastNameNode = new FocusNode();
@@ -36,7 +43,6 @@ class PersonalDetailsScreen extends StatelessWidget {
     FlutterStatusbarcolor.setStatusBarColor(Colors.white);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     personalDetailsBloc.setInitDate(DateTime.now());
-    captainPersonalData == null ? personalDetailsBloc.setGenderMale() : null;
     personalDetailsBloc.fetchAllNationality();
     // vehicleBloc.fetchAllCarBrand();
     personalDetailsBloc.setCalendarColor(false);
@@ -767,7 +773,7 @@ class PersonalDetailsScreen extends StatelessWidget {
                                         //         .getPassword()
                                         //         .toString(),
                                         //     personalDetailsBloc
-                                        //         .getConfirmPassword()
+                                        //         .Password()
                                         //         .toString());
                                         TextFieldValidation()
                                             .checkDriverLicenseIssueDateValidation(
@@ -781,11 +787,22 @@ class PersonalDetailsScreen extends StatelessWidget {
                                         if (personalDetailsBloc
                                             .checkEditPersonalDetailsValidation()) {
                                           personalDetailsBloc.editAccount();
-                                          Navigator.push(
+                                          captainPersonalData == null
+                                              ? Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) {
-                                                  return VehicleDetailsScreen();
+                                                  return VehicleDetailsScreen(
+                                                    plateCode: vehicleBloc
+                                                        .getPlateNumber(),
+                                                  );
+                                                }),
+                                          )
+                                              : Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                                  return CompletedInfoScreen();
                                                 }),
                                           );
                                         } else {}
@@ -1368,11 +1385,16 @@ class PersonalDetailsScreen extends StatelessWidget {
             child: TextFormField(
               style: TextStyle(
                 fontFamily: FontFamilies.POPPINS,
-                fontSize: (MediaQuery.of(context).size.height * 0.02),
+                fontSize: (MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.02),
               ),
               initialValue: captainPersonalData != null
                   ? captainPersonalData.data.firstName
-                  : null,
+                  : firstName != null
+                  ? firstName
+                  : "",
               focusNode: firstNameNode,
               cursorColor: AppColors.MAIN_COLOR,
               keyboardType: TextInputType.text,
@@ -1404,11 +1426,16 @@ class PersonalDetailsScreen extends StatelessWidget {
             child: TextFormField(
               style: TextStyle(
                 fontFamily: FontFamilies.POPPINS,
-                fontSize: (MediaQuery.of(context).size.height * 0.02),
+                fontSize: (MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.02),
               ),
               initialValue: captainPersonalData != null
                   ? captainPersonalData.data.lastName
-                  : null,
+                  : lastName != null
+                  ? lastName
+                  : "",
               focusNode: lastNameNode,
               cursorColor: AppColors.MAIN_COLOR,
               keyboardType: TextInputType.text,
@@ -1443,11 +1470,16 @@ class PersonalDetailsScreen extends StatelessWidget {
                   TextFormField(
                     style: TextStyle(
                       fontFamily: FontFamilies.POPPINS,
-                      fontSize: (MediaQuery.of(context).size.height * 0.02),
+                      fontSize: (MediaQuery
+                          .of(context)
+                          .size
+                          .height * 0.02),
                     ),
                     initialValue: captainPersonalData != null
                         ? captainPersonalData.data.email
-                        : null,
+                        : email != null
+                        ? email
+                        : "",
                     focusNode: emailNode,
                     cursorColor: AppColors.MAIN_COLOR,
                     keyboardType: TextInputType.text,
@@ -1486,7 +1518,7 @@ class PersonalDetailsScreen extends StatelessWidget {
                                   fontSize: 10),
                             )
                           ],
-                        ));
+                            ));
                       } else {
                         return Container();
                       }
@@ -1510,308 +1542,311 @@ class PersonalDetailsScreen extends StatelessWidget {
                 return StreamBuilder(
                   stream: personalDetailsBloc.isEmailValid,
                   builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Container(
-                          margin: EdgeInsets.only(top: 3),
-                          child: TextField(
-                            style: TextStyle(
-                              fontFamily: FontFamilies.POPPINS,
-                              fontSize:
-                              (MediaQuery
-                                  .of(context)
-                                  .size
-                                  .height * 0.02),
-                            ),
-                            enabled: personalDetailsBloc.getMessage() == null
-                                ? true
-                                : false,
-                            focusNode: passNode,
-                            cursorColor: AppColors.MAIN_COLOR,
-                            keyboardType: TextInputType.text,
-                            decoration: new InputDecoration(
-                                contentPadding: EdgeInsets.all(0),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: AppColors.LIGHT_BLUE),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: AppColors.MAIN_COLOR),
-                                ),
-                                labelText: 'New Password',
-                                labelStyle: TextStyle(
-                                    color: AppColors.labelColor,
-                                    fontFamily: 'Poppins'),
-                                suffix: InkWell(
-                                  child: snap.hasData
-                                      ? snap.data
-                                          ? Image.asset(
-                                              "assets/images/hidden_pass.png",
-                                              width: 15,
-                                              height: 15,
-                                            )
-                                          : Image.asset(
-                                              "assets/images/show_pass.png",
-                                              width: 15,
-                                              height: 15,
-                                            )
-                                      : Image.asset(
-                                          "assets/images/hidden_pass.png",
-                                          width: 15,
-                                          height: 15,
-                                        ),
-                                  onTap: () {
-                                    snap.hasData
-                                        ? personalDetailsBloc
-                                            .setPasswordVisibility(!snap.data)
-                                        : personalDetailsBloc
-                                            .setPasswordVisibility(false);
-                                  },
-                                )),
-                            obscureText: snap.hasData ? snap.data : true,
-                            onChanged: (personalDetailsBloc.changePassword),
+                    if (snapshot.hasData) {
+                      return Container(
+                        margin: EdgeInsets.only(top: 3),
+                        child: TextField(
+                          style: TextStyle(
+                            fontFamily: FontFamilies.POPPINS,
+                            fontSize:
+                            (MediaQuery
+                                .of(context)
+                                .size
+                                .height * 0.02),
                           ),
-                        );
-                      } else {
-                        return StreamBuilder(
-                          stream: personalDetailsBloc.message,
-                          builder: (BuildContext context,
-                              AsyncSnapshot<String> snapshot) {
-                            print(snapshot.data);
-                            if (snapshot.hasData &&
-                                snapshot.data == "success") {
-                              return Container(
-                                width: 520,
-                                height: 50,
-                                margin: EdgeInsets.only(
-                                    top: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .height *
-                                        0.018),
-                                child: Stack(
-
-                                  children: [
-                                    Container(
-                                      // margin: EdgeInsets.only(top: 5, bottom: 10),
-                                        width:
-                                        MediaQuery
-                                            .of(context)
-                                            .size
-                                            .width,
-                                        child: StreamBuilder(
-                                          stream: personalDetailsBloc.password,
-                                          builder: (BuildContext context,
-                                              AsyncSnapshot<String> snapshot) {
-                                            _controller.text = snapshot.data;
-                                            return TextFormField(
-                                              controller: _controller,
-                                              style: TextStyle(
-                                                fontFamily: FontFamilies
-                                                    .POPPINS,
-                                                fontSize: (MediaQuery
-                                                    .of(context)
-                                                    .size
-                                                    .height *
-                                                    0.02),
-                                              ),
-                                              enabled: false,
-                                              focusNode: passNode,
-                                              cursorColor: AppColors.MAIN_COLOR,
-                                              keyboardType: TextInputType.text,
-                                              decoration: new InputDecoration(
-
-                                                contentPadding: EdgeInsets.all(
-                                                    0),
-                                                enabledBorder: UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: AppColors
-                                                          .LIGHT_BLUE),
-                                                ),
-                                                focusedBorder: UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: AppColors
-                                                          .MAIN_COLOR),
-                                                ),
-
-                                                labelText: 'New Password',
-                                                labelStyle: TextStyle(
-                                                    color: AppColors.labelColor,
-                                                    fontFamily: 'Poppins'),
-                                                // suffix: InkWell(
-                                                //   child: snap.hasData
-                                                //       ? snap.data
-                                                //       ? Image.asset(
-                                                //     "assets/images/hidden_pass.png",
-                                                //     width: 15,
-                                                //     height: 15,
-                                                //   )
-                                                //       : Image.asset(
-                                                //     "assets/images/show_pass.png",
-                                                //     width: 15,
-                                                //     height: 15,
-                                                //   )
-                                                //       : Image.asset(
-                                                //     "assets/images/hidden_pass.png",
-                                                //     width: 15,
-                                                //     height: 15,
-                                                //   ),
-                                                //   onTap: () {
-                                                //     snap.hasData
-                                                //         ? personalDetailsBloc
-                                                //         .setPasswordVisibility(!snap.data)
-                                                //         : personalDetailsBloc
-                                                //         .setPasswordVisibility(false);
-                                                //   },
-                                                // )
-                                              ),
-                                              obscureText:
-                                              snap.hasData ? snap.data : true,
-                                            );
-                                          },
-                                        )),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: InkWell(
-                                        child: snap.hasData
-                                            ? snap.data
-                                            ? Image.asset(
-                                          "assets/images/hidden_pass.png",
-                                          width: 15,
-                                          height: 15,
-                                        )
-                                            : Image.asset(
-                                          "assets/images/show_pass.png",
-                                          width: 15,
-                                          height: 15,
-                                        )
-                                            : Image.asset(
-                                          "assets/images/hidden_pass.png",
-                                          width: 15,
-                                          height: 15,
-                                        ),
-                                        onTap: () {
-                                          snap.hasData
-                                              ? personalDetailsBloc
-                                              .setPasswordVisibility(
-                                              !snap.data)
-                                              : personalDetailsBloc
-                                              .setPasswordVisibility(false);
-                                        },
-                                      ),
-                                    ),
-
-                                  ],
+                          enabled: personalDetailsBloc.getMessage() == null
+                              ? true
+                              : false,
+                          focusNode: passNode,
+                          cursorColor: AppColors.MAIN_COLOR,
+                          keyboardType: TextInputType.text,
+                          decoration: new InputDecoration(
+                              contentPadding: EdgeInsets.all(0),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide:
+                                BorderSide(color: AppColors.LIGHT_BLUE),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                BorderSide(color: AppColors.MAIN_COLOR),
+                              ),
+                              labelText: 'New Password',
+                              labelStyle: TextStyle(
+                                  color: AppColors.labelColor,
+                                  fontFamily: 'Poppins'),
+                              suffix: InkWell(
+                                child: snap.hasData
+                                    ? snap.data
+                                    ? Image.asset(
+                                  "assets/images/hidden_pass.png",
+                                  width: 15,
+                                  height: 15,
+                                )
+                                    : Image.asset(
+                                  "assets/images/show_pass.png",
+                                  width: 15,
+                                  height: 15,
+                                )
+                                    : Image.asset(
+                                  "assets/images/hidden_pass.png",
+                                  width: 15,
+                                  height: 15,
                                 ),
-                              );
-                            } else {
-                              return Container(
-                                margin: EdgeInsets.only(
-                                    top: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .height *
-                                        0.018),
-                                child: TextField(
-                                  style: TextStyle(
-                                    fontFamily: FontFamilies.POPPINS,
-                                    fontSize:
-                                    (MediaQuery
-                                        .of(context)
-                                        .size
-                                        .height *
-                                        0.02),
-                                  ),
-                                  focusNode: passNode,
-                                  cursorColor: AppColors.MAIN_COLOR,
-                                  keyboardType: TextInputType.text,
-                                  decoration: new InputDecoration(
-                                      contentPadding: EdgeInsets.all(0),
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: AppColors.LIGHT_BLUE),
-                                      ),
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: AppColors.MAIN_COLOR),
-                                      ),
-                                      labelText: 'New Password',
-                                      labelStyle: TextStyle(
-                                          color: AppColors.labelColor,
-                                          fontFamily: 'Poppins'),
-                                      suffix: InkWell(
-                                        child: snap.hasData
-                                            ? snap.data
-                                            ? Image.asset(
-                                          "assets/images/hidden_pass.png",
-                                          width: 15,
-                                          height: 15,
-                                        )
-                                            : Image.asset(
-                                          "assets/images/show_pass.png",
-                                          width: 15,
-                                          height: 15,
-                                        )
-                                            : Image.asset(
-                                          "assets/images/hidden_pass.png",
-                                          width: 15,
-                                          height: 15,
-                                        ),
-                                        onTap: () {
-                                          snap.hasData
-                                              ? personalDetailsBloc
-                                              .setPasswordVisibility(
-                                              !snap.data)
-                                              : personalDetailsBloc
-                                              .setPasswordVisibility(false);
+                                onTap: () {
+                                  snap.hasData
+                                      ? personalDetailsBloc
+                                      .setPasswordVisibility(!snap.data)
+                                      : personalDetailsBloc
+                                      .setPasswordVisibility(false);
+                                },
+                              )),
+                          obscureText: snap.hasData ? snap.data : true,
+                          onChanged: (personalDetailsBloc.changePassword),
+                        ),
+                      );
+                    } else {
+                      return StreamBuilder(
+                        stream: personalDetailsBloc.message,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<String> snapshot) {
+                          print(snapshot.data);
+                          if (snapshot.hasData && snapshot.data == "success") {
+                            return Container(
+                              width: 520,
+                              height: 50,
+                              margin: EdgeInsets.only(
+                                  top: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height *
+                                      0.018),
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    // margin: EdgeInsets.only(top: 5, bottom: 10),
+                                      width: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width,
+                                      child: StreamBuilder(
+                                        stream: personalDetailsBloc.password,
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<String> snapshot) {
+                                          _controller.text = snapshot.data;
+                                          return TextFormField(
+                                            controller: _controller,
+                                            style: TextStyle(
+                                              fontFamily: FontFamilies.POPPINS,
+                                              fontSize: (MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .height *
+                                                  0.02),
+                                            ),
+                                            enabled: false,
+                                            focusNode: passNode,
+                                            cursorColor: AppColors.MAIN_COLOR,
+                                            keyboardType: TextInputType.text,
+                                            decoration: new InputDecoration(
+                                              contentPadding: EdgeInsets.all(0),
+                                              enabledBorder:
+                                              UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color:
+                                                    AppColors.LIGHT_BLUE),
+                                              ),
+                                              focusedBorder:
+                                              UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color:
+                                                    AppColors.MAIN_COLOR),
+                                              ),
+
+                                              labelText: 'New Password',
+                                              labelStyle: TextStyle(
+                                                  color: AppColors.labelColor,
+                                                  fontFamily: 'Poppins'),
+                                              // suffix: InkWell(
+                                              //   child: snap.hasData
+                                              //       ? snap.data
+                                              //       ? Image.asset(
+                                              //     "assets/images/hidden_pass.png",
+                                              //     width: 15,
+                                              //     height: 15,
+                                              //   )
+                                              //       : Image.asset(
+                                              //     "assets/images/show_pass.png",
+                                              //     width: 15,
+                                              //     height: 15,
+                                              //   )
+                                              //       : Image.asset(
+                                              //     "assets/images/hidden_pass.png",
+                                              //     width: 15,
+                                              //     height: 15,
+                                              //   ),
+                                              //   onTap: () {
+                                              //     snap.hasData
+                                              //         ? personalDetailsBloc
+                                              //         .setPasswordVisibility(!snap.data)
+                                              //         : personalDetailsBloc
+                                              //         .setPasswordVisibility(false);
+                                              //   },
+                                              // )
+                                            ),
+                                            obscureText:
+                                            snap.hasData ? snap.data : true,
+                                          );
                                         },
                                       )),
-                                  obscureText: snap.hasData ? snap.data : true,
-                                  onChanged:
-                                  (personalDetailsBloc.changePassword),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: InkWell(
+                                      child: snap.hasData
+                                          ? snap.data
+                                          ? Image.asset(
+                                        "assets/images/hidden_pass.png",
+                                        width: 15,
+                                        height: 15,
+                                      )
+                                          : Image.asset(
+                                        "assets/images/show_pass.png",
+                                        width: 15,
+                                        height: 15,
+                                      )
+                                          : Image.asset(
+                                        "assets/images/hidden_pass.png",
+                                        width: 15,
+                                        height: 15,
+                                      ),
+                                      onTap: () {
+                                        snap.hasData
+                                            ? personalDetailsBloc
+                                            .setPasswordVisibility(
+                                            !snap.data)
+                                            : personalDetailsBloc
+                                            .setPasswordVisibility(false);
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          } else {
+                            return Container(
+                              margin: EdgeInsets.only(
+                                  top: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height *
+                                      0.018),
+                              child: TextField(
+                                style: TextStyle(
+                                  fontFamily: FontFamilies.POPPINS,
+                                  fontSize:
+                                  (MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height *
+                                      0.02),
                                 ),
-                              );
-                            }
-                          },
-                        );
-                      }
-                    },
-                  );
-                },
-              ),
-              StreamBuilder(
-                stream: personalDetailsBloc.isPassValid,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.width * 0.01),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Image.asset(
-                              "assets/images/error_icon.png",
-                              width: 10,
-                              height: 10,
-                            ),
-                            Container(
-                                width: MediaQuery.of(context).size.width - 60,
-                                padding: EdgeInsets.only(left: 8),
-                                child: Text(
-                                  "  " + snapshot.data,
-                                  style: TextStyle(
-                                      color: AppColors.ERROR,
-                                      fontFamily: 'Poppins',
-                                      fontSize: 10),
-                                )),
-                          ],
-                        ));
-                  } else {
-                    return Container();
-                  }
-                },
-              ),
+                                focusNode: passNode,
+                                cursorColor: AppColors.MAIN_COLOR,
+                                keyboardType: TextInputType.text,
+                                decoration: new InputDecoration(
+                                    contentPadding: EdgeInsets.all(0),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.LIGHT_BLUE),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.MAIN_COLOR),
+                                    ),
+                                    labelText: 'New Password',
+                                    labelStyle: TextStyle(
+                                        color: AppColors.labelColor,
+                                        fontFamily: 'Poppins'),
+                                    suffix: InkWell(
+                                      child: snap.hasData
+                                          ? snap.data
+                                          ? Image.asset(
+                                        "assets/images/hidden_pass.png",
+                                        width: 15,
+                                        height: 15,
+                                      )
+                                          : Image.asset(
+                                        "assets/images/show_pass.png",
+                                        width: 15,
+                                        height: 15,
+                                      )
+                                          : Image.asset(
+                                        "assets/images/hidden_pass.png",
+                                        width: 15,
+                                        height: 15,
+                                      ),
+                                      onTap: () {
+                                        snap.hasData
+                                            ? personalDetailsBloc
+                                            .setPasswordVisibility(
+                                            !snap.data)
+                                            : personalDetailsBloc
+                                            .setPasswordVisibility(false);
+                                      },
+                                    )),
+                                obscureText: snap.hasData ? snap.data : true,
+                                onChanged: (personalDetailsBloc.changePassword),
+                              ),
+                            );
+                          }
+                        },
+                      );
+                    }
+                  },
+                );
+              },
+            ),
+            StreamBuilder(
+              stream: personalDetailsBloc.isPassValid,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Container(
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width,
+                      padding: EdgeInsets.only(
+                          top: MediaQuery
+                              .of(context)
+                              .size
+                              .width * 0.01),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Image.asset(
+                            "assets/images/error_icon.png",
+                            width: 10,
+                            height: 10,
+                          ),
+                          Container(
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width - 60,
+                              padding: EdgeInsets.only(left: 8),
+                              child: Text(
+                                "  " + snapshot.data,
+                                style: TextStyle(
+                                    color: AppColors.ERROR,
+                                    fontFamily: 'Poppins',
+                                    fontSize: 10),
+                              )),
+                        ],
+                      ));
+                } else {
+                  return Container();
+                }
+              },
+            ),
           ],
         );
       },
@@ -1884,7 +1919,8 @@ class PersonalDetailsScreen extends StatelessWidget {
                                 onTap: () {
                                   snap.hasData
                                       ? personalDetailsBloc
-                                      .setConfirmPasswordVisibility(!snap.data)
+                                      .setConfirmPasswordVisibility(
+                                      !snap.data)
                                       : personalDetailsBloc
                                       .setConfirmPasswordVisibility(false);
                                 },
@@ -1910,12 +1946,10 @@ class PersonalDetailsScreen extends StatelessWidget {
                                       .height *
                                       0.018),
                               child: Stack(
-
                                 children: [
                                   Container(
                                     // margin: EdgeInsets.only(top: 5, bottom: 10),
-                                      width:
-                                      MediaQuery
+                                      width: MediaQuery
                                           .of(context)
                                           .size
                                           .width,
@@ -1939,17 +1973,18 @@ class PersonalDetailsScreen extends StatelessWidget {
                                             cursorColor: AppColors.MAIN_COLOR,
                                             keyboardType: TextInputType.text,
                                             decoration: new InputDecoration(
-
                                               contentPadding: EdgeInsets.all(0),
-                                              enabledBorder: UnderlineInputBorder(
+                                              enabledBorder:
+                                              UnderlineInputBorder(
                                                 borderSide: BorderSide(
-                                                    color: AppColors
-                                                        .LIGHT_BLUE),
+                                                    color:
+                                                    AppColors.LIGHT_BLUE),
                                               ),
-                                              focusedBorder: UnderlineInputBorder(
+                                              focusedBorder:
+                                              UnderlineInputBorder(
                                                 borderSide: BorderSide(
-                                                    color: AppColors
-                                                        .MAIN_COLOR),
+                                                    color:
+                                                    AppColors.MAIN_COLOR),
                                               ),
 
                                               labelText: 'Confirm Password',
@@ -2019,7 +2054,6 @@ class PersonalDetailsScreen extends StatelessWidget {
                                       },
                                     ),
                                   ),
-
                                 ],
                               ),
                             );

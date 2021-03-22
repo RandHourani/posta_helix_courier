@@ -5,6 +5,7 @@ import 'package:posta_courier/src/reasources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class OtpSignInBloc {
+  final _phoneNumber = BehaviorSubject<String>();
   final _firstDigit = BehaviorSubject<String>();
   final _secondDigit = BehaviorSubject<String>();
   final _thirdDigit = BehaviorSubject<String>();
@@ -37,6 +38,10 @@ class OtpSignInBloc {
 
   setValidation(bool val) {
     _codeValidation.add(val);
+  }
+
+  setPhone(String val) {
+    _phoneNumber.add(val);
   }
 
   add(String value) {
@@ -93,8 +98,7 @@ class OtpSignInBloc {
       "provider": "captains"
     });
     _verify.sink.add(response);
-    print("_verify.value.message");
-    print(_verify.value.message);
+
     if (_verify.value.message == "success") {
       _validation.add(true);
       _codeValidation.add(true);
@@ -105,17 +109,16 @@ class OtpSignInBloc {
       _validation.add(false);
       _codeValidation.add(false);
     }
-
-
   }
-  getSignUpCode()
-  {return _signUpCode.value;}
 
-
-
+  getSignUpCode() {
+    return _signUpCode.value;
+  }
 
   checkCodeValidation() {
-    return _validation.value;
+    return _validation.value == null
+        ? getVerify(_phoneNumber.value)
+        : _validation.value;
   }
 
   void dispose() {

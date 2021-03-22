@@ -60,7 +60,7 @@ class PersonalDetailsBloc {
   Function(String) get changeConfirmPass => _confirmPassword.sink.add;
 
   Function(String) get changeEmail {
-    _invalidEmailError.add(null);
+    // _invalidEmailError.add(null);
     return _email.sink.add;
   }
 
@@ -418,9 +418,18 @@ class PersonalDetailsBloc {
   }
 
   resetData() {
+    _firstNameController.add(null);
+    _lastNameController.add(null);
+    _email.add(null);
     _birthdayController.add(null);
     _driverLicenseIssueDate.add(null);
     _driverLicenseExpiredOn.add(null);
+    _password.add(null);
+    _message.add(null);
+    _confirmPassword.add(null);
+    _captainRegistered.add(null);
+    _selectedNationality.add(null);
+    setGenderMale();
   }
 
   void dispose() {

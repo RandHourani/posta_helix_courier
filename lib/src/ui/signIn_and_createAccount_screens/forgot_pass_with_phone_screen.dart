@@ -10,8 +10,7 @@ import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/signIn_bl
 import 'package:posta_courier/src/constants/application_colors_value.dart';
 import 'package:posta_courier/src/constants/fonts_size.dart';
 import 'package:posta_courier/src/ui/signIn_and_createAccount_screens/otp_screen.dart';
-import 'otp_forgot_pass_screen.dart';
-import 'package:posta_courier/src/ui/widgets/country_code_dialog.dart';
+import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/otp_signIn_bloc.dart';
 import 'package:posta_courier/src/ui/widgets/country_code.dart';
 import 'package:country_codes/country_codes.dart';
 import 'package:posta_courier/src/ui/widgets/dialog_loading.dart';
@@ -254,6 +253,8 @@ class ForgotPassWithPhone extends StatelessWidget {
         FlutterStatusbarcolor.setStatusBarColor(AppColors.dialogStatusBar);
         Future.delayed(Duration(seconds: 3), () {
           if (forgotPassBloc.getMessage() == "success") {
+            otpBloc.resetCode();
+            Navigator.pop(context);
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) {

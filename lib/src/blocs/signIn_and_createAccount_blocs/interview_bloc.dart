@@ -29,7 +29,7 @@ class InterviewBloc {
   Observable<bool> get scheduleInterview => _scheduleInterview.stream;
 
   Stream<bool> get submitValid => Observable.combineLatest2(
-      selectedTime, interviewDate, (selectedTime, interviewDate) => true);
+      selectedTime, _interviewHours, (selectedTime, interviewHours) => true);
 
   addInterviewDate(String date) {
     _interviewDate.add(date);

@@ -24,8 +24,9 @@ import 'package:posta_courier/db/providers/colors_provider.dart';
 
 class VehicleDetailsScreen extends StatelessWidget {
   CaptainData captainPersonalData;
+  String plateCode;
 
-  VehicleDetailsScreen({this.captainPersonalData});
+  VehicleDetailsScreen({this.captainPersonalData, this.plateCode});
 
   FocusNode plateNumberNode = new FocusNode();
   FocusNode brandsNode = new FocusNode();
@@ -1050,24 +1051,32 @@ class VehicleDetailsScreen extends StatelessWidget {
   }
 
   carBrandTextField(context) {
-    return captainPersonalData != null
-        ? Brands(
-            init: captainPersonalData != null
-                ? captainPersonalData.data.car.carBrandName
-                : "",
-          )
-        : TypeAheadFormField(
-            textFieldConfiguration: TextFieldConfiguration(
-              focusNode: brandsNode,
-              style: TextStyle(
-                fontFamily: FontFamilies.POPPINS,
-                fontSize: (MediaQuery.of(context).size.height * 0.02),
-                color: Colors.black,
-              ),
-              controller: _typeAheadController,
-              decoration: InputDecoration(
-                // hintText: captainPersonalData!=null?captainPersonalData.data.car.carBrandName:" ",
-                contentPadding: EdgeInsets.all(0),
+    return StreamBuilder(
+      stream: vehicleBloc.selectedCarBrand,
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        if (snapshot.hasData) {
+          return Brands(
+            init: snapshot.data,
+          );
+        } else {
+          return captainPersonalData != null
+              ? Brands(
+                  init: captainPersonalData != null
+                      ? captainPersonalData.data.car.carBrandName
+                      : "",
+                )
+              : TypeAheadFormField(
+                  textFieldConfiguration: TextFieldConfiguration(
+                    focusNode: brandsNode,
+                    style: TextStyle(
+                      fontFamily: FontFamilies.POPPINS,
+                      fontSize: (MediaQuery.of(context).size.height * 0.02),
+                      color: Colors.black,
+                    ),
+                    controller: _typeAheadController,
+                    decoration: InputDecoration(
+                      // hintText: captainPersonalData!=null?captainPersonalData.data.car.carBrandName:" ",
+                      contentPadding: EdgeInsets.all(0),
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: AppColors.LIGHT_BLUE),
                 ),
@@ -1098,53 +1107,100 @@ class VehicleDetailsScreen extends StatelessWidget {
               return vehicleBloc.getSuggestions(pattern);
             },
             onSuggestionSelected: (suggestion) {
-              // captainPersonalData != null
-              //     ? _typeAheadController.text =
-              //         captainPersonalData.data.car.carBrandName
-              //     :
               _typeAheadController.text = suggestion;
               vehicleBloc.setCarBrand(suggestion.toString());
-              // vehicleBloc.getSuggestions("a");
             },
-            onSaved: (suggestion) {
-              // vehicleBloc.getSuggestions(null);
-            },
+            onSaved: (suggestion) {},
           );
+        }
+      },
+    );
   }
 
   Widget plateNumberTextField() => StreamBuilder<String>(
         stream: vehicleBloc.plateNumber,
         builder: (context, snap) {
-          return Container(
-            margin: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.018),
-            child: TextFormField(
-              style: TextStyle(
-                fontFamily: FontFamilies.POPPINS,
-                fontSize: (MediaQuery.of(context).size.height * 0.02),
-              ),
-              initialValue: captainPersonalData != null
-                  ? captainPersonalData.data.car.number
-                  : "",
-              focusNode: plateNumberNode,
-              cursorColor: AppColors.MAIN_COLOR,
-              keyboardType: TextInputType.text,
-              decoration: new InputDecoration(
-                contentPadding: EdgeInsets.all(0),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: AppColors.LIGHT_BLUE),
+          print(snap.data);
+          if (snap.hasData) {
+            return Container(
+              margin: EdgeInsets.only(
+                  top: MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.018),
+              child: TextFormField(
+                style: TextStyle(
+                  fontFamily: FontFamilies.POPPINS,
+                  fontSize: (MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.02),
                 ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: AppColors.MAIN_COLOR),
+                // initialValue: "snap.data",
+                focusNode: plateNumberNode,
+                cursorColor: AppColors.MAIN_COLOR,
+                keyboardType: TextInputType.text,
+                decoration: new InputDecoration(
+                  contentPadding: EdgeInsets.all(0),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.LIGHT_BLUE),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.MAIN_COLOR),
+                  ),
+                  errorText: snap.error,
+                  labelText: 'Plate Number',
+                  labelStyle: TextStyle(
+                      color: AppColors.labelColor, fontFamily: 'Poppins'),
                 ),
-                errorText: snap.error,
-                labelText: 'Plate Number',
-                labelStyle: TextStyle(
-                    color: AppColors.labelColor, fontFamily: 'Poppins'),
+                onChanged: (value) {
+                  vehicleBloc.changePlateNumber(value);
+                  vehicleBloc.setPlateNumber(value);
+                },
               ),
-              onChanged: (vehicleBloc.changePlateNumber),
-            ),
-          );
+            );
+          }
+          else {
+            return Container(
+              margin: EdgeInsets.only(
+                  top: MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.018),
+              child: TextFormField(
+                style: TextStyle(
+                  fontFamily: FontFamilies.POPPINS,
+                  fontSize: (MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.02),
+                ),
+                initialValue: captainPersonalData != null
+                    ? captainPersonalData.data.car.number
+                    : plateCode != null ? plateCode : "",
+                focusNode: plateNumberNode,
+                cursorColor: AppColors.MAIN_COLOR,
+                keyboardType: TextInputType.text,
+                decoration: new InputDecoration(
+                  contentPadding: EdgeInsets.all(0),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.LIGHT_BLUE),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.MAIN_COLOR),
+                  ),
+                  errorText: snap.error,
+                  labelText: 'Plate Number',
+                  labelStyle: TextStyle(
+                      color: AppColors.labelColor, fontFamily: 'Poppins'),
+                ),
+                onChanged: (value) {
+                  vehicleBloc.changePlateNumber(value);
+                  vehicleBloc.setPlateNumber(value);
+                },
+              ),
+            );
+          }
         },
       );
 
