@@ -16,6 +16,7 @@ import 'package:posta_courier/src/ui/widgets/unsuccessful_dialog_screen.dart';
 import 'package:posta_courier/src/utils/util.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:intl/intl.dart';
+import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/get_captain_data_bloc.dart';
 
 import 'finding_order_sheet.dart';
 
@@ -23,40 +24,87 @@ class NewOrderSuggestionSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: approvedCaptainBloc.checkUser,
-        builder: (BuildContext context, AsyncSnapshot<LogInModel> snapshot) {
-          if (snapshot.hasData) {
-            Future.delayed(Duration(seconds: 60), () {
-              orderBloc.setOrderSheet("NULL");
-            });
-            return SizedBox.expand(
-              child: DraggableScrollableSheet(
-                maxChildSize:MediaQuery.of(context).size.height < 600 ? 0.67:0.78,
-                minChildSize: 0.07,
-                initialChildSize: MediaQuery.of(context).size.height < 600 ? 0.67:0.78,
-                builder:
-                    (BuildContext context, ScrollController scrollController) {
-                  return Container(
-                      margin: EdgeInsets.only(right: 27, left: 27),
-                      width: MediaQuery.of(context).size.width,
-                      decoration: new BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: new BorderRadius.only(
-                          topLeft: const Radius.circular(15.0),
-                          topRight: const Radius.circular(15.0),
-                        ),
-                      ),
-                      child: container(context, snapshot.data));
-                },
-              ),
-            );
-          } else {
-            return FindingOrdersSheet();
-          }
+        stream: checkCaptainDataBloc.suggestion,
+        builder:
+            (BuildContext context, AsyncSnapshot<ActiveSuggestion> snapshot) {
+          return StreamBuilder(
+            stream: orderBloc.timer,
+            builder: (BuildContext context, AsyncSnapshot<int> snap) {
+              if (snap.hasData) {
+                Future.delayed(Duration(seconds: 60), () {
+                  orderBloc.setOrderSheet("NULL");
+                  checkCaptainDataBloc.resetSuggestion();
+                });
+                if (snapshot.hasData) {
+                  return SizedBox.expand(
+                    child: DraggableScrollableSheet(
+                      maxChildSize: MediaQuery.of(context).size.height < 600
+                          ? 0.67
+                          : 0.78,
+                      minChildSize: 0.07,
+                      initialChildSize: MediaQuery.of(context).size.height < 600
+                          ? 0.67
+                          : 0.78,
+                      builder: (BuildContext context,
+                          ScrollController scrollController) {
+                        return Container(
+                            margin: EdgeInsets.only(right: 27, left: 27),
+                            width: MediaQuery.of(context).size.width,
+                            decoration: new BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: new BorderRadius.only(
+                                topLeft: const Radius.circular(15.0),
+                                topRight: const Radius.circular(15.0),
+                              ),
+                            ),
+                            child: container(context, snapshot.data));
+                      },
+                    ),
+                  );
+                } else {
+                  return Container();
+                }
+              } else {
+                Future.delayed(Duration(seconds: snap.data), () {
+                  orderBloc.setOrderSheet("NULL");
+                  checkCaptainDataBloc.resetSuggestion();
+                });
+                if (snapshot.hasData) {
+                  return SizedBox.expand(
+                    child: DraggableScrollableSheet(
+                      maxChildSize: MediaQuery.of(context).size.height < 600
+                          ? 0.67
+                          : 0.78,
+                      minChildSize: 0.07,
+                      initialChildSize: MediaQuery.of(context).size.height < 600
+                          ? 0.67
+                          : 0.78,
+                      builder: (BuildContext context,
+                          ScrollController scrollController) {
+                        return Container(
+                            margin: EdgeInsets.only(right: 27, left: 27),
+                            width: MediaQuery.of(context).size.width,
+                            decoration: new BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: new BorderRadius.only(
+                                topLeft: const Radius.circular(15.0),
+                                topRight: const Radius.circular(15.0),
+                              ),
+                            ),
+                            child: container(context, snapshot.data));
+                      },
+                    ),
+                  );
+                } else {
+                  return Container();
+                }
+              }
+            },
+          );
         });
   }
 
-  container(context, LogInModel snapshot) {
+  container(context, ActiveSuggestion snapshot) {
     return Column(
       children: [
         Container(height: 20, child: TimerWidgetOrder()),
@@ -73,12 +121,15 @@ class NewOrderSuggestionSheet extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(top: 10, bottom: 12),
           child: Text(
-            snapshot.data.activeSuggestion.booking.service.name,
+            snapshot.booking.service.name,
             style: TextStyle(
               fontWeight: FontWeight.w500,
               color: AppColors.MAIN_COLOR,
               fontFamily: FontFamilies.POPPINS,
-              fontSize: (MediaQuery.of(context).size.height * 0.018) + 2,
+              fontSize: (MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.018) + 2,
             ),
           ),
         ),
@@ -125,20 +176,23 @@ class NewOrderSuggestionSheet extends StatelessWidget {
                       width: MediaQuery.of(context).size.width / 1.45,
                       child: Text(
                         snapshot
-                            .data.activeSuggestion.booking.pickupLocationName,
+                            .booking.pickupLocationName,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: AppColors.TITLE_TEXT_COLOR,
                           fontFamily: FontFamilies.POPPINS,
                           fontSize:
-                              (MediaQuery.of(context).size.height * 0.018) + 2,
+                          (MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.018) + 2,
                         ),
                       ),
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / 1.45,
                       child: Text(
-                        snapshot.data.activeSuggestion.booking
+                        snapshot.booking
                             .pickupLocationDetails,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
@@ -198,20 +252,23 @@ class NewOrderSuggestionSheet extends StatelessWidget {
                       width: MediaQuery.of(context).size.width / 1.45,
                       child: Text(
                         snapshot
-                            .data.activeSuggestion.booking.pullDownLocationName,
+                            .booking.pullDownLocationName,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: AppColors.TITLE_TEXT_COLOR,
                           fontFamily: FontFamilies.POPPINS,
                           fontSize:
-                              (MediaQuery.of(context).size.height * 0.018) + 2,
+                          (MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.018) + 2,
                         ),
                       ),
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / 1.45,
                       child: Text(
-                        snapshot.data.activeSuggestion.booking
+                        snapshot.booking
                             .pullDownLocationDetails,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
@@ -270,7 +327,7 @@ class NewOrderSuggestionSheet extends StatelessWidget {
                           ),
                           Text(
                             Utils.timeFormat1(snapshot
-                                    .data.activeSuggestion.booking.dateTime)
+                                .booking.dateTime)
                                 .toString(),
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
@@ -293,7 +350,6 @@ class NewOrderSuggestionSheet extends StatelessWidget {
             ],
           ),
         ),
-
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -309,8 +365,9 @@ class NewOrderSuggestionSheet extends StatelessWidget {
                 color: Colors.white,
                 onPressed: () {
                   orderBloc.rejectOrderSuggestion(
-                      snapshot.data.activeSuggestion.booking.id);
+                      snapshot.booking.id);
                   orderBloc.setOrderSheet("NULL");
+                  checkCaptainDataBloc.resetSuggestion();
                 },
                 child: Text(
                   "Reject",
@@ -334,8 +391,9 @@ class NewOrderSuggestionSheet extends StatelessWidget {
                   color: AppColors.MAIN_COLOR,
                   onPressed: () {
                     orderBloc.acceptOrderSuggestion(
-                        snapshot.data.activeSuggestion.booking.id);
+                        snapshot.booking.id);
                     orderBloc.setOrderSheet("NULL");
+                    checkCaptainDataBloc.resetSuggestion();
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

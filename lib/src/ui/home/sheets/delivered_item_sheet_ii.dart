@@ -862,9 +862,10 @@ class DeliveredItemSheet extends StatelessWidget {
 
                     showDialog(
                         context: context,
-                        builder: (_) =>PodScreen(shipmentCase:shipmentCase,));
-
-
+                        builder: (_) => PodScreen(
+                              shipmentCase: shipmentCase,
+                              screen: "DELIVERY",
+                            ));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

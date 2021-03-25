@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:posta_courier/src/ui/widgets/dialog_loading.dart';
+import 'package:path_provider/path_provider.dart';
 
+import 'package:posta_courier/src/ui/widgets/dialog_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -22,6 +23,8 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:path/path.dart' as path;
+import 'dart:convert' show base64;
+import 'dart:typed_data' show Uint8List, ByteBuffer;
 
 class PodScreen extends StatelessWidget {
   String screen;
@@ -74,7 +77,8 @@ class PodScreen extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       color: AppColors.TITLE_TEXT_COLOR,
                       fontFamily: FontFamilies.POPPINS,
-                      fontSize: (MediaQuery.of(context).size.height * 0.018) + 4,
+                      fontSize:
+                          (MediaQuery.of(context).size.height * 0.018) + 4,
                     ),
                   ),
                 ),
@@ -83,7 +87,6 @@ class PodScreen extends StatelessWidget {
                   color: AppColors.LIGHT_GREY,
                 ),
                 referenceTextField(),
-
                 Divider(
                   thickness: 1,
                   color: AppColors.LIGHT_GREY,
@@ -103,10 +106,17 @@ class PodScreen extends StatelessWidget {
                       Row(
                         children: <Widget>[
                           Container(
-                            width:
-                            (MediaQuery.of(context).size.height * 0.02) + 15,
+                            width: (MediaQuery
+                                .of(context)
+                                .size
+                                .height * 0.02) +
+                                15,
                             height:
-                            (MediaQuery.of(context).size.height * 0.02) + 15,
+                            (MediaQuery
+                                .of(context)
+                                .size
+                                .height * 0.02) +
+                                15,
                             child: StreamBuilder(
                               stream: podBloc.image,
                               builder: (context, snap) {
@@ -139,77 +149,80 @@ class PodScreen extends StatelessWidget {
                                                         return Future.value(
                                                             true);
                                                       },
-                                                      child: Stack(children: [
-                                                        PhotoView(
-                                                          backgroundDecoration:
-                                                          BoxDecoration(
-                                                            color: Colors
-                                                                .black12
-                                                                .withOpacity(
-                                                                0.01),
-                                                          ),
-                                                          imageProvider:
-                                                          FileImage(
-                                                            snap.data,
-                                                          ),
-                                                          minScale: 0.2,
-                                                          // initialScale: 0.2,
-                                                          maxScale: 0.6,
-                                                          customSize:
-                                                          Size(300, 400),
-                                                        ),
-                                                        Align(
-                                                          alignment: Alignment
-                                                              .topRight,
-                                                          child: Container(
-                                                            margin: EdgeInsets
-                                                                .all(10),
-                                                            width: 30,
-                                                            height: 30,
-                                                            decoration:
-                                                            BoxDecoration(
-                                                              boxShadow: <
-                                                                  BoxShadow>[
-                                                                BoxShadow(
-                                                                  color: Colors
-                                                                      .black26,
-                                                                  blurRadius:
-                                                                  5,
-                                                                  offset:
-                                                                  Offset(
-                                                                      2,
-                                                                      2),
-                                                                ),
-                                                              ],
+                                                      child: Stack(
+                                                          children: [
+                                                            PhotoView(
+                                                              backgroundDecoration:
+                                                              BoxDecoration(
+                                                                color: Colors
+                                                                    .black12
+                                                                    .withOpacity(
+                                                                    0.01),
+                                                              ),
+                                                              imageProvider:
+                                                              FileImage(
+                                                                snap.data,
+                                                              ),
+                                                              minScale: 0.2,
+                                                              // initialScale: 0.2,
+                                                              maxScale: 0.6,
+                                                              customSize:
+                                                              Size(300,
+                                                                  400),
                                                             ),
-                                                            child:
-                                                            FloatingActionButton(
-                                                                heroTag:
-                                                                "dismiss",
-                                                                elevation:
-                                                                2.5,
-                                                                backgroundColor:
-                                                                Colors
-                                                                    .white,
-                                                                child:
-                                                                Icon(
-                                                                  Icons
-                                                                      .close,
-                                                                  color: Colors
-                                                                      .black,
-                                                                  size:
-                                                                  20,
+                                                            Align(
+                                                              alignment:
+                                                              Alignment
+                                                                  .topRight,
+                                                              child:
+                                                              Container(
+                                                                margin: EdgeInsets
+                                                                    .all(
+                                                                    10),
+                                                                width: 30,
+                                                                height: 30,
+                                                                decoration:
+                                                                BoxDecoration(
+                                                                  boxShadow: <
+                                                                      BoxShadow>[
+                                                                    BoxShadow(
+                                                                      color:
+                                                                      Colors
+                                                                          .black26,
+                                                                      blurRadius:
+                                                                      5,
+                                                                      offset: Offset(
+                                                                          2,
+                                                                          2),
+                                                                    ),
+                                                                  ],
                                                                 ),
-                                                                onPressed:
-                                                                    () {
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                  FlutterStatusbarcolor.setStatusBarColor(
-                                                                      Colors.white);
-                                                                }),
-                                                          ),
-                                                        )
-                                                      ]));
+                                                                child: FloatingActionButton(
+                                                                    heroTag: "dismiss",
+                                                                    elevation: 2.5,
+                                                                    backgroundColor: Colors
+                                                                        .white,
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .close,
+                                                                      color:
+                                                                      Colors
+                                                                          .black,
+                                                                      size:
+                                                                      20,
+                                                                    ),
+                                                                    onPressed: () {
+                                                                      Navigator
+                                                                          .pop(
+                                                                          context);
+                                                                      FlutterStatusbarcolor
+                                                                          .setStatusBarColor(
+                                                                          Colors
+                                                                              .white);
+                                                                    }),
+                                                              ),
+                                                            )
+                                                          ]));
                                                 })
                                                 .then((value) =>
                                                 FlutterStatusbarcolor
@@ -227,10 +240,17 @@ class PodScreen extends StatelessWidget {
                                     backgroundColor: Colors.white,
                                     child: Image.asset(
                                       "assets/images/camera.png",
-                                      width: (MediaQuery.of(context).size.height *
+                                      width:
+                                      (MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height *
                                           0.02),
                                       height:
-                                      (MediaQuery.of(context).size.height *
+                                      (MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height *
                                           0.02),
                                     ),
                                     onPressed: () {
@@ -298,26 +318,34 @@ class PodScreen extends StatelessWidget {
                                                 ),
                                               ));
                                         })
-                                        .then((value) => FlutterStatusbarcolor
-                                        .setStatusBarColor(Colors.white));
+                                        .then((value) =>
+                                        FlutterStatusbarcolor
+                                            .setStatusBarColor(Colors.white));
                                   },
                                   child: Padding(
                                     padding: EdgeInsets.only(left: 10),
                                     child: SvgPicture.asset(
                                         "assets/images/edit_pin.svg",
-                                        width:
-                                        (MediaQuery.of(context).size.height *
+                                        width: (MediaQuery
+                                            .of(context)
+                                            .size
+                                            .height *
                                             0.02) +
                                             2,
-                                        height:
-                                        (MediaQuery.of(context).size.height *
+                                        height: (MediaQuery
+                                            .of(context)
+                                            .size
+                                            .height *
                                             0.02) +
                                             2),
                                   ),
                                 );
                               } else {
                                 return SizedBox(
-                                  width: (MediaQuery.of(context).size.height *
+                                  width: (MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height *
                                       0.02) +
                                       12,
                                 );
@@ -369,21 +397,80 @@ class PodScreen extends StatelessWidget {
                             color: AppColors.LIGHT_GREY,
                             fontFamily: FontFamilies.POPPINS,
                             fontSize:
-                            (MediaQuery.of(context).size.height * 0.018) + 2,
+                            (MediaQuery
+                                .of(context)
+                                .size
+                                .height * 0.018) +
+                                2,
                           ),
                         ),
                         color: AppColors.SIGNATURE_COLOR,
                         elevation: 0,
                       ),
                     ),
+                    StreamBuilder(
+                      stream: podBloc.checkSignature,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          if (snapshot.data) {
+                            return Container(
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width,
+                                padding: EdgeInsets.only(
+                                    top: MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width *
+                                        0.01),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 3),
+                                      child: Image.asset(
+                                        "assets/images/error_icon.png",
+                                        width: 13,
+                                        height: 13,
+                                      ),
+                                    ),
+                                    Container(
+                                        width:
+                                        MediaQuery
+                                            .of(context)
+                                            .size
+                                            .width -
+                                            60,
+                                        padding: EdgeInsets.only(left: 3),
+                                        child: Text(
+                                          "You need to take photo or set signature",
+                                          style: TextStyle(
+                                              color: AppColors.ERROR,
+                                              fontFamily: 'Poppins',
+                                              fontSize: 13),
+                                        )),
+                                  ],
+                                ));
+                          } else {
+                            return Container();
+                          }
+                        } else {
+                          return Container();
+                        }
+                      },
+                    ),
                     Padding(
-                      padding: EdgeInsets.only(top: 0),
+                      padding: EdgeInsets.only(top: 8),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
                             height: 50,
-                            width: 120,
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width / 3.8,
                             margin: EdgeInsets.only(right: 10),
                             child: RaisedButton(
                               shape: RoundedRectangleBorder(
@@ -398,7 +485,11 @@ class PodScreen extends StatelessWidget {
                                 "Cancel",
                                 style: TextStyle(
                                     fontFamily: FontFamilies.POPPINS,
-                                    fontSize: (MediaQuery.of(context).size.width *
+                                    fontSize:
+                                    (MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width *
                                         0.008) +
                                         11,
                                     color: Colors.black,
@@ -407,78 +498,155 @@ class PodScreen extends StatelessWidget {
                             ),
                           ),
                           StreamBuilder(
-                            stream: podBloc.submitValid,
-                            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                              if(snapshot.hasData)
-                              {return  Container(
-                                height: 50,
-                                width: 160,
-                                child: RaisedButton(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                  ),
-                                  elevation: 3,
-                                  color: AppColors.MAIN_COLOR,
-                                  onPressed: () {
-                                    // getSign();
-                                    orderBloc.bookingAction();
-                                    Navigator.of(context).pop(true);
-                                    _showDialog(context);
-
-                                  },
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        left:
-                                        MediaQuery.of(context).size.width * 0.02),
-                                    child: Text(
-                                      "Submit",
-                                      style: TextStyle(
-                                          fontFamily: FontFamilies.POPPINS,
-                                          fontSize:
-                                          (MediaQuery.of(context).size.width *
-                                              0.008) +
-                                              11,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                  ),
-                                ),
-                              );}
-                              else
-                              {
-                                return  Container(
-                                  height: 50,
-                                  width: 160,
-                                  child: RaisedButton(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                    ),
-                                    elevation: 3,
-                                    color: AppColors.LIGHT_GREY,
-                                    onPressed: () {
-
-                                    },
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                          left:
-                                          MediaQuery.of(context).size.width * 0.02),
-                                      child: Text(
-                                        "Submit",
-                                        style: TextStyle(
-                                            fontFamily: FontFamilies.POPPINS,
-                                            fontSize:
-                                            (MediaQuery.of(context).size.width *
-                                                0.008) +
-                                                11,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w700),
+                              stream: podBloc.submitValid2,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<bool> snapshot) {
+                                if (snapshot.hasData) {
+                                  return Container(
+                                    height: 50,
+                                    width:
+                                    MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width / 2.8,
+                                    child: RaisedButton(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(5.0),
+                                      ),
+                                      elevation: 3,
+                                      color: AppColors.MAIN_COLOR,
+                                      onPressed: () async {
+                                        getSign();
+                                        Navigator.of(context).pop(true);
+                                        _showDialog(context);
+                                      },
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            left: MediaQuery
+                                                .of(context)
+                                                .size
+                                                .width *
+                                                0.02),
+                                        child: Text(
+                                          "Submit",
+                                          style: TextStyle(
+                                              fontFamily: FontFamilies.POPPINS,
+                                              fontSize: (MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width *
+                                                  0.008) +
+                                                  11,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w700),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              }
-                            },
-                          ),
+                                  );
+                                } else {
+                                  return StreamBuilder(
+                                      stream: podBloc.reference,
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<String> snapshot) {
+                                        if (snapshot.hasData) {
+                                          return Container(
+                                            height: 50,
+                                            width: MediaQuery
+                                                .of(context)
+                                                .size
+                                                .width /
+                                                2.8,
+                                            child: RaisedButton(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                BorderRadius.circular(5.0),
+                                              ),
+                                              elevation: 3,
+                                              color: AppColors.MAIN_COLOR,
+                                              onPressed: () {
+                                                if (_controller.isEmpty) {
+                                                  podBloc.checkSign(true);
+                                                } else {
+                                                  podBloc.checkSign(false);
+                                                  getSign();
+                                                  Navigator.of(context)
+                                                      .pop(true);
+                                                  _showDialog(context);
+                                                }
+                                              },
+                                              child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: MediaQuery
+                                                        .of(context)
+                                                        .size
+                                                        .width *
+                                                        0.02),
+                                                child: Text(
+                                                  "Submit",
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                      FontFamilies.POPPINS,
+                                                      fontSize: (MediaQuery
+                                                          .of(
+                                                          context)
+                                                          .size
+                                                          .width *
+                                                          0.008) +
+                                                          11,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                      FontWeight.w700),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          return Container(
+                                            height: 50,
+                                            width: MediaQuery
+                                                .of(context)
+                                                .size
+                                                .width /
+                                                2.8,
+                                            child: RaisedButton(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                BorderRadius.circular(5.0),
+                                              ),
+                                              elevation: 3,
+                                              color: AppColors.LIGHT_GREY,
+                                              onPressed: () {},
+                                              child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: MediaQuery
+                                                        .of(context)
+                                                        .size
+                                                        .width *
+                                                        0.02),
+                                                child: Text(
+                                                  "Submit",
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                      FontFamilies.POPPINS,
+                                                      fontSize: (MediaQuery
+                                                          .of(
+                                                          context)
+                                                          .size
+                                                          .width *
+                                                          0.008) +
+                                                          11,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                      FontWeight.w700),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      });
+                                }
+                              })
                         ],
                       ),
                     ),
@@ -490,37 +658,41 @@ class PodScreen extends StatelessWidget {
     );
   }
 
-  Widget referenceTextField() => StreamBuilder<String>(
-    stream: podBloc.reference,
-    builder: (context, snap) {
-      return Container(
-        margin: EdgeInsets.only(top: 20),
-        child: TextFormField(
-          style: TextStyle(
-            fontFamily: FontFamilies.POPPINS,
-            fontSize: (MediaQuery.of(context).size.height * 0.02),
-          ),
-          focusNode: referenceNode,
-          cursorColor: AppColors.MAIN_COLOR,
-          keyboardType: TextInputType.text,
-          decoration: new InputDecoration(
-            contentPadding: EdgeInsets.all(0),
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.LIGHT_BLUE),
+  Widget referenceTextField() =>
+      StreamBuilder<String>(
+        stream: podBloc.reference,
+        builder: (context, snap) {
+          return Container(
+            margin: EdgeInsets.only(top: 20),
+            child: TextFormField(
+              style: TextStyle(
+                fontFamily: FontFamilies.POPPINS,
+                fontSize: (MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.02),
+              ),
+              focusNode: referenceNode,
+              cursorColor: AppColors.MAIN_COLOR,
+              keyboardType: TextInputType.text,
+              decoration: new InputDecoration(
+                contentPadding: EdgeInsets.all(0),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.LIGHT_BLUE),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.MAIN_COLOR),
+                ),
+                errorText: snap.error,
+                labelText: 'Enter Reference',
+                labelStyle: TextStyle(
+                    color: AppColors.labelColor, fontFamily: 'Poppins'),
+              ),
+              onChanged: (podBloc.changeReference),
             ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.MAIN_COLOR),
-            ),
-            errorText: snap.error,
-            labelText: 'Enter Reference',
-            labelStyle: TextStyle(
-                color: AppColors.labelColor, fontFamily: 'Poppins'),
-          ),
-          onChanged: (podBloc.changeReference),
-        ),
+          );
+        },
       );
-    },
-  );
 
   image(BuildContext context) {
     return AlertDialog(
@@ -594,7 +766,7 @@ class PodScreen extends StatelessWidget {
             },
           );
         },
-      );
+  );
 
   Container sign(Uint8List data) {
     return Container(
@@ -603,35 +775,25 @@ class PodScreen extends StatelessWidget {
         child: Image.memory(data));
   }
 
-  //  getSign() async {
-  //
-  //   await _controller.toPngBytes().then((value) async {
-  //
-  // final dir = await getTemporaryDirectory();
-  // await dir.create(recursive: true);
-  // final tempFile = File(path.join(dir.path, "sign.png"));
-  // await tempFile.writeAsBytes(value);
-  //
-  // podBloc.setSign(tempFile);
-  // print(tempFile.path);
-  //   });
-  // }
+  Future<Uint8List> getSign() async {
+    File fileImg;
+    await _controller.toPngBytes().then((value) async {
+      final directory = await getApplicationDocumentsDirectory();
+      fileImg = File('${directory.path}/sign.png');
+      podBloc.setSign(value);
+    });
+  }
 
   Future<void> _showDialog(context) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-
-        Future.delayed(Duration(seconds: 3), () {
-
+        Future.delayed(Duration(seconds: 2), () {
           Navigator.of(context).pop(true);
-
         });
         return LoadingDialogWidget();
       },
     );
   }
-
-
 }

@@ -30,7 +30,9 @@ class ApprovedCaptainBloc {
       _checkCaptainStatus.stream;
 
   Observable<String> get phone => _phoneNumber.stream;
+
   Observable<String> get profileImg => _profileImage.stream;
+
   Observable<File> get profileImage => _profileImageUpdate.stream;
 
   Observable<LogInModel> get checkUser => _checkAuth.stream;
@@ -56,15 +58,17 @@ class ApprovedCaptainBloc {
   }
 
   logout() {
-_repository.logout();
+    _repository.logout();
   }
+
   updateProfileImage(File file) {
     _profileImageUpdate.add(file);
     _repository.setProfileImage(file);
   }
+
   void updateImage(ImageSource source, String img) {
     _repository.takeImage(source).then((value) {
-    updateProfileImage(value);
+      updateProfileImage(value);
     });
   }
 

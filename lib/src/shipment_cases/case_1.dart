@@ -17,7 +17,9 @@ class StandardCase {
     switch (state) {
       case "ACCEPTED":
         {
-          return GoToPickUpItemSheet(shipmentCase: "CASE_1",);
+          return GoToPickUpItemSheet(
+            shipmentCase: "CASE_1",
+          );
         }
         break;
       case "STARTED":
@@ -41,8 +43,7 @@ class StandardCase {
         break;
       case "DONE":
         {
-
-        return StreamBuilder(
+          return StreamBuilder(
               stream: orderBloc.ride,
               builder:
                   (BuildContext context, AsyncSnapshot<RideModel> snapshot) {
@@ -87,11 +88,13 @@ class StandardCase {
     }
   }
 
-  static   selectSheetShipperPay(String state, context,int pay) {
+  static selectSheetShipperPay(String state, context, int pay) {
     switch (state) {
       case "ACCEPTED":
         {
-          return GoToPickUpItemSheet(shipmentCase: "SHIPPER_PAY",);
+          return GoToPickUpItemSheet(
+            shipmentCase: "SHIPPER_PAY",
+          );
         }
         break;
       case "STARTED":
@@ -101,9 +104,13 @@ class StandardCase {
         break;
       case "ARRIVED":
         {
-          return pay!=null? PickedUpItemSheet(
+          return pay != null
+              ? PickedUpItemSheet(
             shipmentCase: "CASE_1",
-          ):PaymentWithoutCODSheet(shipmentCase:"SHIPPER_PAY" ,);
+          )
+              : PaymentWithoutCODSheet(
+            shipmentCase: "SHIPPER_PAY",
+          );
         }
         break;
       case "READY_TO_PICK_UP":
@@ -113,7 +120,6 @@ class StandardCase {
           );
         }
         break;
-
 
       case "PICKED_UP":
         {
@@ -153,23 +159,24 @@ class StandardCase {
         break;
       case "DONE":
         {
+          return StreamBuilder(
+              stream: orderBloc.ride,
+              builder:
+                  (BuildContext context, AsyncSnapshot<RideModel> snapshot) {
+                if (snapshot.data.data.bookings[orderBloc.getOrderIndex()].order
+                    .cashOnDeliveryOption ==
+                    "NONE") {
+                  return PaymentWithoutCODSheet(
+                    shipmentCase: "CASE_1",
+                  );
+                } else {
+                  // orderBloc.bookingAction();
 
-        return StreamBuilder(
-            stream: orderBloc.ride,
-            builder:
-                (BuildContext context, AsyncSnapshot<RideModel> snapshot) {
-              if (snapshot.data.data.bookings[orderBloc.getOrderIndex()].order
-                  .cashOnDeliveryOption ==
-                  "NONE") {
-                return PaymentWithoutCODSheet(
-                  shipmentCase: "CASE_1",
-                );
-              } else {
-                return PaymentWithCODSheet(
-                  shipmentCase: "CASE_1",
-                );
-              }
-            });
+                  return PaymentWithCODSheet(
+                    shipmentCase: "CASE_1",
+                  );
+                }
+              });
         }
         break;
       default:

@@ -22,6 +22,7 @@ class OrderBloc {
   final _bookingAction = BehaviorSubject<BookingAction>();
   final _podScreen = BehaviorSubject<bool>();
   final _imgDialog = BehaviorSubject<bool>();
+  final _timer = BehaviorSubject<int>();
   var _polyLines = Set<Polyline>();
 
   Observable<String> get orderSheet => _orderSheet.stream;
@@ -37,6 +38,12 @@ class OrderBloc {
   Observable<bool> get pod => _podScreen.stream;
 
   Observable<bool> get imagePod => _imgDialog.stream;
+
+  Observable<int> get timer => _timer.stream;
+
+  setTimer(int min) {
+    _timer.add(min);
+  }
 
   setOrderSheet(String state) {
     _orderSheet.add(state);
@@ -61,13 +68,10 @@ class OrderBloc {
     //  }
     // else
     //   { setNewOrder();}
-
   }
-
 
   acceptOrderSuggestion(int id) {
     _repository.acceptSuggestion(id);
-    getOrders("NOT_PAID");
   }
 
   rejectOrderSuggestion(int id) {
@@ -79,11 +83,10 @@ class OrderBloc {
     OrderModel orders = await _repository.getOrders(filter);
     _getOrder.add(orders);
     _orderList.add(_getOrder.value.data.data);
-    if(_orderList.value.isEmpty){}
-    else
-      {
-    // setNewOrder();
-      }
+    if (_orderList.value.isEmpty) {
+    } else {
+      // setNewOrder();
+    }
   }
 
   getOrderList() {
@@ -98,7 +101,6 @@ class OrderBloc {
   }
 
   getRide(OrderDetails order) async {
-
     RideModel ride = await _repository.getRide(order.ride.id);
     _getRide.add(ride);
     orderBloc.setOrderSheet(_getRide.value.data.bookings[0].status);
@@ -109,36 +111,36 @@ class OrderBloc {
     _rideIndex.add(_getRide.value.data.bookings
         .indexWhere((element) => element.rideId == order.ride.id));
     setPolyLine();
-
   }
 
   setPolyLine() {
     PolylinePoints polylinePoints = PolylinePoints();
+    if (_getRide.value.data.bookings.first.summary != null) {
+      List<PointLatLng> result = polylinePoints.decodePolyline(_getRide
+          .value
+          .data
+          .bookings
+          .first
+          .summary
+          .estimatedRout
+          .estimatedRoute
+          .first
+          .points
+          .points);
+      List<LatLng> polylineCoordinates = [];
 
-    List<PointLatLng> result = polylinePoints.decodePolyline(_getRide
-        .value
-        .data
-        .bookings
-        .first
-        .summary
-        .estimatedRout
-        .estimatedRoute
-        .first
-        .points
-        .points);
-    List<LatLng> polylineCoordinates = [];
+      if (result.isNotEmpty) {
+        result.forEach((PointLatLng point) {
+          polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+        });
+      }
 
-    if (result.isNotEmpty) {
-      result.forEach((PointLatLng point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      });
-    }
-
-    _polyLines.add(Polyline(
-        width: 3,
-        polylineId: PolylineId("poly"),
-        color: AppColors.MAIN_COLOR,
-        points: polylineCoordinates));
+      _polyLines.add(Polyline(
+          width: 3,
+          polylineId: PolylineId("poly"),
+          color: AppColors.MAIN_COLOR,
+          points: polylineCoordinates));
+    } else {}
   }
 
   getPolyLine() {

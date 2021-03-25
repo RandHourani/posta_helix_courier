@@ -50,6 +50,7 @@ class LifecycleEventHandler extends WidgetsBindingObserver {
       case AppLifecycleState.resumed:
         {
           checkCaptainDataBloc.checkUserAuth();
+          checkCaptainDataBloc.checkUserAuth();
           // approvedCaptainBloc.checkUserAuth();
           //   orderBloc.getOrders("NOT_PAID");
         }
@@ -87,36 +88,34 @@ class HomeScreen extends StatelessWidget {
 
     GoogleMapController _controller;
     return new WillPopScope(
-        onWillPop: () {
-          // this is the block you need
-          Utils.setScreen('/home');
-
-          // SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-          exit(0);
-          return Future.value(false);
-        },
+        // onWillPop: () {
+        //   // this is the block you need
+        //   Utils.setScreen('/home');
+        //
+        //   // exit(0);
+        // },
         child: Scaffold(
-          key: _scaffoldKey,
-          drawer: NavDrawer(),
-          appBar: AppBar(
-            centerTitle: true,
-            // this is all you need
-            leading: InkWell(
-              splashColor: Colors.white,
-              child: Container(
-                margin: EdgeInsets.only(left: 10),
-                child: SvgPicture.asset(
-                  "assets/images/menu.svg",
-                  width: 22,
-                  height: 22,
-                ),
-              ),
-              onTap: () => _scaffoldKey.currentState.openDrawer(),
+      key: _scaffoldKey,
+      drawer: NavDrawer(),
+      appBar: AppBar(
+        centerTitle: true,
+        // this is all you need
+        leading: InkWell(
+          splashColor: Colors.white,
+          child: Container(
+            margin: EdgeInsets.only(left: 10),
+            child: SvgPicture.asset(
+              "assets/images/menu.svg",
+              width: 22,
+              height: 22,
             ),
-            leadingWidth: 35.0,
-            backgroundColor: Colors.white,
-            elevation: 0,
-            title: Container(
+          ),
+          onTap: () => _scaffoldKey.currentState.openDrawer(),
+        ),
+        leadingWidth: 35.0,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Container(
               child: SvgPicture.asset(
                 "assets/images/home_page_logo.svg",
                 width: 32,
@@ -197,7 +196,7 @@ class HomeScreen extends StatelessWidget {
                                       if (snapshot.data) {
                                         return StreamBuilder(
                                           stream:
-                                              onlineOfflineBloc.goingOffline,
+                                          onlineOfflineBloc.captainStatus,
                                           builder: (BuildContext context,
                                               AsyncSnapshot<bool> snapshot) {
                                             if (snapshot.hasData) {
@@ -205,7 +204,7 @@ class HomeScreen extends StatelessWidget {
                                                 stream: orderBloc.order,
                                                 builder: (BuildContext context,
                                                     AsyncSnapshot<OrderModel>
-                                                        snapshot) {
+                                                    snapshot) {
                                                   if (snapshot.hasData) {
                                                     if (snapshot.data.data.data
                                                         .isEmpty) {
@@ -216,11 +215,11 @@ class HomeScreen extends StatelessWidget {
                                                             child: InkWell(
                                                                 onTap: () {
                                                                   onlineOfflineBloc
-                                                                      .setOfflineStatus(
-                                                                          false);
+                                                                      .setStatus(
+                                                                      false);
                                                                   onlineOfflineBloc
                                                                       .setStatus(
-                                                                          false);
+                                                                      false);
                                                                   approvedCaptainBloc
                                                                       .checkCaptainStatus();
                                                                 },
@@ -310,11 +309,11 @@ class HomeScreen extends StatelessWidget {
                                                           child: InkWell(
                                                               onTap: () {
                                                                 onlineOfflineBloc
-                                                                    .setOfflineStatus(
-                                                                        false);
+                                                                    .setStatus(
+                                                                    false);
                                                                 onlineOfflineBloc
                                                                     .setStatus(
-                                                                        false);
+                                                                    false);
                                                                 approvedCaptainBloc
                                                                     .checkCaptainStatus();
                                                               },
@@ -345,8 +344,8 @@ class HomeScreen extends StatelessWidget {
                                                     child: InkWell(
                                                         onTap: () {
                                                           onlineOfflineBloc
-                                                              .setOfflineStatus(
-                                                                  false);
+                                                              .setStatus(
+                                                              false);
                                                           onlineOfflineBloc
                                                               .setStatus(false);
                                                           approvedCaptainBloc
@@ -388,146 +387,179 @@ class HomeScreen extends StatelessWidget {
                                                   alignment:
                                                       Alignment.bottomCenter,
                                                   child: StreamBuilder(
-                                                    stream:
-                                                        orderBloc.orderSheet,
+                                                    stream: checkCaptainDataBloc
+                                                        .suggestion,
                                                     builder: (BuildContext
-                                                            context,
-                                                        AsyncSnapshot<String>
-                                                            snapshot) {
-                                                      return StreamBuilder(
-                                                        stream: orderBloc.ride,
-                                                        builder: (BuildContext
-                                                                context,
-                                                            AsyncSnapshot<
-                                                                    RideModel>
-                                                                snapshot) {
-                                                          if (snapshot
-                                                              .hasData) {
-                                                            if (snapshot
-                                                                .data
-                                                                .data
-                                                                .bookings
-                                                                .isEmpty) {
-                                                              return FindingOrdersSheet();
-                                                            } else {
-                                                              if (snapshot
-                                                                  .data
-                                                                  .data
-                                                                  .bookings[0]
-                                                                  .order
-                                                                  .payUpFront) {
-                                                                return StreamBuilder(
-                                                                  stream: orderBloc
-                                                                      .orderSheet,
-                                                                  builder: (BuildContext
-                                                                          context,
-                                                                      AsyncSnapshot<
-                                                                              String>
-                                                                          snap) {
-                                                                    return StandardCase.selectSheetShipperPay(
-                                                                        snap
-                                                                            .data,
-                                                                        context,
-                                                                        snapshot
-                                                                            .data
-                                                                            .data
-                                                                            .bookings[0]
-                                                                            .order
-                                                                            .paidUpFront);
-                                                                  },
-                                                                );
-                                                              } else if (snapshot
-                                                                  .data
-                                                                  .data
-                                                                  .bookings[0]
-                                                                  .order
-                                                                  .roundTrip) {
-                                                                return StreamBuilder(
-                                                                  stream: orderBloc
-                                                                      .orderSheet,
-                                                                  builder: (BuildContext
-                                                                          context,
-                                                                      AsyncSnapshot<
-                                                                              String>
-                                                                          snapshots) {
-                                                                    return RoundTripCase.selectSheetRoundTrip(
-                                                                        snapshots
-                                                                            .data,
-                                                                        context,
-                                                                        snapshot
-                                                                            .data
-                                                                            .data
-                                                                            .bookings[0]
-                                                                            .order
-                                                                            .status);
-                                                                  },
-                                                                );
-                                                              } else if (snapshot
-                                                                      .data
-                                                                      .data
-                                                                      .bookings[
-                                                                          0]
-                                                                      .order
-                                                                      .cashOnDeliveryOption ==
-                                                                  "RETURN") {
-                                                                return StreamBuilder(
-                                                                  stream: orderBloc
-                                                                      .orderSheet,
-                                                                  builder: (BuildContext
-                                                                          context,
-                                                                      AsyncSnapshot<
-                                                                              String>
-                                                                          snapshots) {
-                                                                    return RoundTripCase.selectSheetRoundTrip(
-                                                                        snapshots
-                                                                            .data,
-                                                                        context,
-                                                                        snapshot
-                                                                            .data
-                                                                            .data
-                                                                            .bookings[0]
-                                                                            .order
-                                                                            .status);
-                                                                  },
-                                                                );
-                                                              } else {
-                                                                return StreamBuilder(
-                                                                  stream: orderBloc
-                                                                      .orderSheet,
-                                                                  builder: (BuildContext
-                                                                          context,
-                                                                      AsyncSnapshot<
-                                                                              String>
-                                                                          snapshot) {
-                                                                    return StandardCase.sheet(
-                                                                        snapshot
-                                                                            .data,
-                                                                        context,
-                                                                        "NORMAL");
-                                                                  },
-                                                                );
-                                                              }
-                                                            }
-                                                          } else {
+                                                    context,
+                                                        AsyncSnapshot<
+                                                            ActiveSuggestion>
+                                                        snapshot) {
+                                                      if (snapshot.hasData) {
+                                                        return NewOrderSuggestionSheet();
+                                                      } else {
+                                                        return StreamBuilder(
+                                                          stream: orderBloc
+                                                              .orderSheet,
+                                                          builder: (BuildContext
+                                                          context,
+                                                              AsyncSnapshot<
+                                                                  String>
+                                                              snapshot) {
                                                             return StreamBuilder(
                                                               stream: orderBloc
-                                                                  .orderSheet,
-                                                              builder: (BuildContext
-                                                                      context,
+                                                                  .ride,
+                                                              builder: (
+                                                                  BuildContext
+                                                                  context,
                                                                   AsyncSnapshot<
-                                                                          String>
-                                                                      snapshot) {
-                                                                return StandardCase
-                                                                    .sheet(
-                                                                        snapshot
-                                                                            .data,
+                                                                      RideModel>
+                                                                  snapshot) {
+                                                                if (snapshot
+                                                                    .hasData) {
+                                                                  if (snapshot
+                                                                      .data
+                                                                      .data
+                                                                      .bookings
+                                                                      .isEmpty) {
+                                                                    return FindingOrdersSheet();
+                                                                  } else {
+                                                                    if (snapshot
+                                                                        .data
+                                                                        .data
+                                                                        .bookings[
+                                                                    0]
+                                                                        .order
+                                                                        .payUpFront) {
+                                                                      return StreamBuilder(
+                                                                        stream:
+                                                                        orderBloc
+                                                                            .orderSheet,
+                                                                        builder: (
+                                                                            BuildContext
+                                                                            context,
+                                                                            AsyncSnapshot<
+                                                                                String>
+                                                                            snap) {
+                                                                          return StandardCase
+                                                                              .selectSheetShipperPay(
+                                                                              snap
+                                                                                  .data,
+                                                                              context,
+                                                                              snapshot
+                                                                                  .data
+                                                                                  .data
+                                                                                  .bookings[0]
+                                                                                  .order
+                                                                                  .paidUpFront);
+                                                                        },
+                                                                      );
+                                                                    } else
+                                                                    if (snapshot
+                                                                        .data
+                                                                        .data
+                                                                        .bookings[
+                                                                    0]
+                                                                        .order
+                                                                        .roundTrip) {
+                                                                      return StreamBuilder(
+                                                                        stream:
+                                                                        orderBloc
+                                                                            .orderSheet,
+                                                                        builder: (
+                                                                            BuildContext
+                                                                            context,
+                                                                            AsyncSnapshot<
+                                                                                String>
+                                                                            snapshots) {
+                                                                          return RoundTripCase
+                                                                              .selectSheetRoundTrip(
+                                                                              snapshots
+                                                                                  .data,
+                                                                              context,
+                                                                              snapshot
+                                                                                  .data
+                                                                                  .data
+                                                                                  .bookings[0]
+                                                                                  .order
+                                                                                  .status);
+                                                                        },
+                                                                      );
+                                                                    } else
+                                                                    if (snapshot
+                                                                        .data
+                                                                        .data
+                                                                        .bookings[0]
+                                                                        .order
+                                                                        .cashOnDeliveryOption ==
+                                                                        "RETURN") {
+                                                                      return StreamBuilder(
+                                                                        stream:
+                                                                        orderBloc
+                                                                            .orderSheet,
+                                                                        builder: (
+                                                                            BuildContext
+                                                                            context,
+                                                                            AsyncSnapshot<
+                                                                                String>
+                                                                            snapshots) {
+                                                                          return RoundTripCase
+                                                                              .selectSheetRoundTrip(
+                                                                              snapshots
+                                                                                  .data,
+                                                                              context,
+                                                                              snapshot
+                                                                                  .data
+                                                                                  .data
+                                                                                  .bookings[0]
+                                                                                  .order
+                                                                                  .status);
+                                                                        },
+                                                                      );
+                                                                    } else {
+                                                                      return StreamBuilder(
+                                                                        stream:
+                                                                        orderBloc
+                                                                            .orderSheet,
+                                                                        builder: (
+                                                                            BuildContext
+                                                                            context,
+                                                                            AsyncSnapshot<
+                                                                                String>
+                                                                            snapshot) {
+                                                                          return StandardCase
+                                                                              .sheet(
+                                                                              snapshot
+                                                                                  .data,
+                                                                              context,
+                                                                              "NORMAL");
+                                                                        },
+                                                                      );
+                                                                    }
+                                                                  }
+                                                                } else {
+                                                                  return StreamBuilder(
+                                                                    stream: orderBloc
+                                                                        .orderSheet,
+                                                                    builder: (
+                                                                        BuildContext
                                                                         context,
-                                                                        "NORMAL");
+                                                                        AsyncSnapshot<
+                                                                            String>
+                                                                        snapshot) {
+                                                                      return StandardCase
+                                                                          .sheet(
+                                                                          snapshot
+                                                                              .data,
+                                                                          context,
+                                                                          "NORMAL");
+                                                                    },
+                                                                  );
+                                                                }
                                                               },
                                                             );
-                                                          }
-                                                        },
-                                                      );
+                                                          },
+                                                        );
+                                                      }
                                                     },
                                                   )),
                                             );
@@ -618,7 +650,6 @@ class HomeScreen extends StatelessWidget {
                   );
                 } else {
                   onlineOfflineBloc.setStatus(true);
-                  onlineOfflineBloc.setOfflineStatus(true);
                   return StreamBuilder(
                     stream: onlineOfflineBloc.captainStatus,
                     builder:
@@ -682,7 +713,7 @@ class HomeScreen extends StatelessWidget {
                                       if (snapshot.data) {
                                         return StreamBuilder(
                                           stream:
-                                              onlineOfflineBloc.goingOffline,
+                                          onlineOfflineBloc.captainStatus,
                                           builder: (BuildContext context,
                                               AsyncSnapshot<bool> snapshot) {
                                             if (snapshot.hasData) {
@@ -690,7 +721,7 @@ class HomeScreen extends StatelessWidget {
                                                 stream: orderBloc.order,
                                                 builder: (BuildContext context,
                                                     AsyncSnapshot<OrderModel>
-                                                        snapshot) {
+                                                    snapshot) {
                                                   if (snapshot.hasData) {
                                                     if (snapshot.data.data.data
                                                         .isEmpty) {
@@ -700,9 +731,7 @@ class HomeScreen extends StatelessWidget {
                                                                 .bottomRight,
                                                             child: InkWell(
                                                                 onTap: () {
-                                                                  onlineOfflineBloc
-                                                                      .setOfflineStatus(
-                                                                          false);
+
                                                                   onlineOfflineBloc
                                                                       .setStatus(
                                                                           false);
@@ -794,9 +823,7 @@ class HomeScreen extends StatelessWidget {
                                                               .bottomRight,
                                                           child: InkWell(
                                                               onTap: () {
-                                                                onlineOfflineBloc
-                                                                    .setOfflineStatus(
-                                                                        false);
+
                                                                 onlineOfflineBloc
                                                                     .setStatus(
                                                                         false);
@@ -829,9 +856,6 @@ class HomeScreen extends StatelessWidget {
                                                         Alignment.bottomRight,
                                                     child: InkWell(
                                                         onTap: () {
-                                                          onlineOfflineBloc
-                                                              .setOfflineStatus(
-                                                                  false);
                                                           onlineOfflineBloc
                                                               .setStatus(false);
                                                           approvedCaptainBloc
@@ -873,146 +897,179 @@ class HomeScreen extends StatelessWidget {
                                                   alignment:
                                                       Alignment.bottomCenter,
                                                   child: StreamBuilder(
-                                                    stream:
-                                                        orderBloc.orderSheet,
+                                                    stream: checkCaptainDataBloc
+                                                        .suggestion,
                                                     builder: (BuildContext
-                                                            context,
-                                                        AsyncSnapshot<String>
-                                                            snapshot) {
-                                                      return StreamBuilder(
-                                                        stream: orderBloc.ride,
-                                                        builder: (BuildContext
-                                                                context,
-                                                            AsyncSnapshot<
-                                                                    RideModel>
-                                                                snapshot) {
-                                                          if (snapshot
-                                                              .hasData) {
-                                                            if (snapshot
-                                                                .data
-                                                                .data
-                                                                .bookings
-                                                                .isEmpty) {
-                                                              return FindingOrdersSheet();
-                                                            } else {
-                                                              if (snapshot
-                                                                  .data
-                                                                  .data
-                                                                  .bookings[0]
-                                                                  .order
-                                                                  .payUpFront) {
-                                                                return StreamBuilder(
-                                                                  stream: orderBloc
-                                                                      .orderSheet,
-                                                                  builder: (BuildContext
-                                                                          context,
-                                                                      AsyncSnapshot<
-                                                                              String>
-                                                                          snap) {
-                                                                    return StandardCase.selectSheetShipperPay(
-                                                                        snap
-                                                                            .data,
-                                                                        context,
-                                                                        snapshot
-                                                                            .data
-                                                                            .data
-                                                                            .bookings[0]
-                                                                            .order
-                                                                            .paidUpFront);
-                                                                  },
-                                                                );
-                                                              } else if (snapshot
-                                                                  .data
-                                                                  .data
-                                                                  .bookings[0]
-                                                                  .order
-                                                                  .roundTrip) {
-                                                                return StreamBuilder(
-                                                                  stream: orderBloc
-                                                                      .orderSheet,
-                                                                  builder: (BuildContext
-                                                                          context,
-                                                                      AsyncSnapshot<
-                                                                              String>
-                                                                          snapshots) {
-                                                                    return RoundTripCase.selectSheetRoundTrip(
-                                                                        snapshots
-                                                                            .data,
-                                                                        context,
-                                                                        snapshot
-                                                                            .data
-                                                                            .data
-                                                                            .bookings[0]
-                                                                            .order
-                                                                            .status);
-                                                                  },
-                                                                );
-                                                              } else if (snapshot
-                                                                      .data
-                                                                      .data
-                                                                      .bookings[
-                                                                          0]
-                                                                      .order
-                                                                      .cashOnDeliveryOption ==
-                                                                  "RETURN") {
-                                                                return StreamBuilder(
-                                                                  stream: orderBloc
-                                                                      .orderSheet,
-                                                                  builder: (BuildContext
-                                                                          context,
-                                                                      AsyncSnapshot<
-                                                                              String>
-                                                                          snapshots) {
-                                                                    return RoundTripCase.selectSheetRoundTrip(
-                                                                        snapshots
-                                                                            .data,
-                                                                        context,
-                                                                        snapshot
-                                                                            .data
-                                                                            .data
-                                                                            .bookings[0]
-                                                                            .order
-                                                                            .status);
-                                                                  },
-                                                                );
-                                                              } else {
-                                                                return StreamBuilder(
-                                                                  stream: orderBloc
-                                                                      .orderSheet,
-                                                                  builder: (BuildContext
-                                                                          context,
-                                                                      AsyncSnapshot<
-                                                                              String>
-                                                                          snapshot) {
-                                                                    return StandardCase.sheet(
-                                                                        snapshot
-                                                                            .data,
-                                                                        context,
-                                                                        "NORMAL");
-                                                                  },
-                                                                );
-                                                              }
-                                                            }
-                                                          } else {
+                                                    context,
+                                                        AsyncSnapshot<
+                                                            ActiveSuggestion>
+                                                        snapshot) {
+                                                      if (snapshot.hasData) {
+                                                        return NewOrderSuggestionSheet();
+                                                      } else {
+                                                        return StreamBuilder(
+                                                          stream: orderBloc
+                                                              .orderSheet,
+                                                          builder: (BuildContext
+                                                          context,
+                                                              AsyncSnapshot<
+                                                                  String>
+                                                              snapshot) {
                                                             return StreamBuilder(
                                                               stream: orderBloc
-                                                                  .orderSheet,
-                                                              builder: (BuildContext
-                                                                      context,
+                                                                  .ride,
+                                                              builder: (
+                                                                  BuildContext
+                                                                  context,
                                                                   AsyncSnapshot<
-                                                                          String>
-                                                                      snapshot) {
-                                                                return StandardCase
-                                                                    .sheet(
-                                                                        snapshot
-                                                                            .data,
+                                                                      RideModel>
+                                                                  snapshot) {
+                                                                if (snapshot
+                                                                    .hasData) {
+                                                                  if (snapshot
+                                                                      .data
+                                                                      .data
+                                                                      .bookings
+                                                                      .isEmpty) {
+                                                                    return FindingOrdersSheet();
+                                                                  } else {
+                                                                    if (snapshot
+                                                                        .data
+                                                                        .data
+                                                                        .bookings[
+                                                                    0]
+                                                                        .order
+                                                                        .payUpFront) {
+                                                                      return StreamBuilder(
+                                                                        stream:
+                                                                        orderBloc
+                                                                            .orderSheet,
+                                                                        builder: (
+                                                                            BuildContext
+                                                                            context,
+                                                                            AsyncSnapshot<
+                                                                                String>
+                                                                            snap) {
+                                                                          return StandardCase
+                                                                              .selectSheetShipperPay(
+                                                                              snap
+                                                                                  .data,
+                                                                              context,
+                                                                              snapshot
+                                                                                  .data
+                                                                                  .data
+                                                                                  .bookings[0]
+                                                                                  .order
+                                                                                  .paidUpFront);
+                                                                        },
+                                                                      );
+                                                                    } else
+                                                                    if (snapshot
+                                                                        .data
+                                                                        .data
+                                                                        .bookings[
+                                                                    0]
+                                                                        .order
+                                                                        .roundTrip) {
+                                                                      return StreamBuilder(
+                                                                        stream:
+                                                                        orderBloc
+                                                                            .orderSheet,
+                                                                        builder: (
+                                                                            BuildContext
+                                                                            context,
+                                                                            AsyncSnapshot<
+                                                                                String>
+                                                                            snapshots) {
+                                                                          return RoundTripCase
+                                                                              .selectSheetRoundTrip(
+                                                                              snapshots
+                                                                                  .data,
+                                                                              context,
+                                                                              snapshot
+                                                                                  .data
+                                                                                  .data
+                                                                                  .bookings[0]
+                                                                                  .order
+                                                                                  .status);
+                                                                        },
+                                                                      );
+                                                                    } else
+                                                                    if (snapshot
+                                                                        .data
+                                                                        .data
+                                                                        .bookings[0]
+                                                                        .order
+                                                                        .cashOnDeliveryOption ==
+                                                                        "RETURN") {
+                                                                      return StreamBuilder(
+                                                                        stream:
+                                                                        orderBloc
+                                                                            .orderSheet,
+                                                                        builder: (
+                                                                            BuildContext
+                                                                            context,
+                                                                            AsyncSnapshot<
+                                                                                String>
+                                                                            snapshots) {
+                                                                          return RoundTripCase
+                                                                              .selectSheetRoundTrip(
+                                                                              snapshots
+                                                                                  .data,
+                                                                              context,
+                                                                              snapshot
+                                                                                  .data
+                                                                                  .data
+                                                                                  .bookings[0]
+                                                                                  .order
+                                                                                  .status);
+                                                                        },
+                                                                      );
+                                                                    } else {
+                                                                      return StreamBuilder(
+                                                                        stream:
+                                                                        orderBloc
+                                                                            .orderSheet,
+                                                                        builder: (
+                                                                            BuildContext
+                                                                            context,
+                                                                            AsyncSnapshot<
+                                                                                String>
+                                                                            snapshot) {
+                                                                          return StandardCase
+                                                                              .sheet(
+                                                                              snapshot
+                                                                                  .data,
+                                                                              context,
+                                                                              "NORMAL");
+                                                                        },
+                                                                      );
+                                                                    }
+                                                                  }
+                                                                } else {
+                                                                  return StreamBuilder(
+                                                                    stream: orderBloc
+                                                                        .orderSheet,
+                                                                    builder: (
+                                                                        BuildContext
                                                                         context,
-                                                                        "NORMAL");
+                                                                        AsyncSnapshot<
+                                                                            String>
+                                                                        snapshot) {
+                                                                      return StandardCase
+                                                                          .sheet(
+                                                                          snapshot
+                                                                              .data,
+                                                                          context,
+                                                                          "NORMAL");
+                                                                    },
+                                                                  );
+                                                                }
                                                               },
                                                             );
-                                                          }
-                                                        },
-                                                      );
+                                                          },
+                                                        );
+                                                      }
                                                     },
                                                   )),
                                             );
@@ -1082,8 +1139,6 @@ class HomeScreen extends StatelessWidget {
                                             alignment: Alignment.bottomRight,
                                             child: InkWell(
                                                 onTap: () {
-                                                  onlineOfflineBloc
-                                                      .setOfflineStatus(false);
                                                   onlineOfflineBloc
                                                       .setStatus(false);
                                                   approvedCaptainBloc
@@ -1298,8 +1353,6 @@ class HomeScreen extends StatelessWidget {
                                           alignment: Alignment.bottomRight,
                                           child: InkWell(
                                               onTap: () {
-                                                onlineOfflineBloc
-                                                    .setOfflineStatus(false);
                                                 onlineOfflineBloc
                                                     .setStatus(false);
                                                 approvedCaptainBloc
@@ -1526,7 +1579,7 @@ class HomeScreen extends StatelessWidget {
                                   if (snapshot.hasData) {
                                     if (snapshot.data) {
                                       return StreamBuilder(
-                                        stream: onlineOfflineBloc.goingOffline,
+                                        stream: onlineOfflineBloc.captainStatus,
                                         builder: (BuildContext context,
                                             AsyncSnapshot<bool> snapshot) {
                                           if (snapshot.hasData) {
@@ -1534,7 +1587,7 @@ class HomeScreen extends StatelessWidget {
                                               stream: orderBloc.order,
                                               builder: (BuildContext context,
                                                   AsyncSnapshot<OrderModel>
-                                                      snapshot) {
+                                                  snapshot) {
                                                 if (snapshot.hasData) {
                                                   if (snapshot
                                                       .data.data.data.isEmpty) {
@@ -1544,9 +1597,6 @@ class HomeScreen extends StatelessWidget {
                                                               .bottomRight,
                                                           child: InkWell(
                                                               onTap: () {
-                                                                onlineOfflineBloc
-                                                                    .setOfflineStatus(
-                                                                        false);
                                                                 onlineOfflineBloc
                                                                     .setStatus(
                                                                         false);
@@ -1651,9 +1701,6 @@ class HomeScreen extends StatelessWidget {
                                                         child: InkWell(
                                                             onTap: () {
                                                               onlineOfflineBloc
-                                                                  .setOfflineStatus(
-                                                                      false);
-                                                              onlineOfflineBloc
                                                                   .setStatus(
                                                                       false);
                                                               approvedCaptainBloc
@@ -1684,9 +1731,6 @@ class HomeScreen extends StatelessWidget {
                                                       Alignment.bottomRight,
                                                   child: InkWell(
                                                       onTap: () {
-                                                        onlineOfflineBloc
-                                                            .setOfflineStatus(
-                                                                false);
                                                         onlineOfflineBloc
                                                             .setStatus(false);
                                                         approvedCaptainBloc

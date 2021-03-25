@@ -77,15 +77,13 @@ class VehicleBloc {
 
   Observable<bool> get calendarColor => _calendarColor.stream;
 
-  Stream<bool> get submitValid => Observable.combineLatest3(
+  Stream<bool> get submitValid => Observable.combineLatest4(
       selectedCarBrand,
       plateNumber,
       registrationExpiredDate,
-      (
-        selectedCarBrand,
-        plateNumber,
-        registrationExpiredDate,
-      ) =>
+      selectedManuYear,
+      (selectedCarBrand, plateNumber, registrationExpiredDate,
+              selectedManufactory) =>
           true);
 
   setCalendarColor(bool val) {

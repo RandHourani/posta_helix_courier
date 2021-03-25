@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:posta_courier/models/activation_code_model.dart';
@@ -242,7 +243,7 @@ class Repository {
     return orderProvider.bookingAction(id);
   }
 
-  Future<BookingAction> setPOD(int id, String img, File sign, String ref) {
+  Future<BookingAction> setPOD(int id, String img, Uint8List sign, String ref) {
     return orderProvider.POD(id, img, sign, ref);
   }
 

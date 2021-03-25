@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:posta_courier/src/blocs/home_blocs/order_bloc.dart';
+import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/get_captain_data_bloc.dart';
 import 'package:posta_courier/src/constants/application_colors_value.dart';
-
 
 class TimerWidgetOrder extends StatelessWidget {
   @override
@@ -48,6 +48,7 @@ class HorizontalProgressIndicatorState
       });
     if (animation.isCompleted) {
       orderBloc.setOrderSheet("NULL");
+      checkCaptainDataBloc.resetSuggestion();
     } else {}
   }
 

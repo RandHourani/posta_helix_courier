@@ -74,27 +74,27 @@ class PaymentScreen extends StatelessWidget {
                       ],
                     );
                   } else {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          " ",
-                          style: TextStyle(
-                              color: AppColors.TITLE_TEXT_COLOR,
-                              fontFamily: FontFamilies.POPPINS,
-                              fontSize:
-                              (MediaQuery.of(context).size.width * 0.04) +
-                                  4,
-                              fontWeight: FontWeight.w700),
-                        ),
-                        Text(
-                          " ",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
+                  orderBloc.bookingAction();
+
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        " ",
+                        style: TextStyle(
                             color: AppColors.TITLE_TEXT_COLOR,
+                            fontFamily: FontFamilies.POPPINS,
                             fontSize:
-                            (MediaQuery.of(context).size.height * 0.017) +
-                                2,
+                                (MediaQuery.of(context).size.width * 0.04) + 4,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      Text(
+                        " ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.TITLE_TEXT_COLOR,
+                          fontSize:
+                              (MediaQuery.of(context).size.height * 0.017) + 2,
                           ),
                         )
                       ],
@@ -172,7 +172,7 @@ class PaymentScreen extends StatelessWidget {
                                     snapshot.data.data.cashOnDelivery.toString() +
                                         snapshot.data.data.currencyCode.toString(),
                                     style: TextStyle(
-                                      color: AppColors.TITLE_TEXT_COLOR,
+                                      color: Colors.white,
                                       fontFamily: FontFamilies.POPPINS,
                                       fontSize: 24,
                                     ),

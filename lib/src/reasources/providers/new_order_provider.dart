@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -12,6 +13,7 @@ import 'package:posta_courier/models/order_model.dart';
 import 'package:posta_courier/models/ride_model.dart';
 import 'package:posta_courier/src/constants/constants.dart';
 import 'package:posta_courier/src/blocs/home_blocs/order_bloc.dart';
+
 class OrderProvider {
   Client client = Client();
 
@@ -47,6 +49,9 @@ class OrderProvider {
       "Accept": "application/json",
       "Content_Type": "application/json",
     });
+    if (response.statusCode == 200) {
+      orderBloc.getOrders("NOT_PAID");
+    } else {}
     print(response.body);
   }
 
@@ -94,8 +99,8 @@ class OrderProvider {
     var queryParameters = {
       'perPage': 10.toString(),
     };
-    var uri = Uri.http(
-        'development.postahelix.com', '/api/ride/$id/bookings', queryParameters);
+    var uri = Uri.http('development.postahelix.com', '/api/ride/$id/bookings',
+        queryParameters);
 
     var response = await client.get(uri, headers: {
       "Authorization": "Bearer " + accessToken,
@@ -119,35 +124,69 @@ class OrderProvider {
     print(response.body);
     return BookingAction.fromJson(jsonDecode(response.body));
   }
-  Future<BookingAction> POD(int bookingId,String photo,File sig,String ref) async {
+
+  Future<BookingAction> POD(
+      int bookingId, String photo, Uint8List sig, String ref) async {
+    print("sig");
+    print(sig);
     final storage = new FlutterSecureStorage();
     String accessToken = await storage.read(key: "accessToken");
-
-    var acceptUrl = Constants.MAIN_URL + "booking/$bookingId/action";
-    var request = http.MultipartRequest('POST', Uri.parse(acceptUrl));
-    request.headers.addAll({
-      "Authorization": "Bearer " + accessToken,
-      "Accept": "application/json",
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ' + accessToken
+    };
+    var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(
+            'http://development.postahelix.com/api/booking/$bookingId/action'));
+    request.fields.addAll({
+      'proofs[0][type]': 'PHOTO',
+      '_method': 'PUT',
+      'proofs[0][reference]': ref
     });
-    request.files.add(
-         await http.MultipartFile.fromPath('proofs[0][image][name]',sig.path,filename: "sign.png"));
-    request.files.add(  http.MultipartFile.fromString('proofs[0][type]',"PHOTO" ));
-    request.files.add(
-         http.MultipartFile.fromString('proofs[0][reference]', ref));
-    request.files.add( http.MultipartFile.fromString(
-        '_method', "PUT"));
-    var res = await request.send();
-    final respStr = await res.stream.bytesToString();
+    // request.files.add(await http.MultipartFile.fromPath('proofs[0][image]', sig));
+    var multipartFile = http.MultipartFile.fromBytes(
+      'proofs[0][image]',
+      sig,
+      filename: 'sign.jpg', // use the real name if available, or omit
+      // contentType: MediaType('image', 'jpg'),
+    );
 
-     print(res.statusCode);
-     print(respStr);
-    return BookingAction.fromJson(jsonDecode(respStr));
+    request.files.add(multipartFile);
+    request.headers.addAll(headers);
 
+    http.StreamedResponse response = await request.send();
 
+    if (response.statusCode == 200) {
+      http.Response res = await http.Response.fromStream(response);
+      print(res.body);
+      return BookingAction.fromJson(jsonDecode(res.body));
+    } else {
+      print(response.reasonPhrase);
+    }
 
-
-
-
+    // var acceptUrl = Constants.MAIN_URL + "booking/$bookingId/action";
+    // var request = await client.put(acceptUrl,
+    //     body: json.encode({
+    //       "proofs": [
+    //         {
+    //           "type": "PHOTO",
+    //           "reference": ref,
+    //           "image": {"name": sig, "size": "0"}
+    //         }
+    //       ],
+    //       "_method": "PUT"
+    //     }),
+    //     headers: {
+    //       "Authorization": "Bearer " + accessToken,
+    //       "Accept": "application/json",
+    //       'Content-Type': 'application/json'
+    //     });
+    // request.headers.addAll({
+    //   "Authorization": "Bearer " + accessToken,
+    //   "Accept": "application/json",
+    // });
+    // request.files.add(http.MultipartFile.fromString(
   }
 
   Future<void> setBookingPay(int bookingId, int price) async {
@@ -165,7 +204,7 @@ class OrderProvider {
     print(response.body);
   }
 
-  Future<void> setShipperPay(int orderId, int price,String type) async {
+  Future<void> setShipperPay(int orderId, int price, String type) async {
     final storage = new FlutterSecureStorage();
     String accessToken = await storage.read(key: "accessToken");
     var payUrl = Constants.MAIN_URL + "order/$orderId/pay";
@@ -174,16 +213,11 @@ class OrderProvider {
       "Accept": "application/json",
       "Content_Type": "application/json",
     }, body: {
-
-        "amount": price.toString(),
-        "type": type
-
+      "amount": price.toString(),
+      "type": type
     });
     orderBloc.getRide(orderBloc.getOrder());
     print(response.statusCode);
     print(response.body);
   }
-
-
-
 }

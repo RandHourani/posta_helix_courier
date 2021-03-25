@@ -4,6 +4,7 @@ import 'package:posta_courier/models/registered_captain_model.dart';
 import 'package:posta_courier/src/reasources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:posta_courier/src/blocs/home_blocs/approved_captain_bloc.dart';
 
 class IncompleteBloc {
   final _repository = Repository();
@@ -12,20 +13,34 @@ class IncompleteBloc {
   final _vehicleDataCheck = BehaviorSubject<bool>();
   final _documentDataCheck = BehaviorSubject<bool>();
   final _captainDataCheck = BehaviorSubject<CaptainData>();
+  final _activeSugg = BehaviorSubject<ActiveSuggestion>();
   final _fullName = BehaviorSubject<String>();
 
   Observable<bool> get personal => _personalDataCheck.stream;
+
   Observable<bool> get vehicle => _vehicleDataCheck.stream;
+
   Observable<bool> get documents => _documentDataCheck.stream;
+
   Observable<LogInModel> get checkUser => _checkAuth.stream;
+
   Observable<CaptainData> get captainData => _captainDataCheck.stream;
+
   Observable<String> get fullName => _fullName.stream;
 
-  getCaptainData()
-  {
-   return  _checkAuth.value;
+  Observable<ActiveSuggestion> get suggestion => _activeSugg.stream;
+
+  getCaptainData() {
+    return _checkAuth.value;
   }
 
+  resetSuggestion() {
+    _activeSugg.add(null);
+  }
+
+  setSuggestion(ActiveSuggestion value) {
+    _activeSugg.add(value);
+  }
 
   checkUserAuth() async {
     final storage = new FlutterSecureStorage();
@@ -35,7 +50,12 @@ class IncompleteBloc {
       "version_code": 48.toString()
     });
     _checkAuth.add(user);
-
+    if (_checkAuth.value.data.activeSuggestion != null) {
+      print("sugg");
+      _activeSugg.add(_checkAuth.value.data.activeSuggestion);
+    } else {
+      print("test");
+    }
     _fullName.add(
         _checkAuth.value.data.firstName + " " + _checkAuth.value.data.lastName);
     if (_checkAuth.value.data.car.car.isEmpty) {
@@ -43,12 +63,12 @@ class IncompleteBloc {
     } else {
       _vehicleDataCheck.add(true);
     }
-
+    approvedCaptainBloc.checkUserAuth();
     if (_checkAuth.value.data.drivingCertificateBack == null ||
         _checkAuth.value.data.drivingCertificateFront == null ||
         _checkAuth.value.data.idCardFront == null ||
         _checkAuth.value.data.idCardBack == null ||
-        _checkAuth.value.data.car==null) {
+        _checkAuth.value.data.car == null) {
       _documentDataCheck.add(false);
     } else {
       _documentDataCheck.add(true);

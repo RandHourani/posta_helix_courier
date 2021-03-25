@@ -150,9 +150,9 @@ class TextFieldValidation {
   checkRegistrationExpiredDateValidation(String date) {
     DateFormat format = DateFormat("yyyy-MM-dd");
 
-    final difference1 = DateTime.now().difference(format.parse(date)).inDays;
+    final difference1 = DateTime.now().difference(format.parse(date)).inHours;
 
-    if (difference1 < 0) {
+    if (difference1 >= 1 && difference1 < 24 || difference1 > 24) {
       vehicleBloc.setRegistrationExpireDateValidation(null);
     } else {
       vehicleBloc.setRegistrationExpireDateValidation(
@@ -164,9 +164,14 @@ class TextFieldValidation {
   checkNewCarRegistrationExpiredDateValidation(String date) {
     DateFormat format = DateFormat("yyyy-MM-dd");
 
-    final difference1 = DateTime.now().difference(format.parse(date)).inDays;
+    final difference1 = DateTime
+        .now()
+        .difference(format.parse(date))
+        .inHours;
 
-    if (difference1 < 0) {
+    if (difference1 <= 24 && difference1 < 48 ||
+        difference1 < 24 && difference1 < 24 ||
+        difference1 >= 1 && difference1 <= 24) {
       newVehicleBloc.setRegistrationExpireDateValidation(null);
     } else {
       newVehicleBloc.setRegistrationExpireDateValidation(

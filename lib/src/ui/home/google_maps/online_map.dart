@@ -29,9 +29,9 @@ class OnlineMap extends StatelessWidget{
               child: GoogleMap(
             liteModeEnabled: true,
             onMapCreated: (GoogleMapController controller) {
-              rootBundle.loadString('assets/map_style').then((string) {
-                _controller.setMapStyle(string);
-              });
+              // rootBundle.loadString('assets/map_style').then((string) {
+              //   _controller.setMapStyle(string);
+              // });
 
               _controller = controller;
             },
@@ -58,11 +58,11 @@ class OnlineMap extends StatelessWidget{
               tilt: 59.0, // 2
             ),
             onMapCreated: (GoogleMapController controller) {
-              rootBundle
-                  .loadString('assets/map_style')
-                  .then((string) {
-                _controller.setMapStyle(string);
-              });
+              // rootBundle
+              //     .loadString('assets/map_style')
+              //     .then((string) {
+              //   _controller.setMapStyle(string);
+              // });
 
               _controller = controller;
             },

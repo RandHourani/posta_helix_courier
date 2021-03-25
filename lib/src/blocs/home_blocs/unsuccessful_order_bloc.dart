@@ -9,6 +9,7 @@ class UnsuccessfulOrderBloc {
   final _repository = Repository();
   final _reasons = BehaviorSubject<UnsuccessfulOrderModel>();
   final _selectedReason = BehaviorSubject<String>();
+  final _selectedType = BehaviorSubject<String>();
   final _selectedReasonDetails = BehaviorSubject<Reason>();
   final _reason = BehaviorSubject<ActionObj>();
   final _actionObj = ActionObj();
@@ -18,12 +19,16 @@ class UnsuccessfulOrderBloc {
   Observable<String> get selectedReasons => _selectedReason.stream;
 
   unsuccessfulReasons(String type) async {
-    UnsuccessfulOrderModel _unsuccessfulReason =
-        await _repository.unsuccessfulReason(type);
-    _reasons.add(_unsuccessfulReason);
-    _selectedReasonDetails.add(_reasons.value.data.data.first);
-    _selectedReason.add(_reasons.value.data.data.first.reason);
-    _actionObj.setAction("UNSUCCESSFUL");
+    if (_selectedType.value != type) {
+      _selectedType.add(type);
+
+      UnsuccessfulOrderModel _unsuccessfulReason =
+          await _repository.unsuccessfulReason(type);
+      _reasons.add(_unsuccessfulReason);
+      _selectedReasonDetails.add(_reasons.value.data.data.first);
+      _selectedReason.add(_reasons.value.data.data.first.reason);
+      _actionObj.setAction("UNSUCCESSFUL");
+    } else {}
   }
 
   setSelectedReason(String value) {
