@@ -144,15 +144,20 @@ class OrderProvider {
       '_method': 'PUT',
       'proofs[0][reference]': ref
     });
-    // request.files.add(await http.MultipartFile.fromPath('proofs[0][image]', sig));
-    var multipartFile = http.MultipartFile.fromBytes(
-      'proofs[0][image]',
-      sig,
-      filename: 'sign.jpg', // use the real name if available, or omit
-      // contentType: MediaType('image', 'jpg'),
-    );
+    if (photo != null) {
+      request.files.add(await http.MultipartFile.fromPath(
+          'proofs[0][image]', photo,
+          filename: 'photo.jpg'));
+    } else {
+      var multipartFile = http.MultipartFile.fromBytes(
+        'proofs[0][image]',
+        sig,
+        filename: 'sign.jpg', // use the real name if available, or omit
+        // contentType: MediaType('image', 'jpg'),
+      );
 
-    request.files.add(multipartFile);
+      request.files.add(multipartFile);
+    }
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();

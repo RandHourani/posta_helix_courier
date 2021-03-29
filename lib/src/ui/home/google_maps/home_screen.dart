@@ -116,1494 +116,150 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Container(
-              child: SvgPicture.asset(
-                "assets/images/home_page_logo.svg",
-                width: 32,
-                height: 32,
-              ),
-            ),
-            actions: <Widget>[
-              Padding(
-                  padding: EdgeInsets.only(right: 20.0),
-                  child: InkWell(
-                    splashColor: Colors.white,
-                    onTap: () {
-                      checkCaptainDataBloc.checkUserAuth();
-                      approvedCaptainBloc.checkUserAuth();
-                      orderBloc.getOrders("NOT_PAID");
-                    },
-                    child: SvgPicture.asset(
-                      "assets/images/refresh.svg",
-                      width: 22,
-                      height: 22,
-                    ),
-                  )),
-            ],
+          child: SvgPicture.asset(
+            "assets/images/home_page_logo.svg",
+            width: 32,
+            height: 32,
           ),
-          body: StreamBuilder(
-            stream: orderBloc.order,
-            builder: (BuildContext context, AsyncSnapshot<OrderModel> snap) {
-              if (snap.hasData) {
-                if (snap.data.data.data.isEmpty) {
-                  return StreamBuilder(
-                    stream: onlineOfflineBloc.captainStatus,
-                    builder:
-                        (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                      if (snapshot.hasData) {
-                        if (snapshot.data) {
-                          return Stack(
-                            children: [
-                              StreamBuilder(
-                                  stream: onlineOfflineBloc.captainStatus,
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<bool> snapshot) {
-                                    if (snapshot.hasData) {
-                                      if (snapshot.data) {
-                                        return OnlineMap(
-                                          locationPoints: _center,
-                                        );
-                                      } else {
-                                        return OfflineMap(
-                                          locationPoints: _center,
-                                        );
-                                      }
-                                    } else {
-                                      return OfflineMap(
-                                        locationPoints: _center,
-                                      );
-                                    }
-                                  }),
-                              SafeArea(
-                                child: Align(
-                                  alignment: Alignment.topCenter,
-                                  child: Container(
-                                    height: 100,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              "assets/images/rectangle.png"),
-                                          fit: BoxFit.fill),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Stack(children: [
-                                StreamBuilder(
-                                  stream: onlineOfflineBloc.captainStatus,
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<bool> snapshot) {
-                                    if (snapshot.hasData) {
-                                      if (snapshot.data) {
-                                        return StreamBuilder(
-                                          stream:
-                                          onlineOfflineBloc.captainStatus,
-                                          builder: (BuildContext context,
-                                              AsyncSnapshot<bool> snapshot) {
-                                            if (snapshot.hasData) {
-                                              return StreamBuilder(
-                                                stream: orderBloc.order,
-                                                builder: (BuildContext context,
-                                                    AsyncSnapshot<OrderModel>
-                                                    snapshot) {
-                                                  if (snapshot.hasData) {
-                                                    if (snapshot.data.data.data
-                                                        .isEmpty) {
-                                                      return SafeArea(
-                                                        child: Align(
-                                                            alignment: Alignment
-                                                                .bottomRight,
-                                                            child: InkWell(
-                                                                onTap: () {
-                                                                  onlineOfflineBloc
-                                                                      .setStatus(
-                                                                      false);
-                                                                  onlineOfflineBloc
-                                                                      .setStatus(
-                                                                      false);
-                                                                  approvedCaptainBloc
-                                                                      .checkCaptainStatus();
-                                                                },
-                                                                child:
-                                                                    Container(
-                                                                  margin: EdgeInsets
-                                                                      .only(
-                                                                          bottom:
-                                                                              170,
-                                                                          right:
-                                                                              30),
-                                                                  child:
-                                                                      SvgPicture
-                                                                          .asset(
-                                                                    "assets/images/stop.svg",
-                                                                    width: 60,
-                                                                    height: 60,
-                                                                  ),
-                                                                ))),
-                                                      );
-                                                    } else {
-                                                      return SafeArea(
-                                                        child: Align(
-                                                            alignment: Alignment
-                                                                .bottomRight,
-                                                            child: InkWell(
-                                                                onTap: () {
-                                                                  onlineOfflineBloc
-                                                                      .setColor(
-                                                                          false);
-                                                                  return showDialog<
-                                                                          void>(
-                                                                      context:
-                                                                          context,
-                                                                      barrierDismissible:
-                                                                          false,
-                                                                      // user must tap button!
-                                                                      builder:
-                                                                          (BuildContext
-                                                                              context) {
-                                                                        return GoingOfflineErrorDialog();
-                                                                      });
-                                                                },
-                                                                child:
-                                                                    Container(
-                                                                        margin: EdgeInsets.only(
-                                                                            bottom:
-                                                                                170,
-                                                                            right:
-                                                                                30),
-                                                                        child:
-                                                                            StreamBuilder(
-                                                                          stream:
-                                                                              onlineOfflineBloc.stopColor,
-                                                                          builder:
-                                                                              (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                                                                            if (snapshot.hasData) {
-                                                                              if (snapshot.data) {
-                                                                                return SvgPicture.asset(
-                                                                                  "assets/images/stop.svg",
-                                                                                  width: 60,
-                                                                                  height: 60,
-                                                                                );
-                                                                              } else {
-                                                                                return SvgPicture.asset(
-                                                                                  "assets/images/error_stoping.svg",
-                                                                                  width: 60,
-                                                                                  height: 60,
-                                                                                );
-                                                                              }
-                                                                            } else {
-                                                                              return SvgPicture.asset(
-                                                                                "assets/images/stop.svg",
-                                                                                width: 60,
-                                                                                height: 60,
-                                                                              );
-                                                                            }
-                                                                          },
-                                                                        )))),
-                                                      );
-                                                    }
-                                                  } else {
-                                                    return SafeArea(
-                                                      child: Align(
-                                                          alignment: Alignment
-                                                              .bottomRight,
-                                                          child: InkWell(
-                                                              onTap: () {
-                                                                onlineOfflineBloc
-                                                                    .setStatus(
-                                                                    false);
-                                                                onlineOfflineBloc
-                                                                    .setStatus(
-                                                                    false);
-                                                                approvedCaptainBloc
-                                                                    .checkCaptainStatus();
-                                                              },
-                                                              child: Container(
-                                                                margin: EdgeInsets
-                                                                    .only(
-                                                                        bottom:
-                                                                            170,
-                                                                        right:
-                                                                            30),
-                                                                child:
-                                                                    SvgPicture
-                                                                        .asset(
-                                                                  "assets/images/stop.svg",
-                                                                  width: 60,
-                                                                  height: 60,
-                                                                ),
-                                                              ))),
-                                                    );
-                                                  }
-                                                },
-                                              );
-                                            } else {
-                                              return SafeArea(
-                                                child: Align(
-                                                    alignment:
-                                                        Alignment.bottomRight,
-                                                    child: InkWell(
-                                                        onTap: () {
-                                                          onlineOfflineBloc
-                                                              .setStatus(
-                                                              false);
-                                                          onlineOfflineBloc
-                                                              .setStatus(false);
-                                                          approvedCaptainBloc
-                                                              .checkCaptainStatus();
-                                                        },
-                                                        child: Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  bottom: 170,
-                                                                  right: 30),
-                                                          child:
-                                                              SvgPicture.asset(
-                                                            "assets/images/stop.svg",
-                                                            width: 60,
-                                                            height: 60,
-                                                          ),
-                                                        ))),
-                                              );
-                                            }
-                                          },
-                                        );
-                                      } else {
-                                        return Container();
-                                      }
-                                    } else {
-                                      return Container();
-                                    }
-                                  },
-                                ),
-                                StreamBuilder(
-                                    stream: onlineOfflineBloc.captainStatus,
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot<bool> snapshot) {
-                                      if (snapshot.hasData) {
-                                        if (snapshot.data) {
-                                          if (snapshot.data) {
-                                            return SafeArea(
-                                              child: Align(
-                                                  alignment:
-                                                      Alignment.bottomCenter,
-                                                  child: StreamBuilder(
-                                                    stream: checkCaptainDataBloc
-                                                        .suggestion,
-                                                    builder: (BuildContext
-                                                    context,
-                                                        AsyncSnapshot<
-                                                            ActiveSuggestion>
-                                                        snapshot) {
-                                                      if (snapshot.hasData) {
-                                                        return NewOrderSuggestionSheet();
-                                                      } else {
-                                                        return StreamBuilder(
-                                                          stream: orderBloc
-                                                              .orderSheet,
-                                                          builder: (BuildContext
-                                                          context,
-                                                              AsyncSnapshot<
-                                                                  String>
-                                                              snapshot) {
-                                                            return StreamBuilder(
-                                                              stream: orderBloc
-                                                                  .ride,
-                                                              builder: (
-                                                                  BuildContext
-                                                                  context,
-                                                                  AsyncSnapshot<
-                                                                      RideModel>
-                                                                  snapshot) {
-                                                                if (snapshot
-                                                                    .hasData) {
-                                                                  if (snapshot
-                                                                      .data
-                                                                      .data
-                                                                      .bookings
-                                                                      .isEmpty) {
-                                                                    return FindingOrdersSheet();
-                                                                  } else {
-                                                                    if (snapshot
-                                                                        .data
-                                                                        .data
-                                                                        .bookings[
-                                                                    0]
-                                                                        .order
-                                                                        .payUpFront) {
-                                                                      return StreamBuilder(
-                                                                        stream:
-                                                                        orderBloc
-                                                                            .orderSheet,
-                                                                        builder: (
-                                                                            BuildContext
-                                                                            context,
-                                                                            AsyncSnapshot<
-                                                                                String>
-                                                                            snap) {
-                                                                          return StandardCase
-                                                                              .selectSheetShipperPay(
-                                                                              snap
-                                                                                  .data,
-                                                                              context,
-                                                                              snapshot
-                                                                                  .data
-                                                                                  .data
-                                                                                  .bookings[0]
-                                                                                  .order
-                                                                                  .paidUpFront);
-                                                                        },
-                                                                      );
-                                                                    } else
-                                                                    if (snapshot
-                                                                        .data
-                                                                        .data
-                                                                        .bookings[
-                                                                    0]
-                                                                        .order
-                                                                        .roundTrip) {
-                                                                      return StreamBuilder(
-                                                                        stream:
-                                                                        orderBloc
-                                                                            .orderSheet,
-                                                                        builder: (
-                                                                            BuildContext
-                                                                            context,
-                                                                            AsyncSnapshot<
-                                                                                String>
-                                                                            snapshots) {
-                                                                          return RoundTripCase
-                                                                              .selectSheetRoundTrip(
-                                                                              snapshots
-                                                                                  .data,
-                                                                              context,
-                                                                              snapshot
-                                                                                  .data
-                                                                                  .data
-                                                                                  .bookings[0]
-                                                                                  .order
-                                                                                  .status);
-                                                                        },
-                                                                      );
-                                                                    } else
-                                                                    if (snapshot
-                                                                        .data
-                                                                        .data
-                                                                        .bookings[0]
-                                                                        .order
-                                                                        .cashOnDeliveryOption ==
-                                                                        "RETURN") {
-                                                                      return StreamBuilder(
-                                                                        stream:
-                                                                        orderBloc
-                                                                            .orderSheet,
-                                                                        builder: (
-                                                                            BuildContext
-                                                                            context,
-                                                                            AsyncSnapshot<
-                                                                                String>
-                                                                            snapshots) {
-                                                                          return RoundTripCase
-                                                                              .selectSheetRoundTrip(
-                                                                              snapshots
-                                                                                  .data,
-                                                                              context,
-                                                                              snapshot
-                                                                                  .data
-                                                                                  .data
-                                                                                  .bookings[0]
-                                                                                  .order
-                                                                                  .status);
-                                                                        },
-                                                                      );
-                                                                    } else {
-                                                                      return StreamBuilder(
-                                                                        stream:
-                                                                        orderBloc
-                                                                            .orderSheet,
-                                                                        builder: (
-                                                                            BuildContext
-                                                                            context,
-                                                                            AsyncSnapshot<
-                                                                                String>
-                                                                            snapshot) {
-                                                                          return StandardCase
-                                                                              .sheet(
-                                                                              snapshot
-                                                                                  .data,
-                                                                              context,
-                                                                              "NORMAL");
-                                                                        },
-                                                                      );
-                                                                    }
-                                                                  }
-                                                                } else {
-                                                                  return StreamBuilder(
-                                                                    stream: orderBloc
-                                                                        .orderSheet,
-                                                                    builder: (
-                                                                        BuildContext
-                                                                        context,
-                                                                        AsyncSnapshot<
-                                                                            String>
-                                                                        snapshot) {
-                                                                      return StandardCase
-                                                                          .sheet(
-                                                                          snapshot
-                                                                              .data,
-                                                                          context,
-                                                                          "NORMAL");
-                                                                    },
-                                                                  );
-                                                                }
-                                                              },
-                                                            );
-                                                          },
-                                                        );
-                                                      }
-                                                    },
-                                                  )),
-                                            );
-                                          } else {
-                                            return SafeArea(
-                                              child: Align(
-                                                  alignment:
-                                                      Alignment.bottomCenter,
-                                                  child: OnlineOfflineSheet()),
-                                            );
-                                          }
-                                        } else {
-                                          return SafeArea(
-                                            child: Align(
-                                                alignment:
-                                                    Alignment.bottomCenter,
-                                                child: OnlineOfflineSheet()),
-                                          );
-                                        }
-                                      } else {
-                                        return SafeArea(
-                                          child: Align(
-                                              alignment: Alignment.bottomCenter,
-                                              child: OnlineOfflineSheet()),
-                                        );
-                                      }
-                                    }),
-                              ])
-                            ],
-                          );
-                        } else {
-                          return Stack(
-                            children: [
-                              OfflineMap(
-                                locationPoints: _center,
-                              ),
-                              SafeArea(
-                                child: Align(
-                                  alignment: Alignment.topCenter,
-                                  child: Container(
-                                    height: 100,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              "assets/images/rectangle.png"),
-                                          fit: BoxFit.fill),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SafeArea(
-                                child: Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: OnlineOfflineSheet()),
-                              )
-                            ],
-                          );
-                        }
-                      } else {
-                        return Stack(
-                          children: [
-                            OfflineMap(
-                              locationPoints: _center,
-                            ),
-                            SafeArea(
-                              child: Align(
-                                alignment: Alignment.topCenter,
-                                child: Container(
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/images/rectangle.png"),
-                                        fit: BoxFit.fill),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SafeArea(
-                              child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: OnlineOfflineSheet()),
-                            )
-                          ],
-                        );
-                      }
-                    },
-                  );
-                } else {
-                  onlineOfflineBloc.setStatus(true);
-                  return StreamBuilder(
-                    stream: onlineOfflineBloc.captainStatus,
-                    builder:
-                        (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                      if (snapshot.hasData) {
-                        if (snapshot.data) {
-                          return Stack(
-                            children: [
-                              StreamBuilder(
-                                  stream: onlineOfflineBloc.captainStatus,
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<bool> snapshot) {
-                                    if (snapshot.hasData) {
-                                      if (snapshot.data) {
-                                        return OnlineMap(
-                                          locationPoints: _center,
-                                        );
-                                      } else {
-                                        return OfflineMap(
-                                          locationPoints: _center,
-                                        );
-                                      }
-                                    } else {
-                                      return OfflineMap(
-                                        locationPoints: _center,
-                                      );
-                                    }
-                                  }),
-                              SafeArea(
-                                child: Align(
-                                  alignment: Alignment.topCenter,
-                                  child: Container(
-                                    height: 100,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              "assets/images/rectangle.png"),
-                                          fit: BoxFit.fill),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SafeArea(
-                                child: Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Container(
-                                      margin: EdgeInsets.only(top: 50),
-                                      height: 120,
-                                      width: MediaQuery.of(context).size.width,
-                                      child: CaptainOrders(
-                                        orders: snap.data,
-                                      ),
-                                    )),
-                              ),
-                              Stack(children: [
-                                StreamBuilder(
-                                  stream: onlineOfflineBloc.captainStatus,
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<bool> snapshot) {
-                                    if (snapshot.hasData) {
-                                      if (snapshot.data) {
-                                        return StreamBuilder(
-                                          stream:
-                                          onlineOfflineBloc.captainStatus,
-                                          builder: (BuildContext context,
-                                              AsyncSnapshot<bool> snapshot) {
-                                            if (snapshot.hasData) {
-                                              return StreamBuilder(
-                                                stream: orderBloc.order,
-                                                builder: (BuildContext context,
-                                                    AsyncSnapshot<OrderModel>
-                                                    snapshot) {
-                                                  if (snapshot.hasData) {
-                                                    if (snapshot.data.data.data
-                                                        .isEmpty) {
-                                                      return SafeArea(
-                                                        child: Align(
-                                                            alignment: Alignment
-                                                                .bottomRight,
-                                                            child: InkWell(
-                                                                onTap: () {
-
-                                                                  onlineOfflineBloc
-                                                                      .setStatus(
-                                                                          false);
-                                                                  approvedCaptainBloc
-                                                                      .checkCaptainStatus();
-                                                                },
-                                                                child:
-                                                                    Container(
-                                                                  margin: EdgeInsets
-                                                                      .only(
-                                                                          bottom:
-                                                                              170,
-                                                                          right:
-                                                                              30),
-                                                                  child:
-                                                                      SvgPicture
-                                                                          .asset(
-                                                                    "assets/images/stop.svg",
-                                                                    width: 60,
-                                                                    height: 60,
-                                                                  ),
-                                                                ))),
-                                                      );
-                                                    } else {
-                                                      return SafeArea(
-                                                        child: Align(
-                                                            alignment: Alignment
-                                                                .bottomRight,
-                                                            child: InkWell(
-                                                                onTap: () {
-                                                                  onlineOfflineBloc
-                                                                      .setColor(
-                                                                          false);
-                                                                  return showDialog<
-                                                                          void>(
-                                                                      context:
-                                                                          context,
-                                                                      barrierDismissible:
-                                                                          false,
-                                                                      // user must tap button!
-                                                                      builder:
-                                                                          (BuildContext
-                                                                              context) {
-                                                                        return GoingOfflineErrorDialog();
-                                                                      });
-                                                                },
-                                                                child:
-                                                                    Container(
-                                                                        margin: EdgeInsets.only(
-                                                                            bottom:
-                                                                                170,
-                                                                            right:
-                                                                                30),
-                                                                        child:
-                                                                            StreamBuilder(
-                                                                          stream:
-                                                                              onlineOfflineBloc.stopColor,
-                                                                          builder:
-                                                                              (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                                                                            if (snapshot.hasData) {
-                                                                              if (snapshot.data) {
-                                                                                return SvgPicture.asset(
-                                                                                  "assets/images/stop.svg",
-                                                                                  width: 60,
-                                                                                  height: 60,
-                                                                                );
-                                                                              } else {
-                                                                                return SvgPicture.asset(
-                                                                                  "assets/images/error_stoping.svg",
-                                                                                  width: 60,
-                                                                                  height: 60,
-                                                                                );
-                                                                              }
-                                                                            } else {
-                                                                              return SvgPicture.asset(
-                                                                                "assets/images/stop.svg",
-                                                                                width: 60,
-                                                                                height: 60,
-                                                                              );
-                                                                            }
-                                                                          },
-                                                                        )))),
-                                                      );
-                                                    }
-                                                  } else {
-                                                    return SafeArea(
-                                                      child: Align(
-                                                          alignment: Alignment
-                                                              .bottomRight,
-                                                          child: InkWell(
-                                                              onTap: () {
-
-                                                                onlineOfflineBloc
-                                                                    .setStatus(
-                                                                        false);
-                                                                approvedCaptainBloc
-                                                                    .checkCaptainStatus();
-                                                              },
-                                                              child: Container(
-                                                                margin: EdgeInsets
-                                                                    .only(
-                                                                        bottom:
-                                                                            170,
-                                                                        right:
-                                                                            30),
-                                                                child:
-                                                                    SvgPicture
-                                                                        .asset(
-                                                                  "assets/images/stop.svg",
-                                                                  width: 60,
-                                                                  height: 60,
-                                                                ),
-                                                              ))),
-                                                    );
-                                                  }
-                                                },
-                                              );
-                                            } else {
-                                              return SafeArea(
-                                                child: Align(
-                                                    alignment:
-                                                        Alignment.bottomRight,
-                                                    child: InkWell(
-                                                        onTap: () {
-                                                          onlineOfflineBloc
-                                                              .setStatus(false);
-                                                          approvedCaptainBloc
-                                                              .checkCaptainStatus();
-                                                        },
-                                                        child: Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  bottom: 170,
-                                                                  right: 30),
-                                                          child:
-                                                              SvgPicture.asset(
-                                                            "assets/images/stop.svg",
-                                                            width: 60,
-                                                            height: 60,
-                                                          ),
-                                                        ))),
-                                              );
-                                            }
-                                          },
-                                        );
-                                      } else {
-                                        return Container();
-                                      }
-                                    } else {
-                                      return Container();
-                                    }
-                                  },
-                                ),
-                                StreamBuilder(
-                                    stream: onlineOfflineBloc.captainStatus,
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot<bool> snapshot) {
-                                      if (snapshot.hasData) {
-                                        if (snapshot.data) {
-                                          if (snapshot.data) {
-                                            return SafeArea(
-                                              child: Align(
-                                                  alignment:
-                                                      Alignment.bottomCenter,
-                                                  child: StreamBuilder(
-                                                    stream: checkCaptainDataBloc
-                                                        .suggestion,
-                                                    builder: (BuildContext
-                                                    context,
-                                                        AsyncSnapshot<
-                                                            ActiveSuggestion>
-                                                        snapshot) {
-                                                      if (snapshot.hasData) {
-                                                        return NewOrderSuggestionSheet();
-                                                      } else {
-                                                        return StreamBuilder(
-                                                          stream: orderBloc
-                                                              .orderSheet,
-                                                          builder: (BuildContext
-                                                          context,
-                                                              AsyncSnapshot<
-                                                                  String>
-                                                              snapshot) {
-                                                            return StreamBuilder(
-                                                              stream: orderBloc
-                                                                  .ride,
-                                                              builder: (
-                                                                  BuildContext
-                                                                  context,
-                                                                  AsyncSnapshot<
-                                                                      RideModel>
-                                                                  snapshot) {
-                                                                if (snapshot
-                                                                    .hasData) {
-                                                                  if (snapshot
-                                                                      .data
-                                                                      .data
-                                                                      .bookings
-                                                                      .isEmpty) {
-                                                                    return FindingOrdersSheet();
-                                                                  } else {
-                                                                    if (snapshot
-                                                                        .data
-                                                                        .data
-                                                                        .bookings[
-                                                                    0]
-                                                                        .order
-                                                                        .payUpFront) {
-                                                                      return StreamBuilder(
-                                                                        stream:
-                                                                        orderBloc
-                                                                            .orderSheet,
-                                                                        builder: (
-                                                                            BuildContext
-                                                                            context,
-                                                                            AsyncSnapshot<
-                                                                                String>
-                                                                            snap) {
-                                                                          return StandardCase
-                                                                              .selectSheetShipperPay(
-                                                                              snap
-                                                                                  .data,
-                                                                              context,
-                                                                              snapshot
-                                                                                  .data
-                                                                                  .data
-                                                                                  .bookings[0]
-                                                                                  .order
-                                                                                  .paidUpFront);
-                                                                        },
-                                                                      );
-                                                                    } else
-                                                                    if (snapshot
-                                                                        .data
-                                                                        .data
-                                                                        .bookings[
-                                                                    0]
-                                                                        .order
-                                                                        .roundTrip) {
-                                                                      return StreamBuilder(
-                                                                        stream:
-                                                                        orderBloc
-                                                                            .orderSheet,
-                                                                        builder: (
-                                                                            BuildContext
-                                                                            context,
-                                                                            AsyncSnapshot<
-                                                                                String>
-                                                                            snapshots) {
-                                                                          return RoundTripCase
-                                                                              .selectSheetRoundTrip(
-                                                                              snapshots
-                                                                                  .data,
-                                                                              context,
-                                                                              snapshot
-                                                                                  .data
-                                                                                  .data
-                                                                                  .bookings[0]
-                                                                                  .order
-                                                                                  .status);
-                                                                        },
-                                                                      );
-                                                                    } else
-                                                                    if (snapshot
-                                                                        .data
-                                                                        .data
-                                                                        .bookings[0]
-                                                                        .order
-                                                                        .cashOnDeliveryOption ==
-                                                                        "RETURN") {
-                                                                      return StreamBuilder(
-                                                                        stream:
-                                                                        orderBloc
-                                                                            .orderSheet,
-                                                                        builder: (
-                                                                            BuildContext
-                                                                            context,
-                                                                            AsyncSnapshot<
-                                                                                String>
-                                                                            snapshots) {
-                                                                          return RoundTripCase
-                                                                              .selectSheetRoundTrip(
-                                                                              snapshots
-                                                                                  .data,
-                                                                              context,
-                                                                              snapshot
-                                                                                  .data
-                                                                                  .data
-                                                                                  .bookings[0]
-                                                                                  .order
-                                                                                  .status);
-                                                                        },
-                                                                      );
-                                                                    } else {
-                                                                      return StreamBuilder(
-                                                                        stream:
-                                                                        orderBloc
-                                                                            .orderSheet,
-                                                                        builder: (
-                                                                            BuildContext
-                                                                            context,
-                                                                            AsyncSnapshot<
-                                                                                String>
-                                                                            snapshot) {
-                                                                          return StandardCase
-                                                                              .sheet(
-                                                                              snapshot
-                                                                                  .data,
-                                                                              context,
-                                                                              "NORMAL");
-                                                                        },
-                                                                      );
-                                                                    }
-                                                                  }
-                                                                } else {
-                                                                  return StreamBuilder(
-                                                                    stream: orderBloc
-                                                                        .orderSheet,
-                                                                    builder: (
-                                                                        BuildContext
-                                                                        context,
-                                                                        AsyncSnapshot<
-                                                                            String>
-                                                                        snapshot) {
-                                                                      return StandardCase
-                                                                          .sheet(
-                                                                          snapshot
-                                                                              .data,
-                                                                          context,
-                                                                          "NORMAL");
-                                                                    },
-                                                                  );
-                                                                }
-                                                              },
-                                                            );
-                                                          },
-                                                        );
-                                                      }
-                                                    },
-                                                  )),
-                                            );
-                                          } else {
-                                            return SafeArea(
-                                              child: Align(
-                                                  alignment:
-                                                      Alignment.bottomCenter,
-                                                  child: OnlineOfflineSheet()),
-                                            );
-                                          }
-                                        } else {
-                                          return SafeArea(
-                                            child: Align(
-                                                alignment:
-                                                    Alignment.bottomCenter,
-                                                child: OnlineOfflineSheet()),
-                                          );
-                                        }
-                                      } else {
-                                        return SafeArea(
-                                          child: Align(
-                                              alignment: Alignment.bottomCenter,
-                                              child: OnlineOfflineSheet()),
-                                        );
-                                      }
-                                    }),
-                              ])
-                            ],
-                          );
-                        } else {
-                          return Stack(
-                            children: [
-                              OnlineMap(
-                                locationPoints: _center,
-                              ),
-                              SafeArea(
-                                child: Align(
-                                  alignment: Alignment.topCenter,
-                                  child: Container(
-                                    height: 100,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              "assets/images/rectangle.png"),
-                                          fit: BoxFit.fill),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SafeArea(
-                                child: Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Container(
-                                      margin: EdgeInsets.only(top: 50),
-                                      height: 120,
-                                      width: MediaQuery.of(context).size.width,
-                                      child: CaptainOrders(
-                                        orders: snap.data,
-                                      ),
-                                    )),
-                              ),
-                              Stack(children: [
-                                snap.data.data.data.isEmpty
-                                    ? SafeArea(
-                                        child: Align(
-                                            alignment: Alignment.bottomRight,
-                                            child: InkWell(
-                                                onTap: () {
-                                                  onlineOfflineBloc
-                                                      .setStatus(false);
-                                                  approvedCaptainBloc
-                                                      .checkCaptainStatus();
-                                                },
-                                                child: Container(
-                                                  margin: EdgeInsets.only(
-                                                      bottom: 170, right: 30),
-                                                  child: SvgPicture.asset(
-                                                    "assets/images/stop.svg",
-                                                    width: 60,
-                                                    height: 60,
-                                                  ),
-                                                ))),
-                                      )
-                                    : SafeArea(
-                                        child: Align(
-                                            alignment: Alignment.bottomRight,
-                                            child: InkWell(
-                                                onTap: () {
-                                                  onlineOfflineBloc
-                                                      .setColor(false);
-                                                  return showDialog<void>(
-                                                      context: context,
-                                                      barrierDismissible: false,
-                                                      // user must tap button!
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return GoingOfflineErrorDialog();
-                                                      });
-                                                },
-                                                child: Container(
-                                                    margin: EdgeInsets.only(
-                                                        bottom: 170, right: 30),
-                                                    child: StreamBuilder(
-                                                      stream: onlineOfflineBloc
-                                                          .stopColor,
-                                                      builder: (BuildContext
-                                                              context,
-                                                          AsyncSnapshot<dynamic>
-                                                              snapshot) {
-                                                        if (snapshot.hasData) {
-                                                          if (snapshot.data) {
-                                                            return SvgPicture
-                                                                .asset(
-                                                              "assets/images/stop.svg",
-                                                              width: 60,
-                                                              height: 60,
-                                                            );
-                                                          } else {
-                                                            return SvgPicture
-                                                                .asset(
-                                                              "assets/images/error_stoping.svg",
-                                                              width: 60,
-                                                              height: 60,
-                                                            );
-                                                          }
-                                                        } else {
-                                                          return SvgPicture
-                                                              .asset(
-                                                            "assets/images/stop.svg",
-                                                            width: 60,
-                                                            height: 60,
-                                                          );
-                                                        }
-                                                      },
-                                                    )))),
-                                      ),
-                                SafeArea(
-                                  child: Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: StreamBuilder(
-                                        stream: orderBloc.orderSheet,
-                                        builder: (BuildContext context,
-                                            AsyncSnapshot<String> snapshot) {
-                                          return StreamBuilder(
-                                            stream: orderBloc.ride,
-                                            builder: (BuildContext context,
-                                                AsyncSnapshot<RideModel>
-                                                    snapshot) {
-                                              if (snapshot.hasData) {
-                                                if (snapshot.data.data.bookings
-                                                    .isEmpty) {
-                                                  return FindingOrdersSheet();
-                                                } else {
-                                                  if (snapshot
-                                                      .data
-                                                      .data
-                                                      .bookings[0]
-                                                      .order
-                                                      .payUpFront) {
-                                                    return StreamBuilder(
-                                                      stream:
-                                                          orderBloc.orderSheet,
-                                                      builder: (BuildContext
-                                                              context,
-                                                          AsyncSnapshot<String>
-                                                              snap) {
-                                                        return StandardCase
-                                                            .selectSheetShipperPay(
-                                                                snap.data,
-                                                                context,
-                                                                snapshot
-                                                                    .data
-                                                                    .data
-                                                                    .bookings[0]
-                                                                    .order
-                                                                    .paidUpFront);
-                                                      },
-                                                    );
-                                                  } else if (snapshot
-                                                      .data
-                                                      .data
-                                                      .bookings[0]
-                                                      .order
-                                                      .roundTrip) {
-                                                    return StreamBuilder(
-                                                      stream:
-                                                          orderBloc.orderSheet,
-                                                      builder: (BuildContext
-                                                              context,
-                                                          AsyncSnapshot<String>
-                                                              snapshots) {
-                                                        return RoundTripCase
-                                                            .selectSheetRoundTrip(
-                                                                snapshots.data,
-                                                                context,
-                                                                snapshot
-                                                                    .data
-                                                                    .data
-                                                                    .bookings[0]
-                                                                    .order
-                                                                    .status);
-                                                      },
-                                                    );
-                                                  } else {
-                                                    return StreamBuilder(
-                                                      stream:
-                                                          orderBloc.orderSheet,
-                                                      builder: (BuildContext
-                                                              context,
-                                                          AsyncSnapshot<String>
-                                                              snapshot) {
-                                                        return StandardCase
-                                                            .sheet(
-                                                                snapshot.data,
-                                                                context,
-                                                                "NORMAL");
-                                                      },
-                                                    );
-                                                  }
-                                                }
-                                              } else {
-                                                return StreamBuilder(
-                                                  stream: orderBloc.orderSheet,
-                                                  builder:
-                                                      (BuildContext context,
-                                                          AsyncSnapshot<String>
-                                                              snapshot) {
-                                                    return StandardCase.sheet(
-                                                        snapshot.data,
-                                                        context,
-                                                        "NORMAL");
-                                                  },
-                                                );
-                                              }
-                                            },
-                                          );
-                                        },
-                                      )),
-                                )
-                              ])
-                            ],
-                          );
-                        }
-                      } else {
-                        return Stack(
-                          children: [
-                            OnlineMap(
-                              locationPoints: _center,
-                            ),
-                            SafeArea(
-                              child: Align(
-                                alignment: Alignment.topCenter,
-                                child: Container(
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/images/rectangle.png"),
-                                        fit: BoxFit.fill),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SafeArea(
-                              child: Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Container(
-                                    margin: EdgeInsets.only(top: 50),
-                                    height: 120,
-                                    width: MediaQuery.of(context).size.width,
-                                    child: CaptainOrders(
-                                      orders: snap.data,
-                                    ),
-                                  )),
-                            ),
-                            Stack(children: [
-                              snap.data.data.data.isEmpty
-                                  ? SafeArea(
-                                      child: Align(
-                                          alignment: Alignment.bottomRight,
-                                          child: InkWell(
-                                              onTap: () {
-                                                onlineOfflineBloc
-                                                    .setStatus(false);
-                                                approvedCaptainBloc
-                                                    .checkCaptainStatus();
-                                              },
-                                              child: Container(
-                                                margin: EdgeInsets.only(
-                                                    bottom: 170, right: 30),
-                                                child: SvgPicture.asset(
-                                                  "assets/images/stop.svg",
-                                                  width: 60,
-                                                  height: 60,
-                                                ),
-                                              ))),
-                                    )
-                                  : SafeArea(
-                                      child: Align(
-                                          alignment: Alignment.bottomRight,
-                                          child: InkWell(
-                                              onTap: () {
-                                                onlineOfflineBloc
-                                                    .setColor(false);
-                                                return showDialog<void>(
-                                                    context: context,
-                                                    barrierDismissible: false,
-                                                    // user must tap button!
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return GoingOfflineErrorDialog();
-                                                    });
-                                              },
-                                              child: Container(
-                                                  margin: EdgeInsets.only(
-                                                      bottom: 170, right: 30),
-                                                  child: StreamBuilder(
-                                                    stream: onlineOfflineBloc
-                                                        .stopColor,
-                                                    builder: (BuildContext
-                                                            context,
-                                                        AsyncSnapshot<dynamic>
-                                                            snapshot) {
-                                                      if (snapshot.hasData) {
-                                                        if (snapshot.data) {
-                                                          return SvgPicture
-                                                              .asset(
-                                                            "assets/images/stop.svg",
-                                                            width: 60,
-                                                            height: 60,
-                                                          );
-                                                        } else {
-                                                          return SvgPicture
-                                                              .asset(
-                                                            "assets/images/error_stoping.svg",
-                                                            width: 60,
-                                                            height: 60,
-                                                          );
-                                                        }
-                                                      } else {
-                                                        return SvgPicture.asset(
-                                                          "assets/images/stop.svg",
-                                                          width: 60,
-                                                          height: 60,
-                                                        );
-                                                      }
-                                                    },
-                                                  )))),
-                                    ),
-                              SafeArea(
-                                child: Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: StreamBuilder(
-                                      stream: orderBloc.orderSheet,
-                                      builder: (BuildContext context,
-                                          AsyncSnapshot<String> snapshot) {
-                                        return StreamBuilder(
-                                          stream: orderBloc.ride,
-                                          builder: (BuildContext context,
-                                              AsyncSnapshot<RideModel>
-                                                  snapshot) {
-                                            if (snapshot.hasData) {
-                                              if (snapshot
-                                                  .data.data.bookings.isEmpty) {
-                                                return FindingOrdersSheet();
-                                              } else {
-                                                if (snapshot
-                                                    .data
-                                                    .data
-                                                    .bookings[0]
-                                                    .order
-                                                    .payUpFront) {
-                                                  return StreamBuilder(
-                                                    stream:
-                                                        orderBloc.orderSheet,
-                                                    builder: (BuildContext
-                                                            context,
-                                                        AsyncSnapshot<String>
-                                                            snap) {
-                                                      return StandardCase
-                                                          .selectSheetShipperPay(
-                                                              snap.data,
-                                                              context,
-                                                              snapshot
-                                                                  .data
-                                                                  .data
-                                                                  .bookings[0]
-                                                                  .order
-                                                                  .paidUpFront);
-                                                    },
-                                                  );
-                                                } else if (snapshot
-                                                    .data
-                                                    .data
-                                                    .bookings[0]
-                                                    .order
-                                                    .roundTrip) {
-                                                  return StreamBuilder(
-                                                    stream:
-                                                        orderBloc.orderSheet,
-                                                    builder: (BuildContext
-                                                            context,
-                                                        AsyncSnapshot<String>
-                                                            snapshots) {
-                                                      return RoundTripCase
-                                                          .selectSheetRoundTrip(
-                                                              snapshots.data,
-                                                              context,
-                                                              snapshot
-                                                                  .data
-                                                                  .data
-                                                                  .bookings[0]
-                                                                  .order
-                                                                  .status);
-                                                    },
-                                                  );
-                                                } else {
-                                                  return StreamBuilder(
-                                                    stream:
-                                                        orderBloc.orderSheet,
-                                                    builder: (BuildContext
-                                                            context,
-                                                        AsyncSnapshot<String>
-                                                            snapshot) {
-                                                      return StandardCase.sheet(
-                                                          snapshot.data,
-                                                          context,
-                                                          "NORMAL");
-                                                    },
-                                                  );
-                                                }
-                                              }
-                                            } else {
-                                              return StreamBuilder(
-                                                stream: orderBloc.orderSheet,
-                                                builder: (BuildContext context,
-                                                    AsyncSnapshot<String>
-                                                        snapshot) {
-                                                  return StandardCase.sheet(
-                                                      snapshot.data,
-                                                      context,
-                                                      "NORMAL");
-                                                },
-                                              );
-                                            }
-                                          },
-                                        );
-                                      },
-                                    )),
-                              )
-                            ])
-                          ],
-                        );
-                      }
-                    },
-                  );
-                }
-              } else {
-                return StreamBuilder(
-                  stream: onlineOfflineBloc.captainStatus,
-                  builder:
-                      (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                    if (snapshot.hasData) {
-                      if (snapshot.data) {
-                        return Stack(
-                          children: [
-                            StreamBuilder(
-                                stream: onlineOfflineBloc.captainStatus,
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<bool> snapshot) {
-                                  if (snapshot.hasData) {
-                                    if (snapshot.data) {
-                                      return OnlineMap(
-                                        locationPoints: _center,
-                                      );
-                                    } else {
-                                      return OfflineMap(
-                                        locationPoints: _center,
-                                      );
-                                    }
+        ),
+        actions: <Widget>[
+          Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: InkWell(
+                splashColor: Colors.white,
+                onTap: () {
+                  checkCaptainDataBloc.checkUserAuth();
+                  approvedCaptainBloc.checkUserAuth();
+                  orderBloc.getOrders("NOT_PAID");
+                },
+                child: SvgPicture.asset(
+                  "assets/images/refresh.svg",
+                  width: 22,
+                  height: 22,
+                ),
+              )),
+        ],
+      ),
+      body: StreamBuilder(
+        stream: orderBloc.order,
+        builder: (BuildContext context, AsyncSnapshot<OrderModel> snap) {
+          if (snap.hasData) {
+            if (snap.data.data.data.isEmpty) {
+              return StreamBuilder(
+                stream: onlineOfflineBloc.captainStatus,
+                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data) {
+                      return Stack(
+                        children: [
+                          StreamBuilder(
+                              stream: onlineOfflineBloc.captainStatus,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<bool> snapshot) {
+                                if (snapshot.hasData) {
+                                  if (snapshot.data) {
+                                    return OnlineMap(
+                                      locationPoints: _center,
+                                    );
                                   } else {
                                     return OfflineMap(
                                       locationPoints: _center,
                                     );
                                   }
-                                }),
-                            SafeArea(
-                              child: Align(
-                                alignment: Alignment.topCenter,
-                                child: Container(
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/images/rectangle.png"),
-                                        fit: BoxFit.fill),
-                                  ),
+                                } else {
+                                  return OfflineMap(
+                                    locationPoints: _center,
+                                  );
+                                }
+                              }),
+                          SafeArea(
+                            child: Align(
+                              alignment: Alignment.topCenter,
+                              child: Container(
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          "assets/images/rectangle.png"),
+                                      fit: BoxFit.fill),
                                 ),
                               ),
                             ),
-                            Stack(children: [
-                              StreamBuilder(
-                                stream: onlineOfflineBloc.captainStatus,
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<bool> snapshot) {
-                                  if (snapshot.hasData) {
-                                    if (snapshot.data) {
-                                      return StreamBuilder(
-                                        stream: onlineOfflineBloc.captainStatus,
-                                        builder: (BuildContext context,
-                                            AsyncSnapshot<bool> snapshot) {
-                                          if (snapshot.hasData) {
-                                            return StreamBuilder(
-                                              stream: orderBloc.order,
-                                              builder: (BuildContext context,
-                                                  AsyncSnapshot<OrderModel>
-                                                  snapshot) {
-                                                if (snapshot.hasData) {
-                                                  if (snapshot
-                                                      .data.data.data.isEmpty) {
-                                                    return SafeArea(
-                                                      child: Align(
-                                                          alignment: Alignment
-                                                              .bottomRight,
-                                                          child: InkWell(
-                                                              onTap: () {
-                                                                onlineOfflineBloc
-                                                                    .setStatus(
-                                                                        false);
-                                                                approvedCaptainBloc
-                                                                    .checkCaptainStatus();
-                                                              },
-                                                              child: Container(
+                          ),
+                          Stack(children: [
+                            StreamBuilder(
+                              stream: onlineOfflineBloc.captainStatus,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<bool> snapshot) {
+                                if (snapshot.hasData) {
+                                  if (snapshot.data) {
+                                    return StreamBuilder(
+                                      stream: onlineOfflineBloc.captainStatus,
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<bool> snapshot) {
+                                        if (snapshot.hasData) {
+                                          return StreamBuilder(
+                                            stream: orderBloc.order,
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<OrderModel>
+                                                    snapshot) {
+                                              if (snapshot.hasData) {
+                                                if (snapshot
+                                                    .data.data.data.isEmpty) {
+                                                  return SafeArea(
+                                                    child: Align(
+                                                        alignment: Alignment
+                                                            .bottomRight,
+                                                        child: InkWell(
+                                                            onTap: () {
+                                                              onlineOfflineBloc
+                                                                  .setStatus(
+                                                                      false);
+                                                              onlineOfflineBloc
+                                                                  .setStatus(
+                                                                      false);
+                                                              approvedCaptainBloc
+                                                                  .checkCaptainStatus();
+                                                            },
+                                                            child: Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      bottom:
+                                                                          170,
+                                                                      right:
+                                                                          30),
+                                                              child: SvgPicture
+                                                                  .asset(
+                                                                "assets/images/stop.svg",
+                                                                width: 60,
+                                                                height: 60,
+                                                              ),
+                                                            ))),
+                                                  );
+                                                } else {
+                                                  return SafeArea(
+                                                    child: Align(
+                                                        alignment: Alignment
+                                                            .bottomRight,
+                                                        child: InkWell(
+                                                            onTap: () {
+                                                              onlineOfflineBloc
+                                                                  .setColor(
+                                                                      false);
+                                                              return showDialog<
+                                                                      void>(
+                                                                  context:
+                                                                      context,
+                                                                  barrierDismissible:
+                                                                      false,
+                                                                  // user must tap button!
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                    return GoingOfflineErrorDialog();
+                                                                  });
+                                                            },
+                                                            child: Container(
                                                                 margin: EdgeInsets
                                                                     .only(
                                                                         bottom:
@@ -1611,75 +267,18 @@ class HomeScreen extends StatelessWidget {
                                                                         right:
                                                                             30),
                                                                 child:
-                                                                    SvgPicture
-                                                                        .asset(
-                                                                  "assets/images/stop.svg",
-                                                                  width: 60,
-                                                                  height: 60,
-                                                                ),
-                                                              ))),
-                                                    );
-                                                  } else {
-                                                    return SafeArea(
-                                                      child: Align(
-                                                          alignment: Alignment
-                                                              .bottomRight,
-                                                          child: InkWell(
-                                                              onTap: () {
-                                                                onlineOfflineBloc
-                                                                    .setColor(
-                                                                        false);
-                                                                return showDialog<
-                                                                        void>(
-                                                                    context:
-                                                                        context,
-                                                                    barrierDismissible:
-                                                                        false,
-                                                                    // user must tap button!
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return GoingOfflineErrorDialog();
-                                                                    });
-                                                              },
-                                                              child: Container(
-                                                                  margin: EdgeInsets
-                                                                      .only(
-                                                                          bottom:
-                                                                              170,
-                                                                          right:
-                                                                              30),
-                                                                  child:
-                                                                      StreamBuilder(
-                                                                    stream: onlineOfflineBloc
-                                                                        .stopColor,
-                                                                    builder: (BuildContext
-                                                                            context,
-                                                                        AsyncSnapshot<dynamic>
-                                                                            snapshot) {
+                                                                    StreamBuilder(
+                                                                  stream: onlineOfflineBloc
+                                                                      .stopColor,
+                                                                  builder: (BuildContext
+                                                                          context,
+                                                                      AsyncSnapshot<
+                                                                              dynamic>
+                                                                          snapshot) {
+                                                                    if (snapshot
+                                                                        .hasData) {
                                                                       if (snapshot
-                                                                          .hasData) {
-                                                                        if (snapshot
-                                                                            .data) {
-                                                                          return SvgPicture
-                                                                              .asset(
-                                                                            "assets/images/stop.svg",
-                                                                            width:
-                                                                                60,
-                                                                            height:
-                                                                                60,
-                                                                          );
-                                                                        } else {
-                                                                          return SvgPicture
-                                                                              .asset(
-                                                                            "assets/images/error_stoping.svg",
-                                                                            width:
-                                                                                60,
-                                                                            height:
-                                                                                60,
-                                                                          );
-                                                                        }
-                                                                      } else {
+                                                                          .data) {
                                                                         return SvgPicture
                                                                             .asset(
                                                                           "assets/images/stop.svg",
@@ -1688,12 +287,475 @@ class HomeScreen extends StatelessWidget {
                                                                           height:
                                                                               60,
                                                                         );
+                                                                      } else {
+                                                                        return SvgPicture
+                                                                            .asset(
+                                                                          "assets/images/error_stoping.svg",
+                                                                          width:
+                                                                              60,
+                                                                          height:
+                                                                              60,
+                                                                        );
                                                                       }
+                                                                    } else {
+                                                                      return SvgPicture
+                                                                          .asset(
+                                                                        "assets/images/stop.svg",
+                                                                        width:
+                                                                            60,
+                                                                        height:
+                                                                            60,
+                                                                      );
+                                                                    }
+                                                                  },
+                                                                )))),
+                                                  );
+                                                }
+                                              } else {
+                                                return SafeArea(
+                                                  child: Align(
+                                                      alignment:
+                                                          Alignment.bottomRight,
+                                                      child: InkWell(
+                                                          onTap: () {
+                                                            onlineOfflineBloc
+                                                                .setStatus(
+                                                                    false);
+                                                            onlineOfflineBloc
+                                                                .setStatus(
+                                                                    false);
+                                                            approvedCaptainBloc
+                                                                .checkCaptainStatus();
+                                                          },
+                                                          child: Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    bottom: 170,
+                                                                    right: 30),
+                                                            child: SvgPicture
+                                                                .asset(
+                                                              "assets/images/stop.svg",
+                                                              width: 60,
+                                                              height: 60,
+                                                            ),
+                                                          ))),
+                                                );
+                                              }
+                                            },
+                                          );
+                                        } else {
+                                          return SafeArea(
+                                            child: Align(
+                                                alignment:
+                                                    Alignment.bottomRight,
+                                                child: InkWell(
+                                                    onTap: () {
+                                                      onlineOfflineBloc
+                                                          .setStatus(false);
+                                                      onlineOfflineBloc
+                                                          .setStatus(false);
+                                                      approvedCaptainBloc
+                                                          .checkCaptainStatus();
+                                                    },
+                                                    child: Container(
+                                                      margin: EdgeInsets.only(
+                                                          bottom: 170,
+                                                          right: 30),
+                                                      child: SvgPicture.asset(
+                                                        "assets/images/stop.svg",
+                                                        width: 60,
+                                                        height: 60,
+                                                      ),
+                                                    ))),
+                                          );
+                                        }
+                                      },
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
+                                } else {
+                                  return Container();
+                                }
+                              },
+                            ),
+                            StreamBuilder(
+                                stream: onlineOfflineBloc.captainStatus,
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<bool> snapshot) {
+                                  if (snapshot.hasData) {
+                                    if (snapshot.data) {
+                                      if (snapshot.data) {
+                                        return SafeArea(
+                                          child: Align(
+                                              alignment: Alignment.bottomCenter,
+                                              child: StreamBuilder(
+                                                stream: checkCaptainDataBloc
+                                                    .suggestion,
+                                                builder: (BuildContext context,
+                                                    AsyncSnapshot<
+                                                            ActiveSuggestion>
+                                                        snapshot) {
+                                                  if (snapshot.hasData) {
+                                                    return NewOrderSuggestionSheet();
+                                                  } else {
+                                                    return StreamBuilder(
+                                                      stream:
+                                                          orderBloc.orderSheet,
+                                                      builder: (BuildContext
+                                                              context,
+                                                          AsyncSnapshot<String>
+                                                              snapshot) {
+                                                        return StreamBuilder(
+                                                          stream:
+                                                              orderBloc.ride,
+                                                          builder: (BuildContext
+                                                                  context,
+                                                              AsyncSnapshot<
+                                                                      RideModel>
+                                                                  snapshot) {
+                                                            if (snapshot
+                                                                .hasData) {
+                                                              if (snapshot
+                                                                  .data
+                                                                  .data
+                                                                  .bookings
+                                                                  .isEmpty) {
+                                                                return FindingOrdersSheet();
+                                                              } else {
+                                                                if (snapshot
+                                                                        .data
+                                                                        .data
+                                                                        .bookings[
+                                                                            0]
+                                                                        .order
+                                                                        .payUpFront &&
+                                                                    !snapshot
+                                                                        .data
+                                                                        .data
+                                                                        .bookings[
+                                                                            0]
+                                                                        .order
+                                                                        .roundTrip) {
+                                                                  return StreamBuilder(
+                                                                    stream: orderBloc
+                                                                        .orderSheet,
+                                                                    builder: (BuildContext
+                                                                            context,
+                                                                        AsyncSnapshot<String>
+                                                                            snap) {
+                                                                      return StandardCase.selectSheetShipperPay(
+                                                                          snap
+                                                                              .data,
+                                                                          context,
+                                                                          snapshot
+                                                                              .data
+                                                                              .data
+                                                                              .bookings[0]
+                                                                              .order
+                                                                              .paidUpFront);
                                                                     },
-                                                                  )))),
+                                                                  );
+                                                                } else if (snapshot
+                                                                        .data
+                                                                        .data
+                                                                        .bookings[
+                                                                            0]
+                                                                        .order
+                                                                        .payUpFront &&
+                                                                    snapshot
+                                                                        .data
+                                                                        .data
+                                                                        .bookings[
+                                                                            0]
+                                                                        .order
+                                                                        .roundTrip) {
+                                                                  return StreamBuilder(
+                                                                    stream: orderBloc
+                                                                        .orderSheet,
+                                                                    builder: (BuildContext
+                                                                            context,
+                                                                        AsyncSnapshot<String>
+                                                                            snapshots) {
+                                                                      return RoundTripCase.selectSheetRoundTripShipperPay(
+                                                                          snapshots
+                                                                              .data,
+                                                                          context,
+                                                                          snapshot
+                                                                              .data
+                                                                              .data
+                                                                              .bookings[
+                                                                                  0]
+                                                                              .order
+                                                                              .status,
+                                                                          snapshot
+                                                                              .data
+                                                                              .data
+                                                                              .bookings[0]
+                                                                              .order
+                                                                              .paidUpFront);
+                                                                    },
+                                                                  );
+                                                                } else if (!snapshot
+                                                                        .data
+                                                                        .data
+                                                                        .bookings[
+                                                                            0]
+                                                                        .order
+                                                                        .payUpFront &&
+                                                                    snapshot
+                                                                        .data
+                                                                        .data
+                                                                        .bookings[
+                                                                            0]
+                                                                        .order
+                                                                        .roundTrip) {
+                                                                  return StreamBuilder(
+                                                                    stream: orderBloc
+                                                                        .orderSheet,
+                                                                    builder: (BuildContext
+                                                                            context,
+                                                                        AsyncSnapshot<String>
+                                                                            snapshots) {
+                                                                      return RoundTripCase.selectSheetRoundTrip(
+                                                                          snapshots
+                                                                              .data,
+                                                                          context,
+                                                                          snapshot
+                                                                              .data
+                                                                              .data
+                                                                              .bookings[0]
+                                                                              .order
+                                                                              .status);
+                                                                    },
+                                                                  );
+                                                                } else if (snapshot
+                                                                        .data
+                                                                        .data
+                                                                        .bookings[
+                                                                            0]
+                                                                        .order
+                                                                        .cashOnDeliveryOption ==
+                                                                    "RETURN") {
+                                                                  return StreamBuilder(
+                                                                    stream: orderBloc
+                                                                        .orderSheet,
+                                                                    builder: (BuildContext
+                                                                            context,
+                                                                        AsyncSnapshot<String>
+                                                                            snapshots) {
+                                                                      return RoundTripCase.selectSheetRoundTrip(
+                                                                          snapshots
+                                                                              .data,
+                                                                          context,
+                                                                          snapshot
+                                                                              .data
+                                                                              .data
+                                                                              .bookings[0]
+                                                                              .order
+                                                                              .status);
+                                                                    },
+                                                                  );
+                                                                } else {
+                                                                  return StreamBuilder(
+                                                                    stream: orderBloc
+                                                                        .orderSheet,
+                                                                    builder: (BuildContext
+                                                                            context,
+                                                                        AsyncSnapshot<String>
+                                                                            snapshot) {
+                                                                      return StandardCase.sheet(
+                                                                          snapshot
+                                                                              .data,
+                                                                          context,
+                                                                          "NORMAL");
+                                                                    },
+                                                                  );
+                                                                }
+                                                              }
+                                                            } else {
+                                                              return StreamBuilder(
+                                                                stream: orderBloc
+                                                                    .orderSheet,
+                                                                builder: (BuildContext
+                                                                        context,
+                                                                    AsyncSnapshot<
+                                                                            String>
+                                                                        snapshot) {
+                                                                  return StandardCase.sheet(
+                                                                      snapshot
+                                                                          .data,
+                                                                      context,
+                                                                      "NORMAL");
+                                                                },
+                                                              );
+                                                            }
+                                                          },
+                                                        );
+                                                      },
                                                     );
                                                   }
-                                                } else {
+                                                },
+                                              )),
+                                        );
+                                      } else {
+                                        return SafeArea(
+                                          child: Align(
+                                              alignment: Alignment.bottomCenter,
+                                              child: OnlineOfflineSheet()),
+                                        );
+                                      }
+                                    } else {
+                                      return SafeArea(
+                                        child: Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: OnlineOfflineSheet()),
+                                      );
+                                    }
+                                  } else {
+                                    return SafeArea(
+                                      child: Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: OnlineOfflineSheet()),
+                                    );
+                                  }
+                                }),
+                          ])
+                        ],
+                      );
+                    } else {
+                      return Stack(
+                        children: [
+                          OfflineMap(
+                            locationPoints: _center,
+                          ),
+                          SafeArea(
+                            child: Align(
+                              alignment: Alignment.topCenter,
+                              child: Container(
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          "assets/images/rectangle.png"),
+                                      fit: BoxFit.fill),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SafeArea(
+                            child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: OnlineOfflineSheet()),
+                          )
+                        ],
+                      );
+                    }
+                  } else {
+                    return Stack(
+                      children: [
+                        OfflineMap(
+                          locationPoints: _center,
+                        ),
+                        SafeArea(
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: Container(
+                              height: 100,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        "assets/images/rectangle.png"),
+                                    fit: BoxFit.fill),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SafeArea(
+                          child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: OnlineOfflineSheet()),
+                        )
+                      ],
+                    );
+                  }
+                },
+              );
+            } else {
+              onlineOfflineBloc.setStatus(true);
+              return StreamBuilder(
+                stream: onlineOfflineBloc.captainStatus,
+                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data) {
+                      return Stack(
+                        children: [
+                          StreamBuilder(
+                              stream: onlineOfflineBloc.captainStatus,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<bool> snapshot) {
+                                if (snapshot.hasData) {
+                                  if (snapshot.data) {
+                                    return OnlineMap(
+                                      locationPoints: _center,
+                                    );
+                                  } else {
+                                    return OfflineMap(
+                                      locationPoints: _center,
+                                    );
+                                  }
+                                } else {
+                                  return OfflineMap(
+                                    locationPoints: _center,
+                                  );
+                                }
+                              }),
+                          SafeArea(
+                            child: Align(
+                              alignment: Alignment.topCenter,
+                              child: Container(
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          "assets/images/rectangle.png"),
+                                      fit: BoxFit.fill),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SafeArea(
+                            child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 50),
+                                  height: 120,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: CaptainOrders(
+                                    orders: snap.data,
+                                  ),
+                                )),
+                          ),
+                          Stack(children: [
+                            StreamBuilder(
+                              stream: onlineOfflineBloc.captainStatus,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<bool> snapshot) {
+                                if (snapshot.hasData) {
+                                  if (snapshot.data) {
+                                    return StreamBuilder(
+                                      stream: onlineOfflineBloc.captainStatus,
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<bool> snapshot) {
+                                        if (snapshot.hasData) {
+                                          return StreamBuilder(
+                                            stream: orderBloc.order,
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<OrderModel>
+                                                    snapshot) {
+                                              if (snapshot.hasData) {
+                                                if (snapshot
+                                                    .data.data.data.isEmpty) {
                                                   return SafeArea(
                                                     child: Align(
                                                         alignment: Alignment
@@ -1721,156 +783,338 @@ class HomeScreen extends StatelessWidget {
                                                               ),
                                                             ))),
                                                   );
+                                                } else {
+                                                  return SafeArea(
+                                                    child: Align(
+                                                        alignment: Alignment
+                                                            .bottomRight,
+                                                        child: InkWell(
+                                                            onTap: () {
+                                                              onlineOfflineBloc
+                                                                  .setColor(
+                                                                      false);
+                                                              return showDialog<
+                                                                      void>(
+                                                                  context:
+                                                                      context,
+                                                                  barrierDismissible:
+                                                                      false,
+                                                                  // user must tap button!
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                    return GoingOfflineErrorDialog();
+                                                                  });
+                                                            },
+                                                            child: Container(
+                                                                margin: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            170,
+                                                                        right:
+                                                                            30),
+                                                                child:
+                                                                    StreamBuilder(
+                                                                  stream: onlineOfflineBloc
+                                                                      .stopColor,
+                                                                  builder: (BuildContext
+                                                                          context,
+                                                                      AsyncSnapshot<
+                                                                              dynamic>
+                                                                          snapshot) {
+                                                                    if (snapshot
+                                                                        .hasData) {
+                                                                      if (snapshot
+                                                                          .data) {
+                                                                        return SvgPicture
+                                                                            .asset(
+                                                                          "assets/images/stop.svg",
+                                                                          width:
+                                                                              60,
+                                                                          height:
+                                                                              60,
+                                                                        );
+                                                                      } else {
+                                                                        return SvgPicture
+                                                                            .asset(
+                                                                          "assets/images/error_stoping.svg",
+                                                                          width:
+                                                                              60,
+                                                                          height:
+                                                                              60,
+                                                                        );
+                                                                      }
+                                                                    } else {
+                                                                      return SvgPicture
+                                                                          .asset(
+                                                                        "assets/images/stop.svg",
+                                                                        width:
+                                                                            60,
+                                                                        height:
+                                                                            60,
+                                                                      );
+                                                                    }
+                                                                  },
+                                                                )))),
+                                                  );
                                                 }
-                                              },
-                                            );
-                                          } else {
-                                            return SafeArea(
-                                              child: Align(
-                                                  alignment:
-                                                      Alignment.bottomRight,
-                                                  child: InkWell(
-                                                      onTap: () {
-                                                        onlineOfflineBloc
-                                                            .setStatus(false);
-                                                        approvedCaptainBloc
-                                                            .checkCaptainStatus();
-                                                      },
-                                                      child: Container(
-                                                        margin: EdgeInsets.only(
-                                                            bottom: 170,
-                                                            right: 30),
-                                                        child: SvgPicture.asset(
-                                                          "assets/images/stop.svg",
-                                                          width: 60,
-                                                          height: 60,
-                                                        ),
-                                                      ))),
-                                            );
-                                          }
-                                        },
-                                      );
-                                    } else {
-                                      return Container();
-                                    }
-                                  } else {
-                                    return Container();
-                                  }
-                                },
-                              ),
-                              StreamBuilder(
-                                  stream: onlineOfflineBloc.captainStatus,
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<bool> snapshot) {
-                                    if (snapshot.hasData) {
-                                      if (snapshot.data) {
-                                        if (snapshot.data) {
+                                              } else {
+                                                return SafeArea(
+                                                  child: Align(
+                                                      alignment:
+                                                          Alignment.bottomRight,
+                                                      child: InkWell(
+                                                          onTap: () {
+                                                            onlineOfflineBloc
+                                                                .setStatus(
+                                                                    false);
+                                                            approvedCaptainBloc
+                                                                .checkCaptainStatus();
+                                                          },
+                                                          child: Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    bottom: 170,
+                                                                    right: 30),
+                                                            child: SvgPicture
+                                                                .asset(
+                                                              "assets/images/stop.svg",
+                                                              width: 60,
+                                                              height: 60,
+                                                            ),
+                                                          ))),
+                                                );
+                                              }
+                                            },
+                                          );
+                                        } else {
                                           return SafeArea(
                                             child: Align(
                                                 alignment:
-                                                    Alignment.bottomCenter,
-                                                child: StreamBuilder(
-                                                  stream: orderBloc.orderSheet,
-                                                  builder:
-                                                      (BuildContext context,
+                                                    Alignment.bottomRight,
+                                                child: InkWell(
+                                                    onTap: () {
+                                                      onlineOfflineBloc
+                                                          .setStatus(false);
+                                                      approvedCaptainBloc
+                                                          .checkCaptainStatus();
+                                                    },
+                                                    child: Container(
+                                                      margin: EdgeInsets.only(
+                                                          bottom: 170,
+                                                          right: 30),
+                                                      child: SvgPicture.asset(
+                                                        "assets/images/stop.svg",
+                                                        width: 60,
+                                                        height: 60,
+                                                      ),
+                                                    ))),
+                                          );
+                                        }
+                                      },
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
+                                } else {
+                                  return Container();
+                                }
+                              },
+                            ),
+                            StreamBuilder(
+                                stream: onlineOfflineBloc.captainStatus,
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<bool> snapshot) {
+                                  if (snapshot.hasData) {
+                                    if (snapshot.data) {
+                                      if (snapshot.data) {
+                                        return SafeArea(
+                                          child: Align(
+                                              alignment: Alignment.bottomCenter,
+                                              child: StreamBuilder(
+                                                stream: checkCaptainDataBloc
+                                                    .suggestion,
+                                                builder: (BuildContext context,
+                                                    AsyncSnapshot<
+                                                            ActiveSuggestion>
+                                                        snapshot) {
+                                                  if (snapshot.hasData) {
+                                                    return NewOrderSuggestionSheet();
+                                                  } else {
+                                                    return StreamBuilder(
+                                                      stream:
+                                                          orderBloc.orderSheet,
+                                                      builder: (BuildContext
+                                                              context,
                                                           AsyncSnapshot<String>
                                                               snapshot) {
-                                                    return StreamBuilder(
-                                                      stream: orderBloc.ride,
-                                                      builder:
-                                                          (BuildContext context,
+                                                        return StreamBuilder(
+                                                          stream:
+                                                              orderBloc.ride,
+                                                          builder: (BuildContext
+                                                                  context,
                                                               AsyncSnapshot<
                                                                       RideModel>
                                                                   snapshot) {
-                                                        if (snapshot.hasData) {
-                                                          if (snapshot
-                                                              .data
-                                                              .data
-                                                              .bookings
-                                                              .isEmpty) {
-                                                            return FindingOrdersSheet();
-                                                          } else {
                                                             if (snapshot
-                                                                .data
-                                                                .data
-                                                                .bookings[0]
-                                                                .order
-                                                                .payUpFront) {
-                                                              return StreamBuilder(
-                                                                stream: orderBloc
-                                                                    .orderSheet,
-                                                                builder: (BuildContext
-                                                                        context,
-                                                                    AsyncSnapshot<
-                                                                            String>
-                                                                        snap) {
-                                                                  return StandardCase.selectSheetShipperPay(
-                                                                      snap.data,
-                                                                      context,
-                                                                      snapshot
-                                                                          .data
-                                                                          .data
-                                                                          .bookings[
-                                                                              0]
-                                                                          .order
-                                                                          .paidUpFront);
-                                                                },
-                                                              );
-                                                            } else if (snapshot
-                                                                .data
-                                                                .data
-                                                                .bookings[0]
-                                                                .order
-                                                                .roundTrip) {
-                                                              return StreamBuilder(
-                                                                stream: orderBloc
-                                                                    .orderSheet,
-                                                                builder: (BuildContext
-                                                                        context,
-                                                                    AsyncSnapshot<
-                                                                            String>
-                                                                        snapshots) {
-                                                                  return RoundTripCase.selectSheetRoundTrip(
-                                                                      snapshots
-                                                                          .data,
-                                                                      context,
-                                                                      snapshot
-                                                                          .data
-                                                                          .data
-                                                                          .bookings[
-                                                                              0]
-                                                                          .order
-                                                                          .status);
-                                                                },
-                                                              );
-                                                            } else if (snapshot
-                                                                    .data
-                                                                    .data
-                                                                    .bookings[0]
-                                                                    .order
-                                                                    .cashOnDeliveryOption ==
-                                                                "RETURN") {
-                                                              return StreamBuilder(
-                                                                stream: orderBloc
-                                                                    .orderSheet,
-                                                                builder: (BuildContext
-                                                                        context,
-                                                                    AsyncSnapshot<
-                                                                            String>
-                                                                        snapshots) {
-                                                                  return RoundTripCase.selectSheetRoundTrip(
-                                                                      snapshots
-                                                                          .data,
-                                                                      context,
-                                                                      snapshot
-                                                                          .data
-                                                                          .data
-                                                                          .bookings[
-                                                                              0]
-                                                                          .order
-                                                                          .status);
-                                                                },
-                                                              );
+                                                                .hasData) {
+                                                              if (snapshot
+                                                                  .data
+                                                                  .data
+                                                                  .bookings
+                                                                  .isEmpty) {
+                                                                return FindingOrdersSheet();
+                                                              } else {
+                                                                if (snapshot
+                                                                        .data
+                                                                        .data
+                                                                        .bookings[
+                                                                            0]
+                                                                        .order
+                                                                        .payUpFront &&
+                                                                    !snapshot
+                                                                        .data
+                                                                        .data
+                                                                        .bookings[
+                                                                            0]
+                                                                        .order
+                                                                        .roundTrip) {
+                                                                  return StreamBuilder(
+                                                                    stream: orderBloc
+                                                                        .orderSheet,
+                                                                    builder: (BuildContext
+                                                                            context,
+                                                                        AsyncSnapshot<String>
+                                                                            snap) {
+                                                                      return StandardCase.selectSheetShipperPay(
+                                                                          snap
+                                                                              .data,
+                                                                          context,
+                                                                          snapshot
+                                                                              .data
+                                                                              .data
+                                                                              .bookings[0]
+                                                                              .order
+                                                                              .paidUpFront);
+                                                                    },
+                                                                  );
+                                                                } else if (snapshot
+                                                                        .data
+                                                                        .data
+                                                                        .bookings[
+                                                                            0]
+                                                                        .order
+                                                                        .payUpFront &&
+                                                                    snapshot
+                                                                        .data
+                                                                        .data
+                                                                        .bookings[
+                                                                            0]
+                                                                        .order
+                                                                        .roundTrip) {
+                                                                  return StreamBuilder(
+                                                                    stream: orderBloc
+                                                                        .orderSheet,
+                                                                    builder: (BuildContext
+                                                                            context,
+                                                                        AsyncSnapshot<String>
+                                                                            snapshots) {
+                                                                      return RoundTripCase.selectSheetRoundTripShipperPay(
+                                                                          snapshots
+                                                                              .data,
+                                                                          context,
+                                                                          snapshot
+                                                                              .data
+                                                                              .data
+                                                                              .bookings[
+                                                                                  0]
+                                                                              .order
+                                                                              .status,
+                                                                          snapshot
+                                                                              .data
+                                                                              .data
+                                                                              .bookings[0]
+                                                                              .order
+                                                                              .paidUpFront);
+                                                                    },
+                                                                  );
+                                                                } else if (!snapshot
+                                                                        .data
+                                                                        .data
+                                                                        .bookings[
+                                                                            0]
+                                                                        .order
+                                                                        .payUpFront &&
+                                                                    snapshot
+                                                                        .data
+                                                                        .data
+                                                                        .bookings[
+                                                                            0]
+                                                                        .order
+                                                                        .roundTrip) {
+                                                                  return StreamBuilder(
+                                                                    stream: orderBloc
+                                                                        .orderSheet,
+                                                                    builder: (BuildContext
+                                                                            context,
+                                                                        AsyncSnapshot<String>
+                                                                            snapshots) {
+                                                                      return RoundTripCase.selectSheetRoundTrip(
+                                                                          snapshots
+                                                                              .data,
+                                                                          context,
+                                                                          snapshot
+                                                                              .data
+                                                                              .data
+                                                                              .bookings[0]
+                                                                              .order
+                                                                              .status);
+                                                                    },
+                                                                  );
+                                                                } else if (snapshot
+                                                                        .data
+                                                                        .data
+                                                                        .bookings[
+                                                                            0]
+                                                                        .order
+                                                                        .cashOnDeliveryOption ==
+                                                                    "RETURN") {
+                                                                  return StreamBuilder(
+                                                                    stream: orderBloc
+                                                                        .orderSheet,
+                                                                    builder: (BuildContext
+                                                                            context,
+                                                                        AsyncSnapshot<String>
+                                                                            snapshots) {
+                                                                      return RoundTripCase.selectSheetRoundTrip(
+                                                                          snapshots
+                                                                              .data,
+                                                                          context,
+                                                                          snapshot
+                                                                              .data
+                                                                              .data
+                                                                              .bookings[0]
+                                                                              .order
+                                                                              .status);
+                                                                    },
+                                                                  );
+                                                                } else {
+                                                                  return StreamBuilder(
+                                                                    stream: orderBloc
+                                                                        .orderSheet,
+                                                                    builder: (BuildContext
+                                                                            context,
+                                                                        AsyncSnapshot<String>
+                                                                            snapshot) {
+                                                                      return StandardCase.sheet(
+                                                                          snapshot
+                                                                              .data,
+                                                                          context,
+                                                                          "NORMAL");
+                                                                    },
+                                                                  );
+                                                                }
+                                                              }
                                                             } else {
                                                               return StreamBuilder(
                                                                 stream: orderBloc
@@ -1888,38 +1132,14 @@ class HomeScreen extends StatelessWidget {
                                                                 },
                                                               );
                                                             }
-                                                          }
-                                                        } else {
-                                                          return StreamBuilder(
-                                                            stream: orderBloc
-                                                                .orderSheet,
-                                                            builder: (BuildContext
-                                                                    context,
-                                                                AsyncSnapshot<
-                                                                        String>
-                                                                    snapshot) {
-                                                              return StandardCase
-                                                                  .sheet(
-                                                                      snapshot
-                                                                          .data,
-                                                                      context,
-                                                                      "NORMAL");
-                                                            },
-                                                          );
-                                                        }
+                                                          },
+                                                        );
                                                       },
                                                     );
-                                                  },
-                                                )),
-                                          );
-                                        } else {
-                                          return SafeArea(
-                                            child: Align(
-                                                alignment:
-                                                    Alignment.bottomCenter,
-                                                child: OnlineOfflineSheet()),
-                                          );
-                                        }
+                                                  }
+                                                },
+                                              )),
+                                        );
                                       } else {
                                         return SafeArea(
                                           child: Align(
@@ -1934,200 +1154,17 @@ class HomeScreen extends StatelessWidget {
                                             child: OnlineOfflineSheet()),
                                       );
                                     }
-                                  }),
-                            ])
-                          ],
-                        );
-                      } else {
-                        return Stack(
-                          children: [
-                            OnlineMap(
-                              locationPoints: _center,
-                            ),
-                            SafeArea(
-                              child: Align(
-                                alignment: Alignment.topCenter,
-                                child: Container(
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/images/rectangle.png"),
-                                        fit: BoxFit.fill),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            // SafeArea(
-                            //   child: Align(
-                            //       alignment: Alignment.topLeft,
-                            //       child: Container(
-                            //         margin: EdgeInsets.only(top: 50),
-                            //         height: 120,
-                            //         width: MediaQuery.of(context).size.width,
-                            //         child: CaptainOrders(
-                            //           orders: snap.data,
-                            //         ),
-                            //       )),
-                            // ),
-                            // Stack(children: [
-                            //   snap.data.data.data.isEmpty? SafeArea(
-                            //     child: Align(
-                            //         alignment: Alignment.bottomRight,
-                            //         child: InkWell(
-                            //             onTap: () {
-                            //               onlineOfflineBloc
-                            //                   .setOfflineStatus(false);
-                            //               onlineOfflineBloc
-                            //                   .setStatus(false);
-                            //               approvedCaptainBloc
-                            //                   .checkCaptainStatus();
-                            //             },
-                            //             child: Container(
-                            //               margin: EdgeInsets.only(
-                            //                   bottom: 170, right: 30),
-                            //               child: SvgPicture.asset(
-                            //                 "assets/images/stop.svg",
-                            //                 width: 60,
-                            //                 height: 60,
-                            //               ),
-                            //             ))),
-                            //   )
-                            //
-                            //       :SafeArea(
-                            //     child: Align(
-                            //         alignment: Alignment.bottomRight,
-                            //         child: InkWell(
-                            //             onTap: () {
-                            //               onlineOfflineBloc.setColor(false);
-                            //               return showDialog<void>(
-                            //                   context: context,
-                            //                   barrierDismissible: false,
-                            //                   // user must tap button!
-                            //                   builder:
-                            //                       (BuildContext context) {
-                            //                     return GoingOfflineErrorDialog();
-                            //                   });
-                            //             },
-                            //             child: Container(
-                            //                 margin: EdgeInsets.only(
-                            //                     bottom: 170, right: 30),
-                            //                 child: StreamBuilder(
-                            //                   stream: onlineOfflineBloc
-                            //                       .stopColor,
-                            //                   builder:
-                            //                       (BuildContext context,
-                            //                       AsyncSnapshot<dynamic>
-                            //                       snapshot) {
-                            //                     if (snapshot.hasData) {
-                            //                       if (snapshot.data) {
-                            //                         return SvgPicture.asset(
-                            //                           "assets/images/stop.svg",
-                            //                           width: 60,
-                            //                           height: 60,
-                            //                         );
-                            //                       } else {
-                            //                         return SvgPicture.asset(
-                            //                           "assets/images/error_stoping.svg",
-                            //                           width: 60,
-                            //                           height: 60,
-                            //                         );
-                            //                       }
-                            //                     } else {
-                            //                       return SvgPicture.asset(
-                            //                         "assets/images/stop.svg",
-                            //                         width: 60,
-                            //                         height: 60,
-                            //                       );
-                            //                     }
-                            //                   },
-                            //                 )))),
-                            //   ),
-                            //
-                            //   SafeArea(
-                            //     child: Align(
-                            //         alignment: Alignment.bottomCenter,
-                            //         child: StreamBuilder(
-                            //           stream: orderBloc.orderSheet,
-                            //           builder: (BuildContext context,
-                            //               AsyncSnapshot<String> snapshot) {
-                            //             return StreamBuilder(
-                            //               stream: orderBloc.ride,
-                            //               builder: (BuildContext context,
-                            //                   AsyncSnapshot<RideModel> snapshot) {
-                            //                 if (snapshot.hasData) {
-                            //                   if(snapshot.data.data.bookings.isEmpty){
-                            //                     return FindingOrdersSheet();
-                            //                   }
-                            //                   else
-                            //                   { if (snapshot.data.data.bookings[0].order
-                            //                       .payUpFront) {
-                            //                     return StreamBuilder(
-                            //                       stream: orderBloc.orderSheet,
-                            //                       builder: (BuildContext context,
-                            //                           AsyncSnapshot<String>
-                            //                           snap) {
-                            //                         return StandardCase
-                            //                             .selectSheetShipperPay(
-                            //                             snap.data, context,snapshot.data.data.bookings[0].order
-                            //                             .paidUpFront);
-                            //                       },
-                            //                     );
-                            //                   }
-                            //                   else if (snapshot.data.data
-                            //                       .bookings[0].order.roundTrip) {
-                            //                     return StreamBuilder(
-                            //                       stream: orderBloc.orderSheet,
-                            //                       builder: (BuildContext context,
-                            //                           AsyncSnapshot<String>
-                            //                           snapshots) {
-                            //                         return RoundTripCase
-                            //                             .selectSheetRoundTrip(
-                            //                             snapshots.data,
-                            //                             context,
-                            //                             snapshot
-                            //                                 .data
-                            //                                 .data
-                            //                                 .bookings[0]
-                            //                                 .order
-                            //                                 .status);
-                            //                       },
-                            //                     );
-                            //                   } else {
-                            //                     return StreamBuilder(
-                            //                       stream: orderBloc.orderSheet,
-                            //                       builder: (BuildContext context,
-                            //                           AsyncSnapshot<String>
-                            //                           snapshot) {
-                            //                         return StandardCase.sheet(
-                            //                             snapshot.data,
-                            //                             context,
-                            //                             "NORMAL");
-                            //                       },
-                            //                     );
-                            //                   }}
-                            //
-                            //                 } else {
-                            //                   return StreamBuilder(
-                            //                     stream: orderBloc.orderSheet,
-                            //                     builder: (BuildContext context,
-                            //                         AsyncSnapshot<String> snapshot) {
-                            //                       return StandardCase.sheet(
-                            //                           snapshot.data,
-                            //                           context,
-                            //                           "NORMAL");
-                            //                     },
-                            //                   );
-                            //                 }
-                            //               },
-                            //             );
-                            //           },
-                            //         )),
-                            //   )
-                            // ])
-                          ],
-                        );
-                      }
+                                  } else {
+                                    return SafeArea(
+                                      child: Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: OnlineOfflineSheet()),
+                                    );
+                                  }
+                                }),
+                          ])
+                        ],
+                      );
                     } else {
                       return Stack(
                         children: [
@@ -2148,181 +1185,1294 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          // SafeArea(
-                          //   child: Align(
-                          //       alignment: Alignment.topLeft,
-                          //       child: Container(
-                          //         margin: EdgeInsets.only(top: 50),
-                          //         height: 120,
-                          //         width: MediaQuery.of(context).size.width,
-                          //         child: CaptainOrders(
-                          //           orders: snap.data,
-                          //         ),
-                          //       )),
-                          // ),
-                          // Stack(children: [
-                          //   snap.data.data.data.isEmpty? SafeArea(
-                          //     child: Align(
-                          //         alignment: Alignment.bottomRight,
-                          //         child: InkWell(
-                          //             onTap: () {
-                          //               onlineOfflineBloc
-                          //                   .setOfflineStatus(false);
-                          //               onlineOfflineBloc
-                          //                   .setStatus(false);
-                          //               approvedCaptainBloc
-                          //                   .checkCaptainStatus();
-                          //             },
-                          //             child: Container(
-                          //               margin: EdgeInsets.only(
-                          //                   bottom: 170, right: 30),
-                          //               child: SvgPicture.asset(
-                          //                 "assets/images/stop.svg",
-                          //                 width: 60,
-                          //                 height: 60,
-                          //               ),
-                          //             ))),
-                          //   )
-                          //
-                          //       :SafeArea(
-                          //     child: Align(
-                          //         alignment: Alignment.bottomRight,
-                          //         child: InkWell(
-                          //             onTap: () {
-                          //               onlineOfflineBloc.setColor(false);
-                          //               return showDialog<void>(
-                          //                   context: context,
-                          //                   barrierDismissible: false,
-                          //                   // user must tap button!
-                          //                   builder:
-                          //                       (BuildContext context) {
-                          //                     return GoingOfflineErrorDialog();
-                          //                   });
-                          //             },
-                          //             child: Container(
-                          //                 margin: EdgeInsets.only(
-                          //                     bottom: 170, right: 30),
-                          //                 child: StreamBuilder(
-                          //                   stream: onlineOfflineBloc
-                          //                       .stopColor,
-                          //                   builder:
-                          //                       (BuildContext context,
-                          //                       AsyncSnapshot<dynamic>
-                          //                       snapshot) {
-                          //                     if (snapshot.hasData) {
-                          //                       if (snapshot.data) {
-                          //                         return SvgPicture.asset(
-                          //                           "assets/images/stop.svg",
-                          //                           width: 60,
-                          //                           height: 60,
-                          //                         );
-                          //                       } else {
-                          //                         return SvgPicture.asset(
-                          //                           "assets/images/error_stoping.svg",
-                          //                           width: 60,
-                          //                           height: 60,
-                          //                         );
-                          //                       }
-                          //                     } else {
-                          //                       return SvgPicture.asset(
-                          //                         "assets/images/stop.svg",
-                          //                         width: 60,
-                          //                         height: 60,
-                          //                       );
-                          //                     }
-                          //                   },
-                          //                 )))),
-                          //   ),
-                          //
-                          //   SafeArea(
-                          //     child: Align(
-                          //         alignment: Alignment.bottomCenter,
-                          //         child: StreamBuilder(
-                          //           stream: orderBloc.orderSheet,
-                          //           builder: (BuildContext context,
-                          //               AsyncSnapshot<String> snapshot) {
-                          //             return StreamBuilder(
-                          //               stream: orderBloc.ride,
-                          //               builder: (BuildContext context,
-                          //                   AsyncSnapshot<RideModel> snapshot) {
-                          //                 if (snapshot.hasData) {
-                          //                   if(snapshot.data.data.bookings.isEmpty){
-                          //                     return FindingOrdersSheet();
-                          //                   }
-                          //                   else
-                          //                   { if (snapshot.data.data.bookings[0].order
-                          //                       .payUpFront) {
-                          //                     return StreamBuilder(
-                          //                       stream: orderBloc.orderSheet,
-                          //                       builder: (BuildContext context,
-                          //                           AsyncSnapshot<String>
-                          //                           snap) {
-                          //                         return StandardCase
-                          //                             .selectSheetShipperPay(
-                          //                             snap.data, context,snapshot.data.data.bookings[0].order
-                          //                             .paidUpFront);
-                          //                       },
-                          //                     );
-                          //                   }
-                          //                   else if (snapshot.data.data
-                          //                       .bookings[0].order.roundTrip) {
-                          //                     return StreamBuilder(
-                          //                       stream: orderBloc.orderSheet,
-                          //                       builder: (BuildContext context,
-                          //                           AsyncSnapshot<String>
-                          //                           snapshots) {
-                          //                         return RoundTripCase
-                          //                             .selectSheetRoundTrip(
-                          //                             snapshots.data,
-                          //                             context,
-                          //                             snapshot
-                          //                                 .data
-                          //                                 .data
-                          //                                 .bookings[0]
-                          //                                 .order
-                          //                                 .status);
-                          //                       },
-                          //                     );
-                          //                   } else {
-                          //                     return StreamBuilder(
-                          //                       stream: orderBloc.orderSheet,
-                          //                       builder: (BuildContext context,
-                          //                           AsyncSnapshot<String>
-                          //                           snapshot) {
-                          //                         return StandardCase.sheet(
-                          //                             snapshot.data,
-                          //                             context,
-                          //                             "NORMAL");
-                          //                       },
-                          //                     );
-                          //                   }}
-                          //
-                          //                 } else {
-                          //                   return StreamBuilder(
-                          //                     stream: orderBloc.orderSheet,
-                          //                     builder: (BuildContext context,
-                          //                         AsyncSnapshot<String> snapshot) {
-                          //                       return StandardCase.sheet(
-                          //                           snapshot.data,
-                          //                           context,
-                          //                           "NORMAL");
-                          //                     },
-                          //                   );
-                          //                 }
-                          //               },
-                          //             );
-                          //           },
-                          //         )),
-                          //   )
-                          // ])
+                          SafeArea(
+                            child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 50),
+                                  height: 120,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: CaptainOrders(
+                                    orders: snap.data,
+                                  ),
+                                )),
+                          ),
+                          Stack(children: [
+                            snap.data.data.data.isEmpty
+                                ? SafeArea(
+                                    child: Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: InkWell(
+                                            onTap: () {
+                                              onlineOfflineBloc
+                                                  .setStatus(false);
+                                              approvedCaptainBloc
+                                                  .checkCaptainStatus();
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.only(
+                                                  bottom: 170, right: 30),
+                                              child: SvgPicture.asset(
+                                                "assets/images/stop.svg",
+                                                width: 60,
+                                                height: 60,
+                                              ),
+                                            ))),
+                                  )
+                                : SafeArea(
+                                    child: Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: InkWell(
+                                            onTap: () {
+                                              onlineOfflineBloc.setColor(false);
+                                              return showDialog<void>(
+                                                  context: context,
+                                                  barrierDismissible: false,
+                                                  // user must tap button!
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return GoingOfflineErrorDialog();
+                                                  });
+                                            },
+                                            child: Container(
+                                                margin: EdgeInsets.only(
+                                                    bottom: 170, right: 30),
+                                                child: StreamBuilder(
+                                                  stream: onlineOfflineBloc
+                                                      .stopColor,
+                                                  builder:
+                                                      (BuildContext context,
+                                                          AsyncSnapshot<dynamic>
+                                                              snapshot) {
+                                                    if (snapshot.hasData) {
+                                                      if (snapshot.data) {
+                                                        return SvgPicture.asset(
+                                                          "assets/images/stop.svg",
+                                                          width: 60,
+                                                          height: 60,
+                                                        );
+                                                      } else {
+                                                        return SvgPicture.asset(
+                                                          "assets/images/error_stoping.svg",
+                                                          width: 60,
+                                                          height: 60,
+                                                        );
+                                                      }
+                                                    } else {
+                                                      return SvgPicture.asset(
+                                                        "assets/images/stop.svg",
+                                                        width: 60,
+                                                        height: 60,
+                                                      );
+                                                    }
+                                                  },
+                                                )))),
+                                  ),
+                            SafeArea(
+                              child: Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: StreamBuilder(
+                                    stream: orderBloc.orderSheet,
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<String> snapshot) {
+                                      return StreamBuilder(
+                                        stream: orderBloc.ride,
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<RideModel> snapshot) {
+                                          if (snapshot.hasData) {
+                                            if (snapshot
+                                                .data.data.bookings.isEmpty) {
+                                              return FindingOrdersSheet();
+                                            } else {
+                                              if (snapshot.data.data.bookings[0]
+                                                      .order.payUpFront &&
+                                                  !snapshot
+                                                      .data
+                                                      .data
+                                                      .bookings[0]
+                                                      .order
+                                                      .roundTrip) {
+                                                return StreamBuilder(
+                                                  stream: orderBloc.orderSheet,
+                                                  builder:
+                                                      (BuildContext context,
+                                                          AsyncSnapshot<String>
+                                                              snap) {
+                                                    return StandardCase
+                                                        .selectSheetShipperPay(
+                                                            snap.data,
+                                                            context,
+                                                            snapshot
+                                                                .data
+                                                                .data
+                                                                .bookings[0]
+                                                                .order
+                                                                .paidUpFront);
+                                                  },
+                                                );
+                                              } else if (snapshot
+                                                      .data
+                                                      .data
+                                                      .bookings[0]
+                                                      .order
+                                                      .payUpFront &&
+                                                  snapshot.data.data.bookings[0]
+                                                      .order.roundTrip) {
+                                                return StreamBuilder(
+                                                  stream: orderBloc.orderSheet,
+                                                  builder:
+                                                      (BuildContext context,
+                                                          AsyncSnapshot<String>
+                                                              snapshots) {
+                                                    return RoundTripCase
+                                                        .selectSheetRoundTripShipperPay(
+                                                            snapshots.data,
+                                                            context,
+                                                            snapshot
+                                                                .data
+                                                                .data
+                                                                .bookings[0]
+                                                                .order
+                                                                .status,
+                                                            snapshot
+                                                                .data
+                                                                .data
+                                                                .bookings[0]
+                                                                .order
+                                                                .paidUpFront);
+                                                  },
+                                                );
+                                              } else if (!snapshot
+                                                      .data
+                                                      .data
+                                                      .bookings[0]
+                                                      .order
+                                                      .payUpFront &&
+                                                  snapshot.data.data.bookings[0]
+                                                      .order.roundTrip) {
+                                                return StreamBuilder(
+                                                  stream: orderBloc.orderSheet,
+                                                  builder:
+                                                      (BuildContext context,
+                                                          AsyncSnapshot<String>
+                                                              snapshots) {
+                                                    return RoundTripCase
+                                                        .selectSheetRoundTrip(
+                                                            snapshots.data,
+                                                            context,
+                                                            snapshot
+                                                                .data
+                                                                .data
+                                                                .bookings[0]
+                                                                .order
+                                                                .status);
+                                                  },
+                                                );
+                                              } else {
+                                                return StreamBuilder(
+                                                  stream: orderBloc.orderSheet,
+                                                  builder:
+                                                      (BuildContext context,
+                                                          AsyncSnapshot<String>
+                                                              snapshot) {
+                                                    return StandardCase.sheet(
+                                                        snapshot.data,
+                                                        context,
+                                                        "NORMAL");
+                                                  },
+                                                );
+                                              }
+                                            }
+                                          } else {
+                                            return StreamBuilder(
+                                              stream: orderBloc.orderSheet,
+                                              builder: (BuildContext context,
+                                                  AsyncSnapshot<String>
+                                                      snapshot) {
+                                                return StandardCase.sheet(
+                                                    snapshot.data,
+                                                    context,
+                                                    "NORMAL");
+                                              },
+                                            );
+                                          }
+                                        },
+                                      );
+                                    },
+                                  )),
+                            )
+                          ])
                         ],
                       );
                     }
-                  },
-                );
-              }
-            },
-          ),
-        ));
+                  } else {
+                    return Stack(
+                      children: [
+                        OnlineMap(
+                          locationPoints: _center,
+                        ),
+                        SafeArea(
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: Container(
+                              height: 100,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        "assets/images/rectangle.png"),
+                                    fit: BoxFit.fill),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SafeArea(
+                          child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Container(
+                                margin: EdgeInsets.only(top: 50),
+                                height: 120,
+                                width: MediaQuery.of(context).size.width,
+                                child: CaptainOrders(
+                                  orders: snap.data,
+                                ),
+                              )),
+                        ),
+                        Stack(children: [
+                          snap.data.data.data.isEmpty
+                              ? SafeArea(
+                                  child: Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: InkWell(
+                                          onTap: () {
+                                            onlineOfflineBloc.setStatus(false);
+                                            approvedCaptainBloc
+                                                .checkCaptainStatus();
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.only(
+                                                bottom: 170, right: 30),
+                                            child: SvgPicture.asset(
+                                              "assets/images/stop.svg",
+                                              width: 60,
+                                              height: 60,
+                                            ),
+                                          ))),
+                                )
+                              : SafeArea(
+                                  child: Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: InkWell(
+                                          onTap: () {
+                                            onlineOfflineBloc.setColor(false);
+                                            return showDialog<void>(
+                                                context: context,
+                                                barrierDismissible: false,
+                                                // user must tap button!
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return GoingOfflineErrorDialog();
+                                                });
+                                          },
+                                          child: Container(
+                                              margin: EdgeInsets.only(
+                                                  bottom: 170, right: 30),
+                                              child: StreamBuilder(
+                                                stream:
+                                                    onlineOfflineBloc.stopColor,
+                                                builder: (BuildContext context,
+                                                    AsyncSnapshot<dynamic>
+                                                        snapshot) {
+                                                  if (snapshot.hasData) {
+                                                    if (snapshot.data) {
+                                                      return SvgPicture.asset(
+                                                        "assets/images/stop.svg",
+                                                        width: 60,
+                                                        height: 60,
+                                                      );
+                                                    } else {
+                                                      return SvgPicture.asset(
+                                                        "assets/images/error_stoping.svg",
+                                                        width: 60,
+                                                        height: 60,
+                                                      );
+                                                    }
+                                                  } else {
+                                                    return SvgPicture.asset(
+                                                      "assets/images/stop.svg",
+                                                      width: 60,
+                                                      height: 60,
+                                                    );
+                                                  }
+                                                },
+                                              )))),
+                                ),
+                          SafeArea(
+                            child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: StreamBuilder(
+                                  stream: orderBloc.orderSheet,
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<String> snapshot) {
+                                    return StreamBuilder(
+                                      stream: orderBloc.ride,
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<RideModel> snapshot) {
+                                        if (snapshot.hasData) {
+                                          if (snapshot
+                                              .data.data.bookings.isEmpty) {
+                                            return FindingOrdersSheet();
+                                          } else {
+                                            if (snapshot.data.data.bookings[0]
+                                                    .order.payUpFront &&
+                                                !snapshot.data.data.bookings[0]
+                                                    .order.roundTrip) {
+                                              return StreamBuilder(
+                                                stream: orderBloc.orderSheet,
+                                                builder: (BuildContext context,
+                                                    AsyncSnapshot<String>
+                                                        snap) {
+                                                  return StandardCase
+                                                      .selectSheetShipperPay(
+                                                          snap.data,
+                                                          context,
+                                                          snapshot
+                                                              .data
+                                                              .data
+                                                              .bookings[0]
+                                                              .order
+                                                              .paidUpFront);
+                                                },
+                                              );
+                                            } else if (snapshot
+                                                    .data
+                                                    .data
+                                                    .bookings[0]
+                                                    .order
+                                                    .payUpFront &&
+                                                snapshot.data.data.bookings[0]
+                                                    .order.roundTrip) {
+                                              return StreamBuilder(
+                                                stream: orderBloc.orderSheet,
+                                                builder: (BuildContext context,
+                                                    AsyncSnapshot<String>
+                                                        snapshots) {
+                                                  return RoundTripCase
+                                                      .selectSheetRoundTripShipperPay(
+                                                          snapshots.data,
+                                                          context,
+                                                          snapshot
+                                                              .data
+                                                              .data
+                                                              .bookings[0]
+                                                              .order
+                                                              .status,
+                                                          snapshot
+                                                              .data
+                                                              .data
+                                                              .bookings[0]
+                                                              .order
+                                                              .paidUpFront);
+                                                },
+                                              );
+                                            } else if (!snapshot
+                                                    .data
+                                                    .data
+                                                    .bookings[0]
+                                                    .order
+                                                    .payUpFront &&
+                                                snapshot.data.data.bookings[0]
+                                                    .order.roundTrip) {
+                                              return StreamBuilder(
+                                                stream: orderBloc.orderSheet,
+                                                builder: (BuildContext context,
+                                                    AsyncSnapshot<String>
+                                                        snapshots) {
+                                                  return RoundTripCase
+                                                      .selectSheetRoundTrip(
+                                                          snapshots.data,
+                                                          context,
+                                                          snapshot
+                                                              .data
+                                                              .data
+                                                              .bookings[0]
+                                                              .order
+                                                              .status);
+                                                },
+                                              );
+                                            } else {
+                                              return StreamBuilder(
+                                                stream: orderBloc.orderSheet,
+                                                builder: (BuildContext context,
+                                                    AsyncSnapshot<String>
+                                                        snapshot) {
+                                                  return StandardCase.sheet(
+                                                      snapshot.data,
+                                                      context,
+                                                      "NORMAL");
+                                                },
+                                              );
+                                            }
+                                          }
+                                        } else {
+                                          return StreamBuilder(
+                                            stream: orderBloc.orderSheet,
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<String>
+                                                    snapshot) {
+                                              return StandardCase.sheet(
+                                                  snapshot.data,
+                                                  context,
+                                                  "NORMAL");
+                                            },
+                                          );
+                                        }
+                                      },
+                                    );
+                                  },
+                                )),
+                          )
+                        ])
+                      ],
+                    );
+                  }
+                },
+              );
+            }
+          } else {
+            return StreamBuilder(
+              stream: onlineOfflineBloc.captainStatus,
+              builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                if (snapshot.hasData) {
+                  if (snapshot.data) {
+                    return Stack(
+                      children: [
+                        StreamBuilder(
+                            stream: onlineOfflineBloc.captainStatus,
+                            builder: (BuildContext context,
+                                AsyncSnapshot<bool> snapshot) {
+                              if (snapshot.hasData) {
+                                if (snapshot.data) {
+                                  return OnlineMap(
+                                    locationPoints: _center,
+                                  );
+                                } else {
+                                  return OfflineMap(
+                                    locationPoints: _center,
+                                  );
+                                }
+                              } else {
+                                return OfflineMap(
+                                  locationPoints: _center,
+                                );
+                              }
+                            }),
+                        SafeArea(
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: Container(
+                              height: 100,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        "assets/images/rectangle.png"),
+                                    fit: BoxFit.fill),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Stack(children: [
+                          StreamBuilder(
+                            stream: onlineOfflineBloc.captainStatus,
+                            builder: (BuildContext context,
+                                AsyncSnapshot<bool> snapshot) {
+                              if (snapshot.hasData) {
+                                if (snapshot.data) {
+                                  return StreamBuilder(
+                                    stream: onlineOfflineBloc.captainStatus,
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<bool> snapshot) {
+                                      if (snapshot.hasData) {
+                                        return StreamBuilder(
+                                          stream: orderBloc.order,
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<OrderModel>
+                                                  snapshot) {
+                                            if (snapshot.hasData) {
+                                              if (snapshot
+                                                  .data.data.data.isEmpty) {
+                                                return SafeArea(
+                                                  child: Align(
+                                                      alignment:
+                                                          Alignment.bottomRight,
+                                                      child: InkWell(
+                                                          onTap: () {
+                                                            onlineOfflineBloc
+                                                                .setStatus(
+                                                                    false);
+                                                            approvedCaptainBloc
+                                                                .checkCaptainStatus();
+                                                          },
+                                                          child: Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    bottom: 170,
+                                                                    right: 30),
+                                                            child: SvgPicture
+                                                                .asset(
+                                                              "assets/images/stop.svg",
+                                                              width: 60,
+                                                              height: 60,
+                                                            ),
+                                                          ))),
+                                                );
+                                              } else {
+                                                return SafeArea(
+                                                  child: Align(
+                                                      alignment:
+                                                          Alignment.bottomRight,
+                                                      child: InkWell(
+                                                          onTap: () {
+                                                            onlineOfflineBloc
+                                                                .setColor(
+                                                                    false);
+                                                            return showDialog<
+                                                                    void>(
+                                                                context:
+                                                                    context,
+                                                                barrierDismissible:
+                                                                    false,
+                                                                // user must tap button!
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return GoingOfflineErrorDialog();
+                                                                });
+                                                          },
+                                                          child: Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      bottom:
+                                                                          170,
+                                                                      right:
+                                                                          30),
+                                                              child:
+                                                                  StreamBuilder(
+                                                                stream:
+                                                                    onlineOfflineBloc
+                                                                        .stopColor,
+                                                                builder: (BuildContext
+                                                                        context,
+                                                                    AsyncSnapshot<
+                                                                            dynamic>
+                                                                        snapshot) {
+                                                                  if (snapshot
+                                                                      .hasData) {
+                                                                    if (snapshot
+                                                                        .data) {
+                                                                      return SvgPicture
+                                                                          .asset(
+                                                                        "assets/images/stop.svg",
+                                                                        width:
+                                                                            60,
+                                                                        height:
+                                                                            60,
+                                                                      );
+                                                                    } else {
+                                                                      return SvgPicture
+                                                                          .asset(
+                                                                        "assets/images/error_stoping.svg",
+                                                                        width:
+                                                                            60,
+                                                                        height:
+                                                                            60,
+                                                                      );
+                                                                    }
+                                                                  } else {
+                                                                    return SvgPicture
+                                                                        .asset(
+                                                                      "assets/images/stop.svg",
+                                                                      width: 60,
+                                                                      height:
+                                                                          60,
+                                                                    );
+                                                                  }
+                                                                },
+                                                              )))),
+                                                );
+                                              }
+                                            } else {
+                                              return SafeArea(
+                                                child: Align(
+                                                    alignment:
+                                                        Alignment.bottomRight,
+                                                    child: InkWell(
+                                                        onTap: () {
+                                                          onlineOfflineBloc
+                                                              .setStatus(false);
+                                                          approvedCaptainBloc
+                                                              .checkCaptainStatus();
+                                                        },
+                                                        child: Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  bottom: 170,
+                                                                  right: 30),
+                                                          child:
+                                                              SvgPicture.asset(
+                                                            "assets/images/stop.svg",
+                                                            width: 60,
+                                                            height: 60,
+                                                          ),
+                                                        ))),
+                                              );
+                                            }
+                                          },
+                                        );
+                                      } else {
+                                        return SafeArea(
+                                          child: Align(
+                                              alignment: Alignment.bottomRight,
+                                              child: InkWell(
+                                                  onTap: () {
+                                                    onlineOfflineBloc
+                                                        .setStatus(false);
+                                                    approvedCaptainBloc
+                                                        .checkCaptainStatus();
+                                                  },
+                                                  child: Container(
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 170, right: 30),
+                                                    child: SvgPicture.asset(
+                                                      "assets/images/stop.svg",
+                                                      width: 60,
+                                                      height: 60,
+                                                    ),
+                                                  ))),
+                                        );
+                                      }
+                                    },
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              } else {
+                                return Container();
+                              }
+                            },
+                          ),
+                          StreamBuilder(
+                              stream: onlineOfflineBloc.captainStatus,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<bool> snapshot) {
+                                if (snapshot.hasData) {
+                                  if (snapshot.data) {
+                                    if (snapshot.data) {
+                                      return SafeArea(
+                                        child: Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: StreamBuilder(
+                                              stream: orderBloc.orderSheet,
+                                              builder: (BuildContext context,
+                                                  AsyncSnapshot<String>
+                                                      snapshot) {
+                                                return StreamBuilder(
+                                                  stream: orderBloc.ride,
+                                                  builder: (BuildContext
+                                                          context,
+                                                      AsyncSnapshot<RideModel>
+                                                          snapshot) {
+                                                    if (snapshot.hasData) {
+                                                      if (snapshot.data.data
+                                                          .bookings.isEmpty) {
+                                                        return FindingOrdersSheet();
+                                                      } else {
+                                                        if (snapshot
+                                                                .data
+                                                                .data
+                                                                .bookings[0]
+                                                                .order
+                                                                .payUpFront &&
+                                                            !snapshot
+                                                                .data
+                                                                .data
+                                                                .bookings[0]
+                                                                .order
+                                                                .roundTrip) {
+                                                          return StreamBuilder(
+                                                            stream: orderBloc
+                                                                .orderSheet,
+                                                            builder: (BuildContext
+                                                                    context,
+                                                                AsyncSnapshot<
+                                                                        String>
+                                                                    snap) {
+                                                              return StandardCase
+                                                                  .selectSheetShipperPay(
+                                                                      snap.data,
+                                                                      context,
+                                                                      snapshot
+                                                                          .data
+                                                                          .data
+                                                                          .bookings[
+                                                                              0]
+                                                                          .order
+                                                                          .paidUpFront);
+                                                            },
+                                                          );
+                                                        } else if (snapshot
+                                                                .data
+                                                                .data
+                                                                .bookings[0]
+                                                                .order
+                                                                .payUpFront &&
+                                                            snapshot
+                                                                .data
+                                                                .data
+                                                                .bookings[0]
+                                                                .order
+                                                                .roundTrip) {
+                                                          return StreamBuilder(
+                                                            stream: orderBloc
+                                                                .orderSheet,
+                                                            builder: (BuildContext
+                                                                    context,
+                                                                AsyncSnapshot<
+                                                                        String>
+                                                                    snapshots) {
+                                                              return RoundTripCase.selectSheetRoundTripShipperPay(
+                                                                  snapshots
+                                                                      .data,
+                                                                  context,
+                                                                  snapshot
+                                                                      .data
+                                                                      .data
+                                                                      .bookings[
+                                                                          0]
+                                                                      .order
+                                                                      .status,
+                                                                  snapshot
+                                                                      .data
+                                                                      .data
+                                                                      .bookings[
+                                                                          0]
+                                                                      .order
+                                                                      .paidUpFront);
+                                                            },
+                                                          );
+                                                        } else if (!snapshot
+                                                                .data
+                                                                .data
+                                                                .bookings[0]
+                                                                .order
+                                                                .payUpFront &&
+                                                            snapshot
+                                                                .data
+                                                                .data
+                                                                .bookings[0]
+                                                                .order
+                                                                .roundTrip) {
+                                                          return StreamBuilder(
+                                                            stream: orderBloc
+                                                                .orderSheet,
+                                                            builder: (BuildContext
+                                                                    context,
+                                                                AsyncSnapshot<
+                                                                        String>
+                                                                    snapshots) {
+                                                              return RoundTripCase
+                                                                  .selectSheetRoundTrip(
+                                                                      snapshots
+                                                                          .data,
+                                                                      context,
+                                                                      snapshot
+                                                                          .data
+                                                                          .data
+                                                                          .bookings[
+                                                                              0]
+                                                                          .order
+                                                                          .status);
+                                                            },
+                                                          );
+                                                        } else if (snapshot
+                                                                .data
+                                                                .data
+                                                                .bookings[0]
+                                                                .order
+                                                                .cashOnDeliveryOption ==
+                                                            "RETURN") {
+                                                          return StreamBuilder(
+                                                            stream: orderBloc
+                                                                .orderSheet,
+                                                            builder: (BuildContext
+                                                                    context,
+                                                                AsyncSnapshot<
+                                                                        String>
+                                                                    snapshots) {
+                                                              return RoundTripCase
+                                                                  .selectSheetRoundTrip(
+                                                                      snapshots
+                                                                          .data,
+                                                                      context,
+                                                                      snapshot
+                                                                          .data
+                                                                          .data
+                                                                          .bookings[
+                                                                              0]
+                                                                          .order
+                                                                          .status);
+                                                            },
+                                                          );
+                                                        } else {
+                                                          return StreamBuilder(
+                                                            stream: orderBloc
+                                                                .orderSheet,
+                                                            builder: (BuildContext
+                                                                    context,
+                                                                AsyncSnapshot<
+                                                                        String>
+                                                                    snapshot) {
+                                                              return StandardCase
+                                                                  .sheet(
+                                                                      snapshot
+                                                                          .data,
+                                                                      context,
+                                                                      "NORMAL");
+                                                            },
+                                                          );
+                                                        }
+                                                      }
+                                                    } else {
+                                                      return StreamBuilder(
+                                                        stream: orderBloc
+                                                            .orderSheet,
+                                                        builder: (BuildContext
+                                                                context,
+                                                            AsyncSnapshot<
+                                                                    String>
+                                                                snapshot) {
+                                                          return StandardCase
+                                                              .sheet(
+                                                                  snapshot.data,
+                                                                  context,
+                                                                  "NORMAL");
+                                                        },
+                                                      );
+                                                    }
+                                                  },
+                                                );
+                                              },
+                                            )),
+                                      );
+                                    } else {
+                                      return SafeArea(
+                                        child: Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: OnlineOfflineSheet()),
+                                      );
+                                    }
+                                  } else {
+                                    return SafeArea(
+                                      child: Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: OnlineOfflineSheet()),
+                                    );
+                                  }
+                                } else {
+                                  return SafeArea(
+                                    child: Align(
+                                        alignment: Alignment.bottomCenter,
+                                        child: OnlineOfflineSheet()),
+                                  );
+                                }
+                              }),
+                        ])
+                      ],
+                    );
+                  } else {
+                    return Stack(
+                      children: [
+                        OnlineMap(
+                          locationPoints: _center,
+                        ),
+                        SafeArea(
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: Container(
+                              height: 100,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        "assets/images/rectangle.png"),
+                                    fit: BoxFit.fill),
+                              ),
+                            ),
+                          ),
+                        ),
+                        // SafeArea(
+                        //   child: Align(
+                        //       alignment: Alignment.topLeft,
+                        //       child: Container(
+                        //         margin: EdgeInsets.only(top: 50),
+                        //         height: 120,
+                        //         width: MediaQuery.of(context).size.width,
+                        //         child: CaptainOrders(
+                        //           orders: snap.data,
+                        //         ),
+                        //       )),
+                        // ),
+                        // Stack(children: [
+                        //   snap.data.data.data.isEmpty? SafeArea(
+                        //     child: Align(
+                        //         alignment: Alignment.bottomRight,
+                        //         child: InkWell(
+                        //             onTap: () {
+                        //               onlineOfflineBloc
+                        //                   .setOfflineStatus(false);
+                        //               onlineOfflineBloc
+                        //                   .setStatus(false);
+                        //               approvedCaptainBloc
+                        //                   .checkCaptainStatus();
+                        //             },
+                        //             child: Container(
+                        //               margin: EdgeInsets.only(
+                        //                   bottom: 170, right: 30),
+                        //               child: SvgPicture.asset(
+                        //                 "assets/images/stop.svg",
+                        //                 width: 60,
+                        //                 height: 60,
+                        //               ),
+                        //             ))),
+                        //   )
+                        //
+                        //       :SafeArea(
+                        //     child: Align(
+                        //         alignment: Alignment.bottomRight,
+                        //         child: InkWell(
+                        //             onTap: () {
+                        //               onlineOfflineBloc.setColor(false);
+                        //               return showDialog<void>(
+                        //                   context: context,
+                        //                   barrierDismissible: false,
+                        //                   // user must tap button!
+                        //                   builder:
+                        //                       (BuildContext context) {
+                        //                     return GoingOfflineErrorDialog();
+                        //                   });
+                        //             },
+                        //             child: Container(
+                        //                 margin: EdgeInsets.only(
+                        //                     bottom: 170, right: 30),
+                        //                 child: StreamBuilder(
+                        //                   stream: onlineOfflineBloc
+                        //                       .stopColor,
+                        //                   builder:
+                        //                       (BuildContext context,
+                        //                       AsyncSnapshot<dynamic>
+                        //                       snapshot) {
+                        //                     if (snapshot.hasData) {
+                        //                       if (snapshot.data) {
+                        //                         return SvgPicture.asset(
+                        //                           "assets/images/stop.svg",
+                        //                           width: 60,
+                        //                           height: 60,
+                        //                         );
+                        //                       } else {
+                        //                         return SvgPicture.asset(
+                        //                           "assets/images/error_stoping.svg",
+                        //                           width: 60,
+                        //                           height: 60,
+                        //                         );
+                        //                       }
+                        //                     } else {
+                        //                       return SvgPicture.asset(
+                        //                         "assets/images/stop.svg",
+                        //                         width: 60,
+                        //                         height: 60,
+                        //                       );
+                        //                     }
+                        //                   },
+                        //                 )))),
+                        //   ),
+                        //
+                        //   SafeArea(
+                        //     child: Align(
+                        //         alignment: Alignment.bottomCenter,
+                        //         child: StreamBuilder(
+                        //           stream: orderBloc.orderSheet,
+                        //           builder: (BuildContext context,
+                        //               AsyncSnapshot<String> snapshot) {
+                        //             return StreamBuilder(
+                        //               stream: orderBloc.ride,
+                        //               builder: (BuildContext context,
+                        //                   AsyncSnapshot<RideModel> snapshot) {
+                        //                 if (snapshot.hasData) {
+                        //                   if(snapshot.data.data.bookings.isEmpty){
+                        //                     return FindingOrdersSheet();
+                        //                   }
+                        //                   else
+                        //                   { if (snapshot.data.data.bookings[0].order
+                        //                       .payUpFront) {
+                        //                     return StreamBuilder(
+                        //                       stream: orderBloc.orderSheet,
+                        //                       builder: (BuildContext context,
+                        //                           AsyncSnapshot<String>
+                        //                           snap) {
+                        //                         return StandardCase
+                        //                             .selectSheetShipperPay(
+                        //                             snap.data, context,snapshot.data.data.bookings[0].order
+                        //                             .paidUpFront);
+                        //                       },
+                        //                     );
+                        //                   }
+                        //                   else if (snapshot.data.data
+                        //                       .bookings[0].order.roundTrip) {
+                        //                     return StreamBuilder(
+                        //                       stream: orderBloc.orderSheet,
+                        //                       builder: (BuildContext context,
+                        //                           AsyncSnapshot<String>
+                        //                           snapshots) {
+                        //                         return RoundTripCase
+                        //                             .selectSheetRoundTrip(
+                        //                             snapshots.data,
+                        //                             context,
+                        //                             snapshot
+                        //                                 .data
+                        //                                 .data
+                        //                                 .bookings[0]
+                        //                                 .order
+                        //                                 .status);
+                        //                       },
+                        //                     );
+                        //                   } else {
+                        //                     return StreamBuilder(
+                        //                       stream: orderBloc.orderSheet,
+                        //                       builder: (BuildContext context,
+                        //                           AsyncSnapshot<String>
+                        //                           snapshot) {
+                        //                         return StandardCase.sheet(
+                        //                             snapshot.data,
+                        //                             context,
+                        //                             "NORMAL");
+                        //                       },
+                        //                     );
+                        //                   }}
+                        //
+                        //                 } else {
+                        //                   return StreamBuilder(
+                        //                     stream: orderBloc.orderSheet,
+                        //                     builder: (BuildContext context,
+                        //                         AsyncSnapshot<String> snapshot) {
+                        //                       return StandardCase.sheet(
+                        //                           snapshot.data,
+                        //                           context,
+                        //                           "NORMAL");
+                        //                     },
+                        //                   );
+                        //                 }
+                        //               },
+                        //             );
+                        //           },
+                        //         )),
+                        //   )
+                        // ])
+                      ],
+                    );
+                  }
+                } else {
+                  return Stack(
+                    children: [
+                      OnlineMap(
+                        locationPoints: _center,
+                      ),
+                      SafeArea(
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Container(
+                            height: 100,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image:
+                                      AssetImage("assets/images/rectangle.png"),
+                                  fit: BoxFit.fill),
+                            ),
+                          ),
+                        ),
+                      ),
+                      // SafeArea(
+                      //   child: Align(
+                      //       alignment: Alignment.topLeft,
+                      //       child: Container(
+                      //         margin: EdgeInsets.only(top: 50),
+                      //         height: 120,
+                      //         width: MediaQuery.of(context).size.width,
+                      //         child: CaptainOrders(
+                      //           orders: snap.data,
+                      //         ),
+                      //       )),
+                      // ),
+                      // Stack(children: [
+                      //   snap.data.data.data.isEmpty? SafeArea(
+                      //     child: Align(
+                      //         alignment: Alignment.bottomRight,
+                      //         child: InkWell(
+                      //             onTap: () {
+                      //               onlineOfflineBloc
+                      //                   .setOfflineStatus(false);
+                      //               onlineOfflineBloc
+                      //                   .setStatus(false);
+                      //               approvedCaptainBloc
+                      //                   .checkCaptainStatus();
+                      //             },
+                      //             child: Container(
+                      //               margin: EdgeInsets.only(
+                      //                   bottom: 170, right: 30),
+                      //               child: SvgPicture.asset(
+                      //                 "assets/images/stop.svg",
+                      //                 width: 60,
+                      //                 height: 60,
+                      //               ),
+                      //             ))),
+                      //   )
+                      //
+                      //       :SafeArea(
+                      //     child: Align(
+                      //         alignment: Alignment.bottomRight,
+                      //         child: InkWell(
+                      //             onTap: () {
+                      //               onlineOfflineBloc.setColor(false);
+                      //               return showDialog<void>(
+                      //                   context: context,
+                      //                   barrierDismissible: false,
+                      //                   // user must tap button!
+                      //                   builder:
+                      //                       (BuildContext context) {
+                      //                     return GoingOfflineErrorDialog();
+                      //                   });
+                      //             },
+                      //             child: Container(
+                      //                 margin: EdgeInsets.only(
+                      //                     bottom: 170, right: 30),
+                      //                 child: StreamBuilder(
+                      //                   stream: onlineOfflineBloc
+                      //                       .stopColor,
+                      //                   builder:
+                      //                       (BuildContext context,
+                      //                       AsyncSnapshot<dynamic>
+                      //                       snapshot) {
+                      //                     if (snapshot.hasData) {
+                      //                       if (snapshot.data) {
+                      //                         return SvgPicture.asset(
+                      //                           "assets/images/stop.svg",
+                      //                           width: 60,
+                      //                           height: 60,
+                      //                         );
+                      //                       } else {
+                      //                         return SvgPicture.asset(
+                      //                           "assets/images/error_stoping.svg",
+                      //                           width: 60,
+                      //                           height: 60,
+                      //                         );
+                      //                       }
+                      //                     } else {
+                      //                       return SvgPicture.asset(
+                      //                         "assets/images/stop.svg",
+                      //                         width: 60,
+                      //                         height: 60,
+                      //                       );
+                      //                     }
+                      //                   },
+                      //                 )))),
+                      //   ),
+                      //
+                      //   SafeArea(
+                      //     child: Align(
+                      //         alignment: Alignment.bottomCenter,
+                      //         child: StreamBuilder(
+                      //           stream: orderBloc.orderSheet,
+                      //           builder: (BuildContext context,
+                      //               AsyncSnapshot<String> snapshot) {
+                      //             return StreamBuilder(
+                      //               stream: orderBloc.ride,
+                      //               builder: (BuildContext context,
+                      //                   AsyncSnapshot<RideModel> snapshot) {
+                      //                 if (snapshot.hasData) {
+                      //                   if(snapshot.data.data.bookings.isEmpty){
+                      //                     return FindingOrdersSheet();
+                      //                   }
+                      //                   else
+                      //                   { if (snapshot.data.data.bookings[0].order
+                      //                       .payUpFront) {
+                      //                     return StreamBuilder(
+                      //                       stream: orderBloc.orderSheet,
+                      //                       builder: (BuildContext context,
+                      //                           AsyncSnapshot<String>
+                      //                           snap) {
+                      //                         return StandardCase
+                      //                             .selectSheetShipperPay(
+                      //                             snap.data, context,snapshot.data.data.bookings[0].order
+                      //                             .paidUpFront);
+                      //                       },
+                      //                     );
+                      //                   }
+                      //                   else if (snapshot.data.data
+                      //                       .bookings[0].order.roundTrip) {
+                      //                     return StreamBuilder(
+                      //                       stream: orderBloc.orderSheet,
+                      //                       builder: (BuildContext context,
+                      //                           AsyncSnapshot<String>
+                      //                           snapshots) {
+                      //                         return RoundTripCase
+                      //                             .selectSheetRoundTrip(
+                      //                             snapshots.data,
+                      //                             context,
+                      //                             snapshot
+                      //                                 .data
+                      //                                 .data
+                      //                                 .bookings[0]
+                      //                                 .order
+                      //                                 .status);
+                      //                       },
+                      //                     );
+                      //                   } else {
+                      //                     return StreamBuilder(
+                      //                       stream: orderBloc.orderSheet,
+                      //                       builder: (BuildContext context,
+                      //                           AsyncSnapshot<String>
+                      //                           snapshot) {
+                      //                         return StandardCase.sheet(
+                      //                             snapshot.data,
+                      //                             context,
+                      //                             "NORMAL");
+                      //                       },
+                      //                     );
+                      //                   }}
+                      //
+                      //                 } else {
+                      //                   return StreamBuilder(
+                      //                     stream: orderBloc.orderSheet,
+                      //                     builder: (BuildContext context,
+                      //                         AsyncSnapshot<String> snapshot) {
+                      //                       return StandardCase.sheet(
+                      //                           snapshot.data,
+                      //                           context,
+                      //                           "NORMAL");
+                      //                     },
+                      //                   );
+                      //                 }
+                      //               },
+                      //             );
+                      //           },
+                      //         )),
+                      //   )
+                      // ])
+                    ],
+                  );
+                }
+              },
+            );
+          }
+        },
+      ),
+    ));
   }
 }

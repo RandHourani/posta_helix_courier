@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:posta_courier/src/blocs/home_blocs/unsuccessful_order_bloc.dart';
 import 'package:posta_courier/src/reasources/repository.dart';
 import 'package:posta_courier/src/blocs/home_blocs/order_bloc.dart';
 import 'package:rxdart/rxdart.dart';
@@ -42,8 +43,18 @@ class PodBlock {
 
   setSign(Uint8List value) {
     _sign.add(value);
-    print(_sign.value);
     POD();
+  }
+
+  setUnsuccessfulSign(Uint8List value) {
+    _sign.add(value);
+    if (_image.value == null) {
+      unsuccessfulOrderBloc.setUnsuccessfulOrder(
+          null, _sign.value, _referenceController.value);
+    } else {
+      unsuccessfulOrderBloc.setUnsuccessfulOrder(
+          _image.value.path, _sign.value, _referenceController.value);
+    }
   }
 
   checkSign(bool value) {
@@ -61,9 +72,16 @@ class PodBlock {
   }
 
   POD() async {
-    var response = await _repository.setPOD(orderBloc.getBookingId(),
-        _image.value.path, _sign.value, _referenceController.value);
-    orderBloc.setOrderSheet(response.data.status);
+    if (_image.value == null) {
+      var response = await _repository.setPOD(orderBloc.getBookingId(), null,
+          _sign.value, _referenceController.value);
+      orderBloc.setOrderSheet(response.data.status);
+    } else {
+      var response = await _repository.setPOD(orderBloc.getBookingId(),
+          _image.value.path, _sign.value, _referenceController.value);
+      orderBloc.setOrderSheet(response.data.status);
+    }
+
     // reset();
   }
 }

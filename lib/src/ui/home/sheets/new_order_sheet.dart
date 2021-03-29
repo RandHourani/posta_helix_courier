@@ -65,7 +65,7 @@ class NewOrderSuggestionSheet extends StatelessWidget {
                   return Container();
                 }
               } else {
-                Future.delayed(Duration(seconds: snap.data), () {
+                Future.delayed(Duration(seconds: 60), () {
                   orderBloc.setOrderSheet("NULL");
                   checkCaptainDataBloc.resetSuggestion();
                 });

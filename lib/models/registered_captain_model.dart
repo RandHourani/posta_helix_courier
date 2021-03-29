@@ -38,6 +38,7 @@ class DataDetails {
   String rating;
   Interview interview;
   bool goingOffline;
+  int lastCheck;
 
   DataDetails(
       {this.username,
@@ -52,17 +53,17 @@ class DataDetails {
       this.profileImage,
       this.idCardFront,
       this.idCardBack,
-      this.drivingCertificateFront,
-      this.drivingCertificateBack,
-      this.nationalityId,
-      this.bankId,
-      this.countryId,
-      this.car,
-      this.approvedAt,
-      this.activeSuggestion,
-      this.rating,
-      this.interview,
-      this.goingOffline});
+    this.drivingCertificateFront,
+    this.drivingCertificateBack,
+    this.nationalityId,
+    this.bankId,
+    this.countryId,
+    this.car,
+    this.approvedAt,
+    this.activeSuggestion,
+    this.rating,
+    this.interview,
+    this.goingOffline, this.lastCheck});
 
   factory DataDetails.fromJson(Map<String, dynamic> json) {
     var list = json['data'] as List;
@@ -93,10 +94,11 @@ class DataDetails {
             : null,
         rating: json['avg_rating'] as String,
         approvedAt:
-            json['approved_at'] != null ? json['approved_at'] as String : null,
+        json['approved_at'] != null ? json['approved_at'] as String : null,
         activeSuggestion: json['active_suggestion'] != null
             ? ActiveSuggestion.fromJson(json['active_suggestion'])
-            : null);
+            : null,
+        lastCheck: json['last_check']);
   }
 }
 

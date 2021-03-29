@@ -106,17 +106,11 @@ class PodScreen extends StatelessWidget {
                       Row(
                         children: <Widget>[
                           Container(
-                            width: (MediaQuery
-                                .of(context)
-                                .size
-                                .height * 0.02) +
+                            width: (MediaQuery.of(context).size.height * 0.02) +
                                 15,
                             height:
-                            (MediaQuery
-                                .of(context)
-                                .size
-                                .height * 0.02) +
-                                15,
+                                (MediaQuery.of(context).size.height * 0.02) +
+                                    15,
                             child: StreamBuilder(
                               stream: podBloc.image,
                               builder: (context, snap) {
@@ -517,7 +511,12 @@ class PodScreen extends StatelessWidget {
                                       elevation: 3,
                                       color: AppColors.MAIN_COLOR,
                                       onPressed: () async {
-                                        getSign();
+                                        if (screen == "Unsuccessful") {
+                                          unsuccessfulOrderSign();
+                                        } else {
+                                          getSign();
+                                        }
+                                        orderBloc.getOrders("NOT_PAID");
                                         Navigator.of(context).pop(true);
                                         _showDialog(context);
                                       },
@@ -569,9 +568,17 @@ class PodScreen extends StatelessWidget {
                                                   podBloc.checkSign(true);
                                                 } else {
                                                   podBloc.checkSign(false);
-                                                  getSign();
+                                                  if (screen ==
+                                                      "Unsuccessful") {
+                                                    unsuccessfulOrderSign();
+                                                  } else {
+                                                    getSign();
+                                                  }
                                                   Navigator.of(context)
                                                       .pop(true);
+                                                  orderBloc
+                                                      .getOrders("NOT_PAID");
+
                                                   _showDialog(context);
                                                 }
                                               },
@@ -781,6 +788,15 @@ class PodScreen extends StatelessWidget {
       final directory = await getApplicationDocumentsDirectory();
       fileImg = File('${directory.path}/sign.png');
       podBloc.setSign(value);
+    });
+  }
+
+  Future<Uint8List> unsuccessfulOrderSign() async {
+    File fileImg;
+    await _controller.toPngBytes().then((value) async {
+      final directory = await getApplicationDocumentsDirectory();
+      fileImg = File('${directory.path}/sign.png');
+      podBloc.setUnsuccessfulSign(value);
     });
   }
 

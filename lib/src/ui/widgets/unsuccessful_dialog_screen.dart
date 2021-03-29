@@ -5,7 +5,7 @@ import 'package:posta_courier/models/unsuccessful_order_model.dart';
 import 'package:posta_courier/src/blocs/home_blocs/unsuccessful_order_bloc.dart';
 import 'package:posta_courier/src/constants/application_colors_value.dart';
 import 'package:posta_courier/src/constants/fonts_size.dart';
-
+import 'package:posta_courier/src/ui/home/pod_dialog.dart';
 
 class UnsuccessfulScreen extends StatelessWidget {
   final String type;
@@ -121,7 +121,13 @@ class UnsuccessfulScreen extends StatelessWidget {
                       color: AppColors.MAIN_COLOR,
                       onPressed: () {
                         Navigator.of(context).pop();
-                        unsuccessfulOrderBloc.setUnsuccessfulOrder(orderId);
+                        unsuccessfulOrderBloc.setOrderId(orderId);
+                        showDialog(
+                            context: context,
+                            builder: (_) =>
+                                PodScreen(
+                                  screen: "Unsuccessful",
+                                ));
                       },
                       child:
                       Padding(

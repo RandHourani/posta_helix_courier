@@ -257,9 +257,10 @@ class Repository {
   }
 
 //
-  Future<void> setUnsuccessfulOrder(int reasonId, String action, int orderId) {
+  Future<void> setUnsuccessfulOrder(int reasonId, String action, int orderId,
+      String photo, Uint8List sig, String ref) {
     return unsuccessfulOrderProvider.setUnsuccessfulOrder(
-        reasonId, action, orderId);
+        reasonId, action, orderId, photo, sig, ref);
   }
 
   Future<void> setNotificationToken(String token) {

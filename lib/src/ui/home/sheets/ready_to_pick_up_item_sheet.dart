@@ -478,14 +478,21 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
 
                 switch(shipmentCase)
                 {
-                  case "CASE_1":{ return  PickedUpItemSheet(
-                    shipmentCase: "PICKED_UP_CASE_1",
-                  );
-                  }break;
-                  case "SHIPPER_PAY":{ return  PaymentWithoutCODSheet(
-                    shipmentCase: shipmentCase,
-                  );
-                  }break;
+                  case "CASE_1":
+                    {
+                      print("test88");
+                      return PickedUpItemSheet(
+                        shipmentCase: "PICKED_UP_CASE_1",
+                      );
+                    }
+                    break;
+                  case "SHIPPER_PAY":
+                    {
+                      return PaymentWithoutCODSheet(
+                        shipmentCase: shipmentCase,
+                      );
+                    }
+                    break;
                 }
               },
               child: Row(

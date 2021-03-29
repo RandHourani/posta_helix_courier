@@ -31,6 +31,8 @@ class RoundTripCase {
               break;
             case "ARRIVED":
               {
+                print("testtttt");
+
                 return PickedUpItemSheet(
                   shipmentCase: "PICKED_UP_CASE_1",
                 );
@@ -73,6 +75,7 @@ class RoundTripCase {
               break;
             default:
               {
+                orderBloc.getRoundBackward();
                 return StreamBuilder(
                   stream: approvedCaptainBloc.checkUser,
                   builder: (BuildContext context,
@@ -198,13 +201,19 @@ class RoundTripCase {
               break;
             case "ARRIVED":
               {
-                return pay!=null? PickedUpItemSheet(
-                  shipmentCase: "CASE_1",
-                ):PaymentWithoutCODSheet(shipmentCase:"SHIPPER_PAY" ,);
+                print("test");
+                return pay != null
+                    ? PickedUpItemSheet(
+                        shipmentCase: "CASE_1",
+                      )
+                    : PaymentWithoutCODSheet(
+                        shipmentCase: "SHIPPER_PAY",
+                      );
               }
               break;
             case "READY_TO_PICK_UP":
               {
+                print("test2");
                 return PickedUpItemSheet(
                   shipmentCase: "CASE_1",
                 );
@@ -234,7 +243,9 @@ class RoundTripCase {
               break;
             case "PAID":
               {
-                return FindingOrdersSheet();
+                orderBloc.getRoundBackward();
+                print("testtttt");
+                return GoToNewLocationSheet();
               }
               break;
             case "PAYMENT":

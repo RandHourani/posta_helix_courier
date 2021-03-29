@@ -188,6 +188,7 @@ class NewVehicleBloc {
     return _carColor.value.carData.data
         .indexWhere((element) => _carColorSelected.value == element.name);
   }
+
   getSelectedColorId() {
     return _carColorSelectedId.value;
   }
@@ -218,7 +219,8 @@ class NewVehicleBloc {
   }
 
   setCarBrand(String value) {
-    if (value == _selectedCarBrand.value) {} else {
+    if (value == _selectedCarBrand.value) {
+    } else {
       _selectedCarBrand.add(value);
       int index = list.value
           .indexWhere((element) => _selectedCarBrand.value == element);
@@ -227,7 +229,7 @@ class NewVehicleBloc {
       fetchAllCarModels();
     }
     int index =
-    list.value.indexWhere((element) => _selectedCarBrand.value == element);
+        list.value.indexWhere((element) => _selectedCarBrand.value == element);
     _carBrandId.add(_carBrand.value.carData.data[index].id.toString());
   }
 
@@ -240,8 +242,11 @@ class NewVehicleBloc {
   }
 
   getSelectedCountries() {
-
-    return _countries.value.data[ _countries.value.data.indexWhere((element) => _selectedCountriesName.value==element.nameEN)].id;
+    return _countries
+        .value
+        .data[_countries.value.data.indexWhere(
+            (element) => _selectedCountriesName.value == element.nameEN)]
+        .id;
   }
 
   setSelectedModel(String value) {
@@ -303,8 +308,6 @@ class NewVehicleBloc {
   setRegistrationExpireDateValidation(String value) {
     _registrationExpireDateValidation.add(value);
   }
-
-
 
   updateInsuranceFront(File file) {
     _insuranceFront.add(file);

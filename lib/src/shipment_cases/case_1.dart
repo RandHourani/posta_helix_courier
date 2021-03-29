@@ -29,6 +29,7 @@ class StandardCase {
         break;
       case "ARRIVED":
         {
+          print("test3");
           return PickedUpItemSheet(
             shipmentCase: "PICKED_UP_CASE_1",
           );
@@ -47,16 +48,20 @@ class StandardCase {
               stream: orderBloc.ride,
               builder:
                   (BuildContext context, AsyncSnapshot<RideModel> snapshot) {
-                if (snapshot.data.data.bookings[orderBloc.getOrderIndex()].order
-                        .cashOnDeliveryOption ==
-                    "NONE") {
-                  return PaymentWithoutCODSheet(
-                    shipmentCase: "CASE_1",
-                  );
+                if (snapshot.hasData) {
+                  if (snapshot.data.data.bookings[orderBloc.getOrderIndex()]
+                          .order.cashOnDeliveryOption ==
+                      "NONE") {
+                    return PaymentWithoutCODSheet(
+                      shipmentCase: "CASE_1",
+                    );
+                  } else {
+                    return PaymentWithCODSheet(
+                      shipmentCase: "CASE_1",
+                    );
+                  }
                 } else {
-                  return PaymentWithCODSheet(
-                    shipmentCase: "CASE_1",
-                  );
+                  return FindingOrdersSheet();
                 }
               });
         }
@@ -104,6 +109,7 @@ class StandardCase {
         break;
       case "ARRIVED":
         {
+          print("test4");
           return pay != null
               ? PickedUpItemSheet(
             shipmentCase: "CASE_1",
@@ -115,6 +121,7 @@ class StandardCase {
         break;
       case "READY_TO_PICK_UP":
         {
+          print("test5");
           return PickedUpItemSheet(
             shipmentCase: "CASE_1",
           );
@@ -181,21 +188,22 @@ class StandardCase {
         break;
       default:
         {
-          return StreamBuilder(
-            stream: approvedCaptainBloc.checkUser,
-            builder:
-                (BuildContext context, AsyncSnapshot<LogInModel> snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.data.data.activeSuggestion != null) {
-                  return NewOrderSuggestionSheet();
-                } else {
-                  return FindingOrdersSheet();
-                }
-              } else {
-                return FindingOrdersSheet();
-              }
-            },
-          );
+          return FindingOrdersSheet();
+          // return StreamBuilder(
+          //   stream: approvedCaptainBloc.checkUser,
+          //   builder:
+          //       (BuildContext context, AsyncSnapshot<LogInModel> snapshot) {
+          //     if (snapshot.hasData) {
+          //       if (snapshot.data.data.activeSuggestion != null) {
+          //         return NewOrderSuggestionSheet();
+          //       } else {
+          //         return FindingOrdersSheet();
+          //       }
+          //     } else {
+          //       return FindingOrdersSheet();
+          //     }
+          //   },
+          // );
         }
     }
   }

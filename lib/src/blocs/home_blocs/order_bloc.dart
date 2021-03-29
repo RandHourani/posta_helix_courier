@@ -15,6 +15,7 @@ class OrderBloc {
   final _order = BehaviorSubject<OrderDetails>();
   final _getRide = BehaviorSubject<RideModel>();
   final _orderIndex = BehaviorSubject<int>();
+  final _orderIndex2 = BehaviorSubject<int>();
   final _orderId = BehaviorSubject<int>();
   final _rideIndex = BehaviorSubject<int>();
   final _rideId = BehaviorSubject<int>();
@@ -111,6 +112,23 @@ class OrderBloc {
     _rideIndex.add(_getRide.value.data.bookings
         .indexWhere((element) => element.rideId == order.ride.id));
     setPolyLine();
+  }
+
+  setOrderIndex(int index) {
+    getOrders("NOT_PAID");
+    _orderIndex2.add(index);
+  }
+
+  getRoundBackward() async {
+    getOrders("NOT_PAID");
+    // getRide(_orderList.value[_orderIndex2.value]);
+    RideModel ride =
+        await _repository.getRide(_orderList.value[_orderIndex2.value].ride.id);
+    _getRide.add(ride);
+    _rideId.add(_orderList.value[_orderIndex2.value].ride.id);
+    _rideIndex.add(_getRide.value.data.bookings.indexWhere((element) =>
+        element.rideId == _orderList.value[_orderIndex2.value].ride.id));
+    print(_rideIndex.value);
   }
 
   setPolyLine() {

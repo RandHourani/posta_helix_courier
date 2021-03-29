@@ -67,8 +67,8 @@ class CaptainOrders extends StatelessWidget {
     return InkWell(
       onTap: () {
         orderBloc.getRide(orders);
+        orderBloc.setOrderIndex(index);
         orderBloc.setPolyLine();
-
       },
       child: Container(
           width: MediaQuery.of(context).size.width / 2.2,

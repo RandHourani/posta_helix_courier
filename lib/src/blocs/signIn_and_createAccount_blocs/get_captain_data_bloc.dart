@@ -50,6 +50,7 @@ class IncompleteBloc {
       "version_code": 48.toString()
     });
     _checkAuth.add(user);
+    print(_checkAuth.value.data.lastCheck);
     if (_checkAuth.value.data.activeSuggestion != null) {
       print("sugg");
       _activeSugg.add(_checkAuth.value.data.activeSuggestion);
