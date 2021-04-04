@@ -88,23 +88,23 @@ class HomeScreen extends StatelessWidget {
 
     GoogleMapController _controller;
     return new WillPopScope(
-        // onWillPop: () {
-        //   // this is the block you need
-        //   Utils.setScreen('/home');
-        //
-        //   // exit(0);
-        // },
+        onWillPop: () {
+          //   // this is the block you need
+          Utils.setScreen('/home');
+          //
+          exit(0);
+        },
         child: Scaffold(
-      key: _scaffoldKey,
-      drawer: NavDrawer(),
-      appBar: AppBar(
-        centerTitle: true,
-        // this is all you need
-        leading: InkWell(
-          splashColor: Colors.white,
-          child: Container(
-            margin: EdgeInsets.only(left: 10),
-            child: SvgPicture.asset(
+          key: _scaffoldKey,
+          drawer: NavDrawer(),
+          appBar: AppBar(
+            centerTitle: true,
+            // this is all you need
+            leading: InkWell(
+              splashColor: Colors.white,
+              child: Container(
+                margin: EdgeInsets.only(left: 10),
+                child: SvgPicture.asset(
               "assets/images/menu.svg",
               width: 22,
               height: 22,
@@ -212,9 +212,7 @@ class HomeScreen extends StatelessWidget {
                                                             .bottomRight,
                                                         child: InkWell(
                                                             onTap: () {
-                                                              onlineOfflineBloc
-                                                                  .setStatus(
-                                                                      false);
+
                                                               onlineOfflineBloc
                                                                   .setStatus(
                                                                       false);
@@ -374,7 +372,8 @@ class HomeScreen extends StatelessWidget {
                                   } else {
                                     return Container();
                                   }
-                                } else {
+                                }
+                                else {
                                   return Container();
                                 }
                               },
@@ -2108,173 +2107,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        // SafeArea(
-                        //   child: Align(
-                        //       alignment: Alignment.topLeft,
-                        //       child: Container(
-                        //         margin: EdgeInsets.only(top: 50),
-                        //         height: 120,
-                        //         width: MediaQuery.of(context).size.width,
-                        //         child: CaptainOrders(
-                        //           orders: snap.data,
-                        //         ),
-                        //       )),
-                        // ),
-                        // Stack(children: [
-                        //   snap.data.data.data.isEmpty? SafeArea(
-                        //     child: Align(
-                        //         alignment: Alignment.bottomRight,
-                        //         child: InkWell(
-                        //             onTap: () {
-                        //               onlineOfflineBloc
-                        //                   .setOfflineStatus(false);
-                        //               onlineOfflineBloc
-                        //                   .setStatus(false);
-                        //               approvedCaptainBloc
-                        //                   .checkCaptainStatus();
-                        //             },
-                        //             child: Container(
-                        //               margin: EdgeInsets.only(
-                        //                   bottom: 170, right: 30),
-                        //               child: SvgPicture.asset(
-                        //                 "assets/images/stop.svg",
-                        //                 width: 60,
-                        //                 height: 60,
-                        //               ),
-                        //             ))),
-                        //   )
-                        //
-                        //       :SafeArea(
-                        //     child: Align(
-                        //         alignment: Alignment.bottomRight,
-                        //         child: InkWell(
-                        //             onTap: () {
-                        //               onlineOfflineBloc.setColor(false);
-                        //               return showDialog<void>(
-                        //                   context: context,
-                        //                   barrierDismissible: false,
-                        //                   // user must tap button!
-                        //                   builder:
-                        //                       (BuildContext context) {
-                        //                     return GoingOfflineErrorDialog();
-                        //                   });
-                        //             },
-                        //             child: Container(
-                        //                 margin: EdgeInsets.only(
-                        //                     bottom: 170, right: 30),
-                        //                 child: StreamBuilder(
-                        //                   stream: onlineOfflineBloc
-                        //                       .stopColor,
-                        //                   builder:
-                        //                       (BuildContext context,
-                        //                       AsyncSnapshot<dynamic>
-                        //                       snapshot) {
-                        //                     if (snapshot.hasData) {
-                        //                       if (snapshot.data) {
-                        //                         return SvgPicture.asset(
-                        //                           "assets/images/stop.svg",
-                        //                           width: 60,
-                        //                           height: 60,
-                        //                         );
-                        //                       } else {
-                        //                         return SvgPicture.asset(
-                        //                           "assets/images/error_stoping.svg",
-                        //                           width: 60,
-                        //                           height: 60,
-                        //                         );
-                        //                       }
-                        //                     } else {
-                        //                       return SvgPicture.asset(
-                        //                         "assets/images/stop.svg",
-                        //                         width: 60,
-                        //                         height: 60,
-                        //                       );
-                        //                     }
-                        //                   },
-                        //                 )))),
-                        //   ),
-                        //
-                        //   SafeArea(
-                        //     child: Align(
-                        //         alignment: Alignment.bottomCenter,
-                        //         child: StreamBuilder(
-                        //           stream: orderBloc.orderSheet,
-                        //           builder: (BuildContext context,
-                        //               AsyncSnapshot<String> snapshot) {
-                        //             return StreamBuilder(
-                        //               stream: orderBloc.ride,
-                        //               builder: (BuildContext context,
-                        //                   AsyncSnapshot<RideModel> snapshot) {
-                        //                 if (snapshot.hasData) {
-                        //                   if(snapshot.data.data.bookings.isEmpty){
-                        //                     return FindingOrdersSheet();
-                        //                   }
-                        //                   else
-                        //                   { if (snapshot.data.data.bookings[0].order
-                        //                       .payUpFront) {
-                        //                     return StreamBuilder(
-                        //                       stream: orderBloc.orderSheet,
-                        //                       builder: (BuildContext context,
-                        //                           AsyncSnapshot<String>
-                        //                           snap) {
-                        //                         return StandardCase
-                        //                             .selectSheetShipperPay(
-                        //                             snap.data, context,snapshot.data.data.bookings[0].order
-                        //                             .paidUpFront);
-                        //                       },
-                        //                     );
-                        //                   }
-                        //                   else if (snapshot.data.data
-                        //                       .bookings[0].order.roundTrip) {
-                        //                     return StreamBuilder(
-                        //                       stream: orderBloc.orderSheet,
-                        //                       builder: (BuildContext context,
-                        //                           AsyncSnapshot<String>
-                        //                           snapshots) {
-                        //                         return RoundTripCase
-                        //                             .selectSheetRoundTrip(
-                        //                             snapshots.data,
-                        //                             context,
-                        //                             snapshot
-                        //                                 .data
-                        //                                 .data
-                        //                                 .bookings[0]
-                        //                                 .order
-                        //                                 .status);
-                        //                       },
-                        //                     );
-                        //                   } else {
-                        //                     return StreamBuilder(
-                        //                       stream: orderBloc.orderSheet,
-                        //                       builder: (BuildContext context,
-                        //                           AsyncSnapshot<String>
-                        //                           snapshot) {
-                        //                         return StandardCase.sheet(
-                        //                             snapshot.data,
-                        //                             context,
-                        //                             "NORMAL");
-                        //                       },
-                        //                     );
-                        //                   }}
-                        //
-                        //                 } else {
-                        //                   return StreamBuilder(
-                        //                     stream: orderBloc.orderSheet,
-                        //                     builder: (BuildContext context,
-                        //                         AsyncSnapshot<String> snapshot) {
-                        //                       return StandardCase.sheet(
-                        //                           snapshot.data,
-                        //                           context,
-                        //                           "NORMAL");
-                        //                     },
-                        //                   );
-                        //                 }
-                        //               },
-                        //             );
-                        //           },
-                        //         )),
-                        //   )
-                        // ])
+
                       ],
                     );
                   }
@@ -2298,173 +2131,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // SafeArea(
-                      //   child: Align(
-                      //       alignment: Alignment.topLeft,
-                      //       child: Container(
-                      //         margin: EdgeInsets.only(top: 50),
-                      //         height: 120,
-                      //         width: MediaQuery.of(context).size.width,
-                      //         child: CaptainOrders(
-                      //           orders: snap.data,
-                      //         ),
-                      //       )),
-                      // ),
-                      // Stack(children: [
-                      //   snap.data.data.data.isEmpty? SafeArea(
-                      //     child: Align(
-                      //         alignment: Alignment.bottomRight,
-                      //         child: InkWell(
-                      //             onTap: () {
-                      //               onlineOfflineBloc
-                      //                   .setOfflineStatus(false);
-                      //               onlineOfflineBloc
-                      //                   .setStatus(false);
-                      //               approvedCaptainBloc
-                      //                   .checkCaptainStatus();
-                      //             },
-                      //             child: Container(
-                      //               margin: EdgeInsets.only(
-                      //                   bottom: 170, right: 30),
-                      //               child: SvgPicture.asset(
-                      //                 "assets/images/stop.svg",
-                      //                 width: 60,
-                      //                 height: 60,
-                      //               ),
-                      //             ))),
-                      //   )
-                      //
-                      //       :SafeArea(
-                      //     child: Align(
-                      //         alignment: Alignment.bottomRight,
-                      //         child: InkWell(
-                      //             onTap: () {
-                      //               onlineOfflineBloc.setColor(false);
-                      //               return showDialog<void>(
-                      //                   context: context,
-                      //                   barrierDismissible: false,
-                      //                   // user must tap button!
-                      //                   builder:
-                      //                       (BuildContext context) {
-                      //                     return GoingOfflineErrorDialog();
-                      //                   });
-                      //             },
-                      //             child: Container(
-                      //                 margin: EdgeInsets.only(
-                      //                     bottom: 170, right: 30),
-                      //                 child: StreamBuilder(
-                      //                   stream: onlineOfflineBloc
-                      //                       .stopColor,
-                      //                   builder:
-                      //                       (BuildContext context,
-                      //                       AsyncSnapshot<dynamic>
-                      //                       snapshot) {
-                      //                     if (snapshot.hasData) {
-                      //                       if (snapshot.data) {
-                      //                         return SvgPicture.asset(
-                      //                           "assets/images/stop.svg",
-                      //                           width: 60,
-                      //                           height: 60,
-                      //                         );
-                      //                       } else {
-                      //                         return SvgPicture.asset(
-                      //                           "assets/images/error_stoping.svg",
-                      //                           width: 60,
-                      //                           height: 60,
-                      //                         );
-                      //                       }
-                      //                     } else {
-                      //                       return SvgPicture.asset(
-                      //                         "assets/images/stop.svg",
-                      //                         width: 60,
-                      //                         height: 60,
-                      //                       );
-                      //                     }
-                      //                   },
-                      //                 )))),
-                      //   ),
-                      //
-                      //   SafeArea(
-                      //     child: Align(
-                      //         alignment: Alignment.bottomCenter,
-                      //         child: StreamBuilder(
-                      //           stream: orderBloc.orderSheet,
-                      //           builder: (BuildContext context,
-                      //               AsyncSnapshot<String> snapshot) {
-                      //             return StreamBuilder(
-                      //               stream: orderBloc.ride,
-                      //               builder: (BuildContext context,
-                      //                   AsyncSnapshot<RideModel> snapshot) {
-                      //                 if (snapshot.hasData) {
-                      //                   if(snapshot.data.data.bookings.isEmpty){
-                      //                     return FindingOrdersSheet();
-                      //                   }
-                      //                   else
-                      //                   { if (snapshot.data.data.bookings[0].order
-                      //                       .payUpFront) {
-                      //                     return StreamBuilder(
-                      //                       stream: orderBloc.orderSheet,
-                      //                       builder: (BuildContext context,
-                      //                           AsyncSnapshot<String>
-                      //                           snap) {
-                      //                         return StandardCase
-                      //                             .selectSheetShipperPay(
-                      //                             snap.data, context,snapshot.data.data.bookings[0].order
-                      //                             .paidUpFront);
-                      //                       },
-                      //                     );
-                      //                   }
-                      //                   else if (snapshot.data.data
-                      //                       .bookings[0].order.roundTrip) {
-                      //                     return StreamBuilder(
-                      //                       stream: orderBloc.orderSheet,
-                      //                       builder: (BuildContext context,
-                      //                           AsyncSnapshot<String>
-                      //                           snapshots) {
-                      //                         return RoundTripCase
-                      //                             .selectSheetRoundTrip(
-                      //                             snapshots.data,
-                      //                             context,
-                      //                             snapshot
-                      //                                 .data
-                      //                                 .data
-                      //                                 .bookings[0]
-                      //                                 .order
-                      //                                 .status);
-                      //                       },
-                      //                     );
-                      //                   } else {
-                      //                     return StreamBuilder(
-                      //                       stream: orderBloc.orderSheet,
-                      //                       builder: (BuildContext context,
-                      //                           AsyncSnapshot<String>
-                      //                           snapshot) {
-                      //                         return StandardCase.sheet(
-                      //                             snapshot.data,
-                      //                             context,
-                      //                             "NORMAL");
-                      //                       },
-                      //                     );
-                      //                   }}
-                      //
-                      //                 } else {
-                      //                   return StreamBuilder(
-                      //                     stream: orderBloc.orderSheet,
-                      //                     builder: (BuildContext context,
-                      //                         AsyncSnapshot<String> snapshot) {
-                      //                       return StandardCase.sheet(
-                      //                           snapshot.data,
-                      //                           context,
-                      //                           "NORMAL");
-                      //                     },
-                      //                   );
-                      //                 }
-                      //               },
-                      //             );
-                      //           },
-                      //         )),
-                      //   )
-                      // ])
+
                     ],
                   );
                 }

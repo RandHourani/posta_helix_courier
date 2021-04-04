@@ -151,8 +151,8 @@ class TextFieldValidation {
     DateFormat format = DateFormat("yyyy-MM-dd");
 
     final difference1 = DateTime.now().difference(format.parse(date)).inHours;
-
-    if (difference1 >= 1 && difference1 < 24 || difference1 > 24) {
+    print(difference1);
+    if (difference1 <= 1) {
       vehicleBloc.setRegistrationExpireDateValidation(null);
     } else {
       vehicleBloc.setRegistrationExpireDateValidation(
@@ -169,9 +169,7 @@ class TextFieldValidation {
         .difference(format.parse(date))
         .inHours;
 
-    if (difference1 <= 24 && difference1 < 48 ||
-        difference1 < 24 && difference1 < 24 ||
-        difference1 >= 1 && difference1 <= 24) {
+    if (difference1 <= 1) {
       newVehicleBloc.setRegistrationExpireDateValidation(null);
     } else {
       newVehicleBloc.setRegistrationExpireDateValidation(

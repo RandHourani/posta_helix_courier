@@ -503,7 +503,7 @@ class Home extends StatelessWidget {
                                 return OnlineOfflineSheet();
                               }
                             } else {
-                              return Container();
+                              return OnlineOfflineSheet();
                             }
                           },
                         )))

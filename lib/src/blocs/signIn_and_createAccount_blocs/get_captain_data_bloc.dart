@@ -1,6 +1,7 @@
 
 import 'package:posta_courier/models/get_captain_model.dart';
 import 'package:posta_courier/models/registered_captain_model.dart';
+import 'package:posta_courier/src/blocs/home_blocs/online_offline_bloc.dart';
 import 'package:posta_courier/src/reasources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -50,6 +51,7 @@ class IncompleteBloc {
       "version_code": 48.toString()
     });
     _checkAuth.add(user);
+
     print(_checkAuth.value.data.lastCheck);
     if (_checkAuth.value.data.activeSuggestion != null) {
       print("sugg");
@@ -100,6 +102,12 @@ class IncompleteBloc {
 
   getData() {
     return _checkAuth.value;
+  }
+
+  checkUserStatus() {
+    _checkAuth.value.data.lastCheck == 1
+        ? onlineOfflineBloc.setStatus(true)
+        : onlineOfflineBloc.setStatus(false);
   }
 
   checkVehicleDetails(bool value) {

@@ -125,103 +125,97 @@ class PodScreen extends StatelessWidget {
                                           onTap: () async {
                                             FlutterStatusbarcolor
                                                 .setStatusBarColor(
-                                                AppColors.dialogStatusBar);
+                                                    AppColors.dialogStatusBar);
                                             await showDialog(
-                                                barrierDismissible: true,
-                                                context: context,
-                                                builder: (_) {
-                                                  FlutterStatusbarcolor
-                                                      .setStatusBarColor(
-                                                      AppColors
-                                                          .dialogStatusBar);
-                                                  return WillPopScope(
-                                                      onWillPop: () {
-                                                        // FlutterStatusbarcolor
-                                                        //     .setStatusBarColor(
-                                                        //         Colors
-                                                        //             .white);
-                                                        return Future.value(
-                                                            true);
-                                                      },
-                                                      child: Stack(
-                                                          children: [
-                                                            PhotoView(
-                                                              backgroundDecoration:
-                                                              BoxDecoration(
-                                                                color: Colors
-                                                                    .black12
-                                                                    .withOpacity(
-                                                                    0.01),
-                                                              ),
-                                                              imageProvider:
-                                                              FileImage(
-                                                                snap.data,
-                                                              ),
-                                                              minScale: 0.2,
-                                                              // initialScale: 0.2,
-                                                              maxScale: 0.6,
-                                                              customSize:
-                                                              Size(300,
-                                                                  400),
-                                                            ),
-                                                            Align(
-                                                              alignment:
-                                                              Alignment
-                                                                  .topRight,
-                                                              child:
-                                                              Container(
-                                                                margin: EdgeInsets
-                                                                    .all(
-                                                                    10),
-                                                                width: 30,
-                                                                height: 30,
-                                                                decoration:
-                                                                BoxDecoration(
-                                                                  boxShadow: <
-                                                                      BoxShadow>[
-                                                                    BoxShadow(
-                                                                      color:
-                                                                      Colors
-                                                                          .black26,
-                                                                      blurRadius:
-                                                                      5,
-                                                                      offset: Offset(
-                                                                          2,
-                                                                          2),
-                                                                    ),
-                                                                  ],
+                                                    barrierDismissible: true,
+                                                    context: context,
+                                                    builder: (_) {
+                                                      FlutterStatusbarcolor
+                                                          .setStatusBarColor(
+                                                              AppColors
+                                                                  .dialogStatusBar);
+                                                      return WillPopScope(
+                                                          onWillPop: () {
+                                                            // FlutterStatusbarcolor
+                                                            //     .setStatusBarColor(
+                                                            //         Colors
+                                                            //             .white);
+                                                            return Future.value(
+                                                                true);
+                                                          },
+                                                          child: Stack(
+                                                              children: [
+                                                                PhotoView(
+                                                                  backgroundDecoration:
+                                                                      BoxDecoration(
+                                                                    color: Colors
+                                                                        .black12
+                                                                        .withOpacity(
+                                                                            0.01),
+                                                                  ),
+                                                                  imageProvider:
+                                                                      FileImage(
+                                                                    snap.data,
+                                                                  ),
+                                                                  minScale: 0.2,
+                                                                  // initialScale: 0.2,
+                                                                  maxScale: 0.6,
+                                                                  customSize:
+                                                                      Size(300,
+                                                                          400),
                                                                 ),
-                                                                child: FloatingActionButton(
-                                                                    heroTag: "dismiss",
-                                                                    elevation: 2.5,
-                                                                    backgroundColor: Colors
-                                                                        .white,
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .close,
-                                                                      color:
-                                                                      Colors
-                                                                          .black,
-                                                                      size:
-                                                                      20,
+                                                                Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .topRight,
+                                                                  child:
+                                                                      Container(
+                                                                    margin: EdgeInsets
+                                                                        .all(
+                                                                            10),
+                                                                    width: 30,
+                                                                    height: 30,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      boxShadow: <
+                                                                          BoxShadow>[
+                                                                        BoxShadow(
+                                                                          color:
+                                                                              Colors.black26,
+                                                                          blurRadius:
+                                                                              5,
+                                                                          offset: Offset(
+                                                                              2,
+                                                                              2),
+                                                                        ),
+                                                                      ],
                                                                     ),
-                                                                    onPressed: () {
-                                                                      Navigator
-                                                                          .pop(
-                                                                          context);
-                                                                      FlutterStatusbarcolor
-                                                                          .setStatusBarColor(
-                                                                          Colors
-                                                                              .white);
-                                                                    }),
-                                                              ),
-                                                            )
-                                                          ]));
-                                                })
+                                                                    child: FloatingActionButton(
+                                                                        heroTag: "dismiss",
+                                                                        elevation: 2.5,
+                                                                        backgroundColor: Colors.white,
+                                                                        child: Icon(
+                                                                          Icons
+                                                                              .close,
+                                                                          color:
+                                                                              Colors.black,
+                                                                          size:
+                                                                              20,
+                                                                        ),
+                                                                        onPressed: () {
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                          FlutterStatusbarcolor.setStatusBarColor(
+                                                                              Colors.white);
+                                                                        }),
+                                                                  ),
+                                                                )
+                                                              ]));
+                                                    })
                                                 .then((value) =>
-                                                FlutterStatusbarcolor
-                                                    .setStatusBarColor(
-                                                    Colors.white));
+                                                    FlutterStatusbarcolor
+                                                        .setStatusBarColor(
+                                                            Colors.white));
                                           },
                                         ),
                                         radius: 50.0,
@@ -422,27 +416,28 @@ class PodScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding: EdgeInsets.only(top: 3),
+                                      padding: EdgeInsets.only(top: 4),
                                       child: Image.asset(
                                         "assets/images/error_icon.png",
-                                        width: 13,
-                                        height: 13,
+                                        width: 10,
+                                        height: 10,
                                       ),
                                     ),
                                     Container(
-                                        width:
-                                        MediaQuery
-                                            .of(context)
-                                            .size
-                                            .width -
-                                            60,
-                                        padding: EdgeInsets.only(left: 3),
+                                      // width:
+                                      // MediaQuery
+                                      //     .of(context)
+                                      //     .size
+                                      //     .width -
+                                      //     60,
+                                        padding:
+                                        EdgeInsets.only(left: 3, top: 3),
                                         child: Text(
                                           "You need to take photo or set signature",
                                           style: TextStyle(
                                               color: AppColors.ERROR,
                                               fontFamily: 'Poppins',
-                                              fontSize: 13),
+                                              fontSize: 10),
                                         )),
                                   ],
                                 ));
@@ -455,7 +450,7 @@ class PodScreen extends StatelessWidget {
                       },
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 8),
+                      padding: EdgeInsets.only(top: 8, bottom: 5),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -474,6 +469,7 @@ class PodScreen extends StatelessWidget {
                               color: Colors.white,
                               onPressed: () {
                                 Navigator.pop(context);
+                                podBloc.reset();
                               },
                               child: Text(
                                 "Cancel",
@@ -519,6 +515,7 @@ class PodScreen extends StatelessWidget {
                                         orderBloc.getOrders("NOT_PAID");
                                         Navigator.of(context).pop(true);
                                         _showDialog(context);
+                                        orderBloc.getRide3();
                                       },
                                       child: Padding(
                                         padding: EdgeInsets.only(
@@ -580,6 +577,7 @@ class PodScreen extends StatelessWidget {
                                                       .getOrders("NOT_PAID");
 
                                                   _showDialog(context);
+                                                  orderBloc.getRide3();
                                                 }
                                               },
                                               child: Padding(

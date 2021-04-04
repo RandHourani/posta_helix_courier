@@ -26,7 +26,7 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
         maxChildSize: MediaQuery.of(context).size.height < 650 ? 0.65 : 0.5,
         minChildSize: MediaQuery.of(context).size.height < 650 ? 0.23 : 0.21,
         initialChildSize:
-        MediaQuery.of(context).size.height < 650 ?  0.65 : 0.5,
+            MediaQuery.of(context).size.height < 650 ? 0.23 : 0.21,
         builder: (BuildContext context, ScrollController scrollController) {
           return Container(
             margin: EdgeInsets.only(right: 27, left: 27),
@@ -57,10 +57,13 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
       children: [
         Container(
           margin: EdgeInsets.only(bottom: 2, top: 5),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height <= 650
-              ? MediaQuery.of(context).size.height / 4.8
-              : MediaQuery.of(context).size.height / 5.7,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
+          // height: MediaQuery.of(context).size.height <= 650
+          //     ? MediaQuery.of(context).size.height / 4.8
+          //     : MediaQuery.of(context).size.height / 5.7,
           child: StreamBuilder(
             stream: orderBloc.ride,
             builder: (BuildContext context, AsyncSnapshot<RideModel> snapshot) {
@@ -68,7 +71,7 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
                 return Column(
                   children: [
                     Padding(
-                        padding: EdgeInsets.only(top: 22),
+                        padding: EdgeInsets.only(top: 20),
                         child: Text(
                           snapshot.data.data.bookings[0]
                               .passengerName,
@@ -76,13 +79,16 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
                               color: AppColors.TITLE_TEXT_COLOR,
                               fontFamily: FontFamilies.POPPINS,
                               fontSize:
-                              (MediaQuery.of(context).size.width * 0.04) +
+                              (MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width * 0.04) +
                                   FontSize.HEADING_FONT,
                               fontWeight: FontWeight.w700),
                         )),
                     Padding(
                       padding: EdgeInsets.only(
-                          top: 5, bottom: 6, left: 40, right: 40),
+                          top: 5, bottom: 7, left: 40, right: 40),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [

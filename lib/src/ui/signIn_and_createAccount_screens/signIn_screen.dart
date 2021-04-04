@@ -839,18 +839,17 @@ class SignInScreen extends StatelessWidget {
           if (signInBloc.logInValidation()) {
             FlutterStatusbarcolor.setStatusBarColor(Colors.white);
             Navigator.of(context).pop(true);
-
+            checkCaptainDataBloc.checkUserStatus();
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) {
                 return StreamBuilder(
-                  stream: checkCaptainDataBloc.checkUser,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<LogInModel> snapshot) {
-                    if(snapshot.hasData){
-                    if (snapshot.data.data.approvedAt != null)
-                    {
-                      signInBloc.resetCountry();
+                    stream: checkCaptainDataBloc.checkUser,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<LogInModel> snapshot) {
+                      if (snapshot.hasData) {
+                        if (snapshot.data.data.approvedAt != null) {
+                          signInBloc.resetCountry();
                       googleMapBloc.getUserLocation();
                       // approvedCaptainBloc.checkUserAuth();
                       // walletBloc.walletAccount();

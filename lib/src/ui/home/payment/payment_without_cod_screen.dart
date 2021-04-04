@@ -9,6 +9,7 @@ import 'package:posta_courier/models/ride_model.dart';
 import 'package:posta_courier/src/blocs/home_blocs/approved_captain_bloc.dart';
 import 'package:posta_courier/src/blocs/home_blocs/order_bloc.dart';
 import 'package:posta_courier/src/blocs/home_blocs/payment_bloc.dart';
+import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/get_captain_data_bloc.dart';
 import 'package:posta_courier/src/constants/application_colors_value.dart';
 import 'package:posta_courier/src/constants/fonts_size.dart';
 import 'package:posta_courier/src/ui/home/sheets/finding_order_sheet.dart';
@@ -35,6 +36,7 @@ Future<void> _showDialog(context) async {
     builder: (BuildContext context) {
       Future.delayed(Duration(seconds: 3), () {
         Navigator.of(context).pop(true);
+        orderBloc.getRide3();
       });
       return LoadingDialogWidget();
     },
@@ -66,35 +68,6 @@ class PaymentWithoutCODScreen extends StatelessWidget {
         body: SingleChildScrollView(
       child: Stack(
         children: [
-          Align(
-            alignment: Alignment.topRight,
-            child: Container(
-              margin: EdgeInsets.all(10),
-              width: 20,
-              height: 20,
-              decoration: BoxDecoration(
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 5,
-                    offset: Offset(1, 1),
-                  ),
-                ],
-              ),
-              child: FloatingActionButton(
-                  heroTag: "dismiss",
-                  elevation: 2.5,
-                  backgroundColor: Colors.white,
-                  child: Icon(
-                    Icons.close,
-                    color: Colors.black,
-                    size: 20,
-                  ),
-                  onPressed: () {
-                    orderBloc.setOrderSheet(null);
-                  }),
-            ),
-          ),
           Column(
             children: [
               Container(
@@ -169,6 +142,7 @@ class PaymentWithoutCODScreen extends StatelessWidget {
                             builder: (BuildContext context,
                                 AsyncSnapshot<RideModel> snapshot) {
                               if (snapshot.hasData) {
+                                print(snapshot.data);
                                 return Text(
                                   snapshot.data.data
                                       .bookings[orderBloc.getOrderIndex()].price
@@ -196,6 +170,8 @@ class PaymentWithoutCODScreen extends StatelessWidget {
                             builder: (BuildContext context,
                                 AsyncSnapshot<BookingAction> snapshot) {
                               if (snapshot.hasData) {
+                                print(snapshot.data);
+
                                 return Text(
                                   snapshot.data.data.finalPrice.toString(),
                                   style: TextStyle(
@@ -205,7 +181,6 @@ class PaymentWithoutCODScreen extends StatelessWidget {
                                   ),
                                 );
                               } else {
-                                orderBloc.bookingAction();
                                 return Text(
                                   "000 JOD",
                                   style: TextStyle(
@@ -374,103 +349,119 @@ class PaymentWithoutCODScreen extends StatelessWidget {
                     NumericKeyboardWidget(
                       screen: "PAYMENT",
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.completedInfoBoxUnderLine,
-                            spreadRadius: 2,
-                            blurRadius: 2,
-                            offset:
-                                Offset(0.5, 1), // changes position of shadow
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 50,
+                          width: 120,
+                          margin: EdgeInsets.only(right: 10),
+                          child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            elevation: 3,
+                            color: Colors.white,
+                            onPressed: () {
+                              orderBloc.setOrderSheet(null);
+                            },
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(
+                                  fontFamily: FontFamilies.POPPINS,
+                                  fontSize: (MediaQuery.of(context).size.width *
+                                          0.008) +
+                                      11,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500),
+                            ),
                           ),
-                        ],
-                      ),
-                      margin: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.width * 0.05,
-                        bottom: MediaQuery.of(context).size.width * 0.05,
-                        left: MediaQuery.of(context).size.width * 0.06,
-                        right: MediaQuery.of(context).size.width * 0.06,
-                      ),
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.width / 7,
-                      child: ButtonTheme(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
                         ),
-                        buttonColor: AppColors.MAIN_COLOR,
-                        child: StreamBuilder(
-                          stream: paymentBloc.payPrice,
-                          builder: (context, snap) {
-                            if (snap.hasData) {
-                              return RaisedButton(
-                                onPressed: () {
-                                  shipmentCase == "SHIPPER_PAY"
-                                      ? paymentBloc.shipperPay()
-                                      : paymentBloc.paid();
-                                  _showDialog(context);
+                        Container(
+                          height: 50,
+                          width: 160,
+                          child: StreamBuilder(
+                            stream: paymentBloc.payPrice,
+                            builder: (context, snap) {
+                              if (snap.hasData) {
+                                return ButtonTheme(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    buttonColor: AppColors.MAIN_COLOR,
+                                    child: RaisedButton(
+                                      onPressed: () {
+                                        shipmentCase == "SHIPPER_PAY"
+                                            ? paymentBloc.shipperPay()
+                                            : paymentBloc.paid();
+                                        _showDialog(context);
 
-                                  switch (shipmentCase) {
-                                    case "CASE_1":
-                                      {
-                                        orderBloc.setOrderSheet("NULL");
-                                      }
-                                      break;
-                                    case "FORWARD_ROUND_TRIP":
-                                      {
-                                        orderBloc.setNewOrder();
-                                      }
-                                      break;
+                                        switch (shipmentCase) {
+                                          case "CASE_1":
+                                            {
+                                              orderBloc.setOrderSheet("NULL");
+                                            }
+                                            break;
+                                          case "FORWARD_ROUND_TRIP":
+                                            {
+                                              orderBloc.setNewOrder();
+                                            }
+                                            break;
 
-                                    case "SHIPPER_PAY":
-                                      {
-                                        orderBloc
-                                            .setOrderSheet("READY_TO_PICK_UP");
-                                      }
-                                      break;
-                                  }
-                                },
-                                child: Text(
-                                  "Submit Receipt",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: FontFamilies.POPPINS,
-                                    fontSize:
-                                        (MediaQuery.of(context).size.width *
-                                                0.008) +
-                                            FontSize.BUTTON_FONT_L,
-                                    color: Colors.white,
+                                          case "SHIPPER_PAY":
+                                            {
+                                              orderBloc.setOrderSheet(
+                                                  "READY_TO_PICK_UP");
+                                            }
+                                            break;
+                                        }
+                                        paymentBloc.resetPrice();
+                                        checkCaptainDataBloc.checkUserAuth();
+                                        checkCaptainDataBloc.checkUserAuth();
+                                      },
+                                      child: Text(
+                                        "Submit Receipt",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: FontFamilies.POPPINS,
+                                          fontSize: (MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.008) +
+                                              FontSize.BUTTON_FONT_L,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ));
+                              } else {
+                                return RaisedButton(
+                                  onPressed: () {
+                                    // orderBloc.setOrderSheet(null);
+                                  },
+                                  child: Text(
+                                    "Submit Receipt",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: FontFamilies.POPPINS,
+                                      fontSize:
+                                          (MediaQuery.of(context).size.width *
+                                                  0.008) +
+                                              FontSize.BUTTON_FONT_L,
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                ),
-                              );
-                            } else {
-                              return RaisedButton(
-                                onPressed: () {
-                                  orderBloc.setOrderSheet(null);
-                                },
-                                child: Text(
-                                  "Submit Receipt",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: FontFamilies.POPPINS,
-                                    fontSize:
-                                        (MediaQuery.of(context).size.width *
-                                                0.008) +
-                                            FontSize.BUTTON_FONT_L,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              );
-                            }
-                          },
+                                );
+                              }
+                            },
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                     Container(
                       color: AppColors.KEYBOARD_BACKGROUND,
                       width: MediaQuery.of(context).size.width,
                       child: Padding(
-                        padding: EdgeInsets.only(bottom: 6),
+                        padding: EdgeInsets.only(top: 6, bottom: 6),
                         child: Image.asset("assets/images/home_indicator.png"),
                       ),
                     ),

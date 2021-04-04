@@ -14,15 +14,20 @@ import 'package:posta_courier/src/ui/widgets/unsuccessful_dialog_screen.dart';
 import 'package:posta_courier/src/utils/util.dart';
 
 class GoToNewLocationSheet extends StatelessWidget {
+  String orderStatus;
+
+  GoToNewLocationSheet({this.orderStatus});
 
   @override
   Widget build(BuildContext context) {
+    // orderBloc.getRoundBackward();
+
     return SizedBox.expand(
       child: DraggableScrollableSheet(
         maxChildSize: MediaQuery.of(context).size.height < 650 ? 0.65 : 0.5,
         minChildSize: MediaQuery.of(context).size.height < 650 ? 0.23 : 0.21,
         initialChildSize:
-        MediaQuery.of(context).size.height < 650 ? 0.25 : 0.23,
+            MediaQuery.of(context).size.height < 650 ? 0.25 : 0.23,
         builder: (BuildContext context, ScrollController scrollController) {
           return Container(
             margin: EdgeInsets.only(right: 27, left: 27),
@@ -52,11 +57,14 @@ class GoToNewLocationSheet extends StatelessWidget {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.only(bottom: 2, top: 5),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height <= 650
-              ? MediaQuery.of(context).size.height / 4.8
-              : MediaQuery.of(context).size.height / 5.7,
+          margin: EdgeInsets.only(bottom: 2, top: 8),
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
+          // height: MediaQuery.of(context).size.height <= 650
+          //     ? MediaQuery.of(context).size.height / 4.8
+          //     : MediaQuery.of(context).size.height / 5.7,
           child: StreamBuilder(
             stream: orderBloc.ride,
             builder: (BuildContext context, AsyncSnapshot<RideModel> snapshot) {
@@ -93,7 +101,6 @@ class GoToNewLocationSheet extends StatelessWidget {
                                       onTap: () {
                                         Utils.launchWhatsApp(phone: snapshot.data.data.bookings[
                                         orderBloc.getOrderIndex()].shipperContactInfo.phoneNumber);
-
                                       },
                                       child: Container(
                                         margin:
@@ -150,7 +157,6 @@ class GoToNewLocationSheet extends StatelessWidget {
                                       onTap: () {
                                         Utils.phoneLaunch(snapshot.data.data.bookings[
                                         orderBloc.getOrderIndex()].shipperContactInfo.phoneNumber);
-
                                       },
                                       child: Container(
                                         margin:
@@ -219,7 +225,6 @@ class GoToNewLocationSheet extends StatelessWidget {
                                             orderBloc.getOrderIndex()]
                                                 .pickupLocationPoints
                                                 .points[0]);
-
                                       },
                                       child: Container(
                                         margin:
@@ -319,17 +324,25 @@ class GoToNewLocationSheet extends StatelessWidget {
                               AsyncSnapshot<RideModel> snapshot) {
                             if (snapshot.hasData) {
                               return Text(
-                                snapshot
+                                orderStatus == "PROCESSING_BACK" ? snapshot
                                     .data
                                     .data
                                     .bookings[orderBloc.getOrderIndex()]
-                                    .pickupLocationName,
+                                    .pickupLocationName : snapshot
+                                    .data
+                                    .data
+                                    .bookings[orderBloc.getOrderIndex()]
+                                    .pullDownLocationName,
+
                                 style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   color: AppColors.TITLE_TEXT_COLOR,
                                   fontFamily: FontFamilies.POPPINS,
                                   fontSize:
-                                  (MediaQuery.of(context).size.height *
+                                  (MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height *
                                       0.018) +
                                       2,
                                 ),
@@ -347,17 +360,25 @@ class GoToNewLocationSheet extends StatelessWidget {
                               AsyncSnapshot<RideModel> snapshot) {
                             if (snapshot.hasData) {
                               return Text(
+                                orderStatus == "PROCESSING_BACK" ? snapshot
+                                    .data
+                                    .data
+                                    .bookings[orderBloc.getOrderIndex()]
+                                    .pickupLocationDetails :
                                 snapshot
                                     .data
                                     .data
                                     .bookings[orderBloc.getOrderIndex()]
-                                    .pickupLocationDetails,
+                                    .pullDownLocationDetails,
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.dialogStatusBar,
                                   fontFamily: FontFamilies.POPPINS,
                                   fontSize:
-                                  (MediaQuery.of(context).size.height *
+                                  (MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height *
                                       0.015),
                                 ),
                               );
@@ -464,8 +485,7 @@ class GoToNewLocationSheet extends StatelessWidget {
             child: RaisedButton(
               elevation: 0,
               onPressed: () {
-                orderBloc.bookingAction();
-
+                orderBloc.bookingAction2();
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

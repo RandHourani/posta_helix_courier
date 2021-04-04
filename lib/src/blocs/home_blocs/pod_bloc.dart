@@ -51,9 +51,11 @@ class PodBlock {
     if (_image.value == null) {
       unsuccessfulOrderBloc.setUnsuccessfulOrder(
           null, _sign.value, _referenceController.value);
+      reset();
     } else {
       unsuccessfulOrderBloc.setUnsuccessfulOrder(
           _image.value.path, _sign.value, _referenceController.value);
+      reset();
     }
   }
 
@@ -72,16 +74,30 @@ class PodBlock {
   }
 
   POD() async {
-    if (_image.value == null) {
-      var response = await _repository.setPOD(orderBloc.getBookingId(), null,
-          _sign.value, _referenceController.value);
-      orderBloc.setOrderSheet(response.data.status);
-    } else {
+    // if (_image.value == null) {
+    //   var response = await _repository.setPOD(orderBloc.getBookingId(), null,
+    //       _sign.value, _referenceController.value);
+    //   orderBloc.setOrderSheet(response.data.status);
+    //   orderBloc.setPrice(response);
+    //   reset();
+    // } else {
+    //   var response = await _repository.setPOD(orderBloc.getBookingId(),
+    //       _image.value.path, _sign.value, _referenceController.value);
+    //   orderBloc.setOrderSheet(response.data.status);
+    //   reset();
+    // }
+    if (_sign.value == null) {
       var response = await _repository.setPOD(orderBloc.getBookingId(),
           _image.value.path, _sign.value, _referenceController.value);
       orderBloc.setOrderSheet(response.data.status);
+      reset();
+    } else {
+      var response = await _repository.setPOD(orderBloc.getBookingId(), null,
+          _sign.value, _referenceController.value);
+      orderBloc.setOrderSheet(response.data.status);
+      orderBloc.setPrice(response);
+      reset();
     }
-
     // reset();
   }
 }

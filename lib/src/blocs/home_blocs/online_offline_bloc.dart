@@ -3,16 +3,16 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class OnlineOfflineBloc{
-  final _captainStatus=BehaviorSubject<bool>();
-  final _goingOffline=BehaviorSubject<bool>();
-  final _stopColor=BehaviorSubject<bool>();
+class OnlineOfflineBloc {
+  final _captainStatus = BehaviorSubject<bool>();
+  final _goingOffline = BehaviorSubject<bool>();
+  final _stopColor = BehaviorSubject<bool>();
   GoogleMapController _controller;
   GoogleMapController _controller2;
 
   Observable<bool> get captainStatus => _captainStatus.stream;
-  Observable<bool> get stopColor => _stopColor.stream;
 
+  Observable<bool> get stopColor => _stopColor.stream;
 
   setStatus(bool value) async {
     _captainStatus.add(value);
@@ -38,4 +38,5 @@ class OnlineOfflineBloc{
     _captainStatus.close();
   }
 }
-final onlineOfflineBloc=OnlineOfflineBloc();
+
+final onlineOfflineBloc = OnlineOfflineBloc();

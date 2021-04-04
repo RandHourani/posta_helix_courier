@@ -712,6 +712,7 @@ class AddNewCar extends StatelessWidget {
                                           },
                                         );
                                       } else {
+                                        newVehicleBloc.getCountries();
                                         return Text("");
                                       }
                                     },

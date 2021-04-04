@@ -11,6 +11,7 @@ import 'package:posta_courier/src/ui/home/sheets/go_to_pick_up_item_sheet.dart';
 import 'package:posta_courier/src/ui/home/sheets/new_order_sheet.dart';
 import 'package:posta_courier/src/ui/home/sheets/picked_up_item_sheet.dart';
 import 'package:posta_courier/src/ui/home/sheets/ready_to_pick_up_item_sheet.dart';
+import 'package:posta_courier/src/ui/widgets/dialog_loading.dart';
 
 class StandardCase {
   static sheet(String state, context, String orderStatus) {
@@ -61,7 +62,10 @@ class StandardCase {
                     );
                   }
                 } else {
-                  return FindingOrdersSheet();
+                  orderBloc.getRide3();
+                  //   orderBloc.bookingAction();
+
+                  return LoadingDialogWidget();
                 }
               });
         }
@@ -134,18 +138,24 @@ class StandardCase {
               stream: orderBloc.ride,
               builder:
                   (BuildContext context, AsyncSnapshot<RideModel> snapshot) {
-                if (snapshot.data.data.bookings[orderBloc.getOrderIndex()].order
-                    .cashOnDeliveryOption ==
-                    "NONE") {
-                  return DeliveredItemSheet(
-                    shipmentCase: "SHIPPER_PAY",
-                  );
-                } else {
-                  return DeliveredItemSheet(
-                    shipmentCase: "SHIPPER_PAY_COD",
-                  );
-                }
-              });
+                    if (snapshot.hasData) {
+                      if (snapshot.data.data.bookings[orderBloc.getOrderIndex()]
+                          .order.cashOnDeliveryOption ==
+                          "NONE") {
+                        return DeliveredItemSheet(
+                          shipmentCase: "SHIPPER_PAY",
+                        );
+                      } else {
+                        return DeliveredItemSheet(
+                          shipmentCase: "SHIPPER_PAY_COD",
+                        );
+                      }
+                    } else {
+                      orderBloc.getRide3();
+                      // orderBloc.bookingAction();
+                      return LoadingDialogWidget();
+                    }
+                  });
         }
         break;
       case "PAID":
@@ -170,19 +180,26 @@ class StandardCase {
               stream: orderBloc.ride,
               builder:
                   (BuildContext context, AsyncSnapshot<RideModel> snapshot) {
-                if (snapshot.data.data.bookings[orderBloc.getOrderIndex()].order
-                    .cashOnDeliveryOption ==
-                    "NONE") {
-                  return PaymentWithoutCODSheet(
-                    shipmentCase: "CASE_1",
-                  );
-                } else {
-                  // orderBloc.bookingAction();
+                    if (snapshot.hasData) {
+                      if (snapshot.data.data.bookings[orderBloc.getOrderIndex()]
+                          .order.cashOnDeliveryOption ==
+                          "NONE") {
+                        // orderBloc.bookingAction();
 
-                  return PaymentWithCODSheet(
-                    shipmentCase: "CASE_1",
-                  );
-                }
+                        return PaymentWithoutCODSheet(
+                          shipmentCase: "CASE_1",
+                        );
+                      } else {
+                        return PaymentWithCODSheet(
+                          shipmentCase: "CASE_1",
+                        );
+                      }
+                    } else {
+                      orderBloc.getRide3();
+                      // orderBloc.bookingAction();
+
+                      return LoadingDialogWidget();
+                    }
               });
         }
         break;

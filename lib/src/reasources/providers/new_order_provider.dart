@@ -165,6 +165,8 @@ class OrderProvider {
     if (response.statusCode == 200) {
       http.Response res = await http.Response.fromStream(response);
       print(res.body);
+      orderBloc.getOrders("NOT_PAID");
+      // orderBloc.bookingAction2();
       return BookingAction.fromJson(jsonDecode(res.body));
     } else {
       print(response.reasonPhrase);
@@ -205,8 +207,6 @@ class OrderProvider {
     }, body: {
       "passenger_paid_amount": price.toString()
     });
-    print(response.statusCode);
-    print(response.body);
   }
 
   Future<void> setShipperPay(int orderId, int price, String type) async {
@@ -221,8 +221,6 @@ class OrderProvider {
       "amount": price.toString(),
       "type": type
     });
-    orderBloc.getRide(orderBloc.getOrder());
-    print(response.statusCode);
-    print(response.body);
+    // orderBloc.getRide(orderBloc.getOrder());
   }
 }

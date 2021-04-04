@@ -15,44 +15,43 @@ import '../pod_dialog.dart';
 
 class DeliveredItemSheet extends StatelessWidget {
   String shipmentCase;
+
   DeliveredItemSheet({this.shipmentCase});
 
   static const LatLng _center = const LatLng(31.949722, 35.932778);
 
-@override
+  @override
   Widget build(BuildContext context) {
-  unsuccessfulOrderBloc.unsuccessfulReasons("UNSUCCESSFUL_DELIVERY");
+    unsuccessfulOrderBloc.unsuccessfulReasons("UNSUCCESSFUL_DELIVERY");
 
-  return SizedBox.expand(
-    child: DraggableScrollableSheet(
-      maxChildSize: MediaQuery.of(context).size.height < 650 ? 0.55 : 0.5,
-      minChildSize: MediaQuery.of(context).size.height < 650 ? 0.25 : 0.21,
-      initialChildSize:
-      MediaQuery.of(context).size.height < 650 ? 0.25 : 0.21,
-      builder: (BuildContext context, ScrollController scrollController) {
-        return Container(
-          margin: EdgeInsets.only(right: 27, left: 27),
-          width: MediaQuery.of(context).size.width,
-          decoration: new BoxDecoration(
-            color: Colors.white,
-            borderRadius: new BorderRadius.only(
-              topLeft: const Radius.circular(15.0),
-              topRight: const Radius.circular(15.0),
+    return SizedBox.expand(
+      child: DraggableScrollableSheet(
+        maxChildSize: MediaQuery.of(context).size.height < 650 ? 0.55 : 0.5,
+        minChildSize: MediaQuery.of(context).size.height < 650 ? 0.25 : 0.21,
+        initialChildSize:
+            MediaQuery.of(context).size.height < 650 ? 0.25 : 0.21,
+        builder: (BuildContext context, ScrollController scrollController) {
+          return Container(
+            margin: EdgeInsets.only(right: 27, left: 27),
+            width: MediaQuery.of(context).size.width,
+            decoration: new BoxDecoration(
+              color: Colors.white,
+              borderRadius: new BorderRadius.only(
+                topLeft: const Radius.circular(15.0),
+                topRight: const Radius.circular(15.0),
+              ),
             ),
-          ),
-          child: ListView.builder(
-            controller: scrollController,
-            itemCount: 1,
-            itemBuilder: (BuildContext context, int index) {
-              return container(context);
-            },
-          ),
-        );
-      },
-    ),
-  );
-
-
+            child: ListView.builder(
+              controller: scrollController,
+              itemCount: 1,
+              itemBuilder: (BuildContext context, int index) {
+                return container(context);
+              },
+            ),
+          );
+        },
+      ),
+    );
   }
 
   container(context) {
@@ -60,35 +59,47 @@ class DeliveredItemSheet extends StatelessWidget {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.only(bottom: 2),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height <= 650
-              ? MediaQuery.of(context).size.height / 4.3
-              : MediaQuery.of(context).size.height / 4.7,
+          margin: EdgeInsets.only(bottom: 2, top: 8),
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
+          // height: MediaQuery.of(context).size.height <= 650
+          //     ? MediaQuery.of(context).size.height / 4.3
+          //     : MediaQuery.of(context).size.height / 4.7,
           child: StreamBuilder(
             stream: orderBloc.ride,
             builder: (BuildContext context, AsyncSnapshot<RideModel> snapshot) {
               if (snapshot.hasData) {
-                if(snapshot.data.data.bookings[orderBloc.getOrderIndex()].order.roundTrip)
-                  {   if(snapshot.data.data.bookings[orderBloc.getOrderIndex()].order.status=="PROCESSING_BACK")
-                    { return Column(
+                if (snapshot.data.data.bookings[orderBloc.getOrderIndex()].order
+                    .roundTrip) {
+                  if (snapshot.data.data.bookings[orderBloc.getOrderIndex()]
+                      .order.status ==
+                      "PROCESSING_BACK") {
+                    return Column(
                       children: [
                         Padding(
-                            padding: EdgeInsets.only(top: 8),
+                            padding: EdgeInsets.only(top: 10),
                             child: Text(
-                              snapshot.data.data.bookings[orderBloc.getOrderIndex()]
+                              snapshot
+                                  .data
+                                  .data
+                                  .bookings[orderBloc.getOrderIndex()]
                                   .passengerName,
                               style: TextStyle(
                                   color: AppColors.TITLE_TEXT_COLOR,
                                   fontFamily: FontFamilies.POPPINS,
-                                  fontSize:
-                                  (MediaQuery.of(context).size.width * 0.04) +
+                                  fontSize: (MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width *
+                                      0.04) +
                                       FontSize.HEADING_FONT,
                                   fontWeight: FontWeight.w700),
                             )),
                         Padding(
                           padding: EdgeInsets.only(
-                              top: 15, bottom: 0, left: 40, right: 40),
+                              top: 15, bottom: 7, left: 40, right: 40),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -101,13 +112,17 @@ class DeliveredItemSheet extends StatelessWidget {
                                       if (snapshot.hasData) {
                                         return InkWell(
                                           onTap: () {
-                                            Utils.launchWhatsApp(phone: snapshot.data.data.bookings[
-                                            orderBloc.getOrderIndex()].passengerUsername);
-
+                                            Utils.launchWhatsApp(
+                                                phone: snapshot
+                                                    .data
+                                                    .data
+                                                    .bookings[orderBloc
+                                                    .getOrderIndex()]
+                                                    .passengerUsername);
                                           },
                                           child: Container(
-                                            margin:
-                                            EdgeInsets.only(top: 6, bottom: 0),
+                                            margin: EdgeInsets.only(
+                                                top: 6, bottom: 0),
                                             width: 48,
                                             height: 48,
                                             child: Container(
@@ -121,8 +136,8 @@ class DeliveredItemSheet extends StatelessWidget {
                                         );
                                       } else {
                                         return Container(
-                                          margin:
-                                          EdgeInsets.only(top: 6, bottom: 0),
+                                          margin: EdgeInsets.only(
+                                              top: 6, bottom: 0),
                                           width: 48,
                                           height: 48,
                                           child: Container(
@@ -136,7 +151,6 @@ class DeliveredItemSheet extends StatelessWidget {
                                       }
                                     },
                                   ),
-
                                   Text(
                                     "WhatsApp",
                                     style: TextStyle(
@@ -144,7 +158,10 @@ class DeliveredItemSheet extends StatelessWidget {
                                       color: AppColors.TITLE_TEXT_COLOR,
                                       fontFamily: FontFamilies.POPPINS,
                                       fontSize:
-                                      (MediaQuery.of(context).size.height *
+                                      (MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height *
                                           0.013),
                                     ),
                                   )
@@ -159,13 +176,16 @@ class DeliveredItemSheet extends StatelessWidget {
                                       if (snapshot.hasData) {
                                         return InkWell(
                                           onTap: () {
-                                            Utils.phoneLaunch(snapshot.data.data.bookings[
-                                            orderBloc.getOrderIndex()].passengerUsername);
-
+                                            Utils.phoneLaunch(snapshot
+                                                .data
+                                                .data
+                                                .bookings[
+                                            orderBloc.getOrderIndex()]
+                                                .passengerUsername);
                                           },
                                           child: Container(
-                                            margin:
-                                            EdgeInsets.only(top: 6, bottom: 0),
+                                            margin: EdgeInsets.only(
+                                                top: 6, bottom: 0),
                                             width: 48,
                                             height: 48,
                                             child: Container(
@@ -179,8 +199,8 @@ class DeliveredItemSheet extends StatelessWidget {
                                         );
                                       } else {
                                         return Container(
-                                          margin:
-                                          EdgeInsets.only(top: 6, bottom: 0),
+                                          margin: EdgeInsets.only(
+                                              top: 6, bottom: 0),
                                           width: 48,
                                           height: 48,
                                           child: Container(
@@ -201,7 +221,10 @@ class DeliveredItemSheet extends StatelessWidget {
                                       color: AppColors.TITLE_TEXT_COLOR,
                                       fontFamily: FontFamilies.POPPINS,
                                       fontSize:
-                                      (MediaQuery.of(context).size.height *
+                                      (MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height *
                                           0.013),
                                     ),
                                   )
@@ -216,25 +239,25 @@ class DeliveredItemSheet extends StatelessWidget {
                                       if (snapshot.hasData) {
                                         return InkWell(
                                           onTap: () {
-                                            Utils.mapLaunch( snapshot
-                                                .data
-                                                .data
-                                                .bookings[
-                                            orderBloc.getOrderIndex()]
-                                                .pickupLocationPoints
-                                                .points[1],
+                                            Utils.mapLaunch(
                                                 snapshot
                                                     .data
                                                     .data
-                                                    .bookings[
-                                                orderBloc.getOrderIndex()]
+                                                    .bookings[orderBloc
+                                                    .getOrderIndex()]
+                                                    .pickupLocationPoints
+                                                    .points[1],
+                                                snapshot
+                                                    .data
+                                                    .data
+                                                    .bookings[orderBloc
+                                                    .getOrderIndex()]
                                                     .pickupLocationPoints
                                                     .points[0]);
-
                                           },
                                           child: Container(
-                                            margin:
-                                            EdgeInsets.only(top: 6, bottom: 0),
+                                            margin: EdgeInsets.only(
+                                                top: 6, bottom: 0),
                                             width: 48,
                                             height: 48,
                                             child: Container(
@@ -248,8 +271,8 @@ class DeliveredItemSheet extends StatelessWidget {
                                         );
                                       } else {
                                         return Container(
-                                          margin:
-                                          EdgeInsets.only(top: 6, bottom: 0),
+                                          margin: EdgeInsets.only(
+                                              top: 6, bottom: 0),
                                           width: 48,
                                           height: 48,
                                           child: Container(
@@ -270,7 +293,10 @@ class DeliveredItemSheet extends StatelessWidget {
                                       color: AppColors.TITLE_TEXT_COLOR,
                                       fontFamily: FontFamilies.POPPINS,
                                       fontSize:
-                                      (MediaQuery.of(context).size.height *
+                                      (MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height *
                                           0.013),
                                     ),
                                   )
@@ -280,60 +306,57 @@ class DeliveredItemSheet extends StatelessWidget {
                           ),
                         ),
                       ],
-                    );}
-                    else
-                      {return Column(
-                        children: [
-                          Padding(
-                              padding: EdgeInsets.only(top: 8),
-                              child: Text(
-                                snapshot.data.data.bookings[orderBloc.getOrderIndex()]
-                                    .consigneeContactInfo.name,
-                                style: TextStyle(
-                                    color: AppColors.TITLE_TEXT_COLOR,
-                                    fontFamily: FontFamilies.POPPINS,
-                                    fontSize:
-                                    (MediaQuery.of(context).size.width * 0.04) +
-                                        FontSize.HEADING_FONT,
-                                    fontWeight: FontWeight.w700),
-                              )),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                top: 15, bottom: 0, left: 40, right: 40),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Column(
-                                  children: [
-                                    StreamBuilder(
-                                      stream: orderBloc.ride,
-                                      builder: (BuildContext context,
-                                          AsyncSnapshot<RideModel> snapshot) {
-                                        if (snapshot.hasData) {
-                                          return InkWell(
-                                            onTap: () {
-                                              Utils.launchWhatsApp(phone: snapshot.data.data.bookings[
-                                              orderBloc.getOrderIndex()].consigneeContactInfo.phoneNumber);
-
-                                            },
-                                            child: Container(
-                                              margin:
-                                              EdgeInsets.only(top: 6, bottom: 0),
-                                              width: 48,
-                                              height: 48,
-                                              child: Container(
-                                                  child: Image.asset(
-                                                    "assets/images/direction.png",
-                                                    width: 40,
-                                                    height: 40,
-                                                    // color: AppColors.MAIN_COLOR,
-                                                  )),
-                                            ),
-                                          );
-                                        } else {
-                                          return Container(
-                                            margin:
-                                            EdgeInsets.only(top: 6, bottom: 0),
+                    );
+                  } else {
+                    return Column(
+                      children: [
+                        Padding(
+                            padding: EdgeInsets.only(top: 8),
+                            child: Text(
+                              snapshot
+                                  .data
+                                  .data
+                                  .bookings[orderBloc.getOrderIndex()]
+                                  .consigneeContactInfo
+                                  .name,
+                              style: TextStyle(
+                                  color: AppColors.TITLE_TEXT_COLOR,
+                                  fontFamily: FontFamilies.POPPINS,
+                                  fontSize: (MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width *
+                                      0.04) +
+                                      FontSize.HEADING_FONT,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: 15, bottom: 0, left: 40, right: 40),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Column(
+                                children: [
+                                  StreamBuilder(
+                                    stream: orderBloc.ride,
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<RideModel> snapshot) {
+                                      if (snapshot.hasData) {
+                                        return InkWell(
+                                          onTap: () {
+                                            Utils.launchWhatsApp(
+                                                phone: snapshot
+                                                    .data
+                                                    .data
+                                                    .bookings[orderBloc
+                                                    .getOrderIndex()]
+                                                    .consigneeContactInfo
+                                                    .phoneNumber);
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.only(
+                                                top: 6, bottom: 0),
                                             width: 48,
                                             height: 48,
                                             child: Container(
@@ -343,124 +366,133 @@ class DeliveredItemSheet extends StatelessWidget {
                                                   height: 40,
                                                   // color: AppColors.MAIN_COLOR,
                                                 )),
-                                          );
-                                        }
-                                      },
+                                          ),
+                                        );
+                                      } else {
+                                        return Container(
+                                          margin: EdgeInsets.only(
+                                              top: 6, bottom: 0),
+                                          width: 48,
+                                          height: 48,
+                                          child: Container(
+                                              child: Image.asset(
+                                                "assets/images/direction.png",
+                                                width: 40,
+                                                height: 40,
+                                                // color: AppColors.MAIN_COLOR,
+                                              )),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                  Text(
+                                    "WhatsApp",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.TITLE_TEXT_COLOR,
+                                      fontFamily: FontFamilies.POPPINS,
+                                      fontSize:
+                                      (MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height *
+                                          0.013),
                                     ),
-
-                                    Text(
-                                      "WhatsApp",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.TITLE_TEXT_COLOR,
-                                        fontFamily: FontFamilies.POPPINS,
-                                        fontSize:
-                                        (MediaQuery.of(context).size.height *
-                                            0.013),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    StreamBuilder(
-                                      stream: orderBloc.ride,
-                                      builder: (BuildContext context,
-                                          AsyncSnapshot<RideModel> snapshot) {
-                                        if (snapshot.hasData) {
-                                          return InkWell(
-                                            onTap: () {
-                                              Utils.phoneLaunch(snapshot.data.data.bookings[
-                                              orderBloc.getOrderIndex()].consigneeContactInfo.phoneNumber);
-
-                                            },
-                                            child: Container(
-                                              margin:
-                                              EdgeInsets.only(top: 6, bottom: 0),
-                                              width: 48,
-                                              height: 48,
-                                              child: Container(
-                                                  child: Image.asset(
-                                                    "assets/images/call_ii.png",
-                                                    width: 40,
-                                                    height: 40,
-                                                    // color: AppColors.MAIN_COLOR,
-                                                  )),
-                                            ),
-                                          );
-                                        } else {
-                                          return Container(
-                                            margin:
-                                            EdgeInsets.only(top: 6, bottom: 0),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  StreamBuilder(
+                                    stream: orderBloc.ride,
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<RideModel> snapshot) {
+                                      if (snapshot.hasData) {
+                                        return InkWell(
+                                          onTap: () {
+                                            Utils.phoneLaunch(snapshot
+                                                .data
+                                                .data
+                                                .bookings[
+                                            orderBloc.getOrderIndex()]
+                                                .consigneeContactInfo
+                                                .phoneNumber);
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.only(
+                                                top: 6, bottom: 0),
                                             width: 48,
                                             height: 48,
                                             child: Container(
                                                 child: Image.asset(
-                                                  "assets/images/call.png",
+                                                  "assets/images/call_ii.png",
                                                   width: 40,
                                                   height: 40,
                                                   // color: AppColors.MAIN_COLOR,
                                                 )),
-                                          );
-                                        }
-                                      },
+                                          ),
+                                        );
+                                      } else {
+                                        return Container(
+                                          margin: EdgeInsets.only(
+                                              top: 6, bottom: 0),
+                                          width: 48,
+                                          height: 48,
+                                          child: Container(
+                                              child: Image.asset(
+                                                "assets/images/call.png",
+                                                width: 40,
+                                                height: 40,
+                                                // color: AppColors.MAIN_COLOR,
+                                              )),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                  Text(
+                                    "Call",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.TITLE_TEXT_COLOR,
+                                      fontFamily: FontFamilies.POPPINS,
+                                      fontSize:
+                                      (MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height *
+                                          0.013),
                                     ),
-                                    Text(
-                                      "Call",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.TITLE_TEXT_COLOR,
-                                        fontFamily: FontFamilies.POPPINS,
-                                        fontSize:
-                                        (MediaQuery.of(context).size.height *
-                                            0.013),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    StreamBuilder(
-                                      stream: orderBloc.ride,
-                                      builder: (BuildContext context,
-                                          AsyncSnapshot<RideModel> snapshot) {
-                                        if (snapshot.hasData) {
-                                          return InkWell(
-                                            onTap: () {
-                                              Utils.mapLaunch( snapshot
-                                                  .data
-                                                  .data
-                                                  .bookings[
-                                              orderBloc.getOrderIndex()]
-                                                  .pullDownLocationPoints
-                                                  .points[1],
-                                                  snapshot
-                                                      .data
-                                                      .data
-                                                      .bookings[
-                                                  orderBloc.getOrderIndex()]
-                                                      .pullDownLocationPoints
-                                                      .points[0]);
-
-                                            },
-                                            child: Container(
-                                              margin:
-                                              EdgeInsets.only(top: 6, bottom: 0),
-                                              width: 48,
-                                              height: 48,
-                                              child: Container(
-                                                  child: Image.asset(
-                                                    "assets/images/direction.png",
-                                                    width: 40,
-                                                    height: 40,
-                                                    // color: AppColors.MAIN_COLOR,
-                                                  )),
-                                            ),
-                                          );
-                                        } else {
-                                          return Container(
-                                            margin:
-                                            EdgeInsets.only(top: 6, bottom: 0),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  StreamBuilder(
+                                    stream: orderBloc.ride,
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<RideModel> snapshot) {
+                                      if (snapshot.hasData) {
+                                        return InkWell(
+                                          onTap: () {
+                                            Utils.mapLaunch(
+                                                snapshot
+                                                    .data
+                                                    .data
+                                                    .bookings[orderBloc
+                                                    .getOrderIndex()]
+                                                    .pullDownLocationPoints
+                                                    .points[1],
+                                                snapshot
+                                                    .data
+                                                    .data
+                                                    .bookings[orderBloc
+                                                    .getOrderIndex()]
+                                                    .pullDownLocationPoints
+                                                    .points[0]);
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.only(
+                                                top: 6, bottom: 0),
                                             width: 48,
                                             height: 48,
                                             child: Container(
@@ -470,44 +502,67 @@ class DeliveredItemSheet extends StatelessWidget {
                                                   height: 40,
                                                   // color: AppColors.MAIN_COLOR,
                                                 )),
-                                          );
-                                        }
-                                      },
+                                          ),
+                                        );
+                                      } else {
+                                        return Container(
+                                          margin: EdgeInsets.only(
+                                              top: 6, bottom: 0),
+                                          width: 48,
+                                          height: 48,
+                                          child: Container(
+                                              child: Image.asset(
+                                                "assets/images/direction.png",
+                                                width: 40,
+                                                height: 40,
+                                                // color: AppColors.MAIN_COLOR,
+                                              )),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                  Text(
+                                    "Direction",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.TITLE_TEXT_COLOR,
+                                      fontFamily: FontFamilies.POPPINS,
+                                      fontSize:
+                                      (MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height *
+                                          0.013),
                                     ),
-                                    Text(
-                                      "Direction",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.TITLE_TEXT_COLOR,
-                                        fontFamily: FontFamilies.POPPINS,
-                                        fontSize:
-                                        (MediaQuery.of(context).size.height *
-                                            0.013),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  )
+                                ],
+                              ),
+                            ],
                           ),
-                        ],
-                      );}
-
-
-                   }
-                else
-                  {return Column(
+                        ),
+                      ],
+                    );
+                  }
+                } else {
+                  return Column(
                     children: [
                       Padding(
                           padding: EdgeInsets.only(top: 8),
                           child: Text(
-                            snapshot.data.data.bookings[orderBloc.getOrderIndex()]
-                                .consigneeContactInfo.name,
+                            snapshot
+                                .data
+                                .data
+                                .bookings[orderBloc.getOrderIndex()]
+                                .consigneeContactInfo
+                                .name,
                             style: TextStyle(
                                 color: AppColors.TITLE_TEXT_COLOR,
                                 fontFamily: FontFamilies.POPPINS,
                                 fontSize:
-                                (MediaQuery.of(context).size.width * 0.04) +
+                                (MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width * 0.04) +
                                     FontSize.HEADING_FONT,
                                 fontWeight: FontWeight.w700),
                           )),
@@ -526,13 +581,18 @@ class DeliveredItemSheet extends StatelessWidget {
                                     if (snapshot.hasData) {
                                       return InkWell(
                                         onTap: () {
-                                          Utils.launchWhatsApp(phone: snapshot.data.data.bookings[
-                                          orderBloc.getOrderIndex()].consigneeContactInfo.phoneNumber);
-
+                                          Utils.launchWhatsApp(
+                                              phone: snapshot
+                                                  .data
+                                                  .data
+                                                  .bookings[
+                                              orderBloc.getOrderIndex()]
+                                                  .consigneeContactInfo
+                                                  .phoneNumber);
                                         },
                                         child: Container(
-                                          margin:
-                                          EdgeInsets.only(top: 6, bottom: 0),
+                                          margin: EdgeInsets.only(
+                                              top: 6, bottom: 0),
                                           width: 48,
                                           height: 48,
                                           child: Container(
@@ -561,7 +621,6 @@ class DeliveredItemSheet extends StatelessWidget {
                                     }
                                   },
                                 ),
-
                                 Text(
                                   "WhatsApp",
                                   style: TextStyle(
@@ -569,7 +628,10 @@ class DeliveredItemSheet extends StatelessWidget {
                                     color: AppColors.TITLE_TEXT_COLOR,
                                     fontFamily: FontFamilies.POPPINS,
                                     fontSize:
-                                    (MediaQuery.of(context).size.height *
+                                    (MediaQuery
+                                        .of(context)
+                                        .size
+                                        .height *
                                         0.013),
                                   ),
                                 )
@@ -584,13 +646,17 @@ class DeliveredItemSheet extends StatelessWidget {
                                     if (snapshot.hasData) {
                                       return InkWell(
                                         onTap: () {
-                                          Utils.phoneLaunch(snapshot.data.data.bookings[
-                                          orderBloc.getOrderIndex()].consigneeContactInfo.phoneNumber);
-
+                                          Utils.phoneLaunch(snapshot
+                                              .data
+                                              .data
+                                              .bookings[
+                                          orderBloc.getOrderIndex()]
+                                              .consigneeContactInfo
+                                              .phoneNumber);
                                         },
                                         child: Container(
-                                          margin:
-                                          EdgeInsets.only(top: 6, bottom: 0),
+                                          margin: EdgeInsets.only(
+                                              top: 6, bottom: 0),
                                           width: 48,
                                           height: 48,
                                           child: Container(
@@ -626,7 +692,10 @@ class DeliveredItemSheet extends StatelessWidget {
                                     color: AppColors.TITLE_TEXT_COLOR,
                                     fontFamily: FontFamilies.POPPINS,
                                     fontSize:
-                                    (MediaQuery.of(context).size.height *
+                                    (MediaQuery
+                                        .of(context)
+                                        .size
+                                        .height *
                                         0.013),
                                   ),
                                 )
@@ -641,13 +710,14 @@ class DeliveredItemSheet extends StatelessWidget {
                                     if (snapshot.hasData) {
                                       return InkWell(
                                         onTap: () {
-                                          Utils.mapLaunch( snapshot
-                                              .data
-                                              .data
-                                              .bookings[
-                                          orderBloc.getOrderIndex()]
-                                              .pullDownLocationPoints
-                                              .points[1],
+                                          Utils.mapLaunch(
+                                              snapshot
+                                                  .data
+                                                  .data
+                                                  .bookings[
+                                              orderBloc.getOrderIndex()]
+                                                  .pullDownLocationPoints
+                                                  .points[1],
                                               snapshot
                                                   .data
                                                   .data
@@ -655,11 +725,10 @@ class DeliveredItemSheet extends StatelessWidget {
                                               orderBloc.getOrderIndex()]
                                                   .pullDownLocationPoints
                                                   .points[0]);
-
                                         },
                                         child: Container(
-                                          margin:
-                                          EdgeInsets.only(top: 6, bottom: 0),
+                                          margin: EdgeInsets.only(
+                                              top: 6, bottom: 0),
                                           width: 48,
                                           height: 48,
                                           child: Container(
@@ -695,7 +764,10 @@ class DeliveredItemSheet extends StatelessWidget {
                                     color: AppColors.TITLE_TEXT_COLOR,
                                     fontFamily: FontFamilies.POPPINS,
                                     fontSize:
-                                    (MediaQuery.of(context).size.height *
+                                    (MediaQuery
+                                        .of(context)
+                                        .size
+                                        .height *
                                         0.013),
                                   ),
                                 )
@@ -705,8 +777,8 @@ class DeliveredItemSheet extends StatelessWidget {
                         ),
                       ),
                     ],
-                  );}
-
+                  );
+                }
               } else {
                 return Container();
               }
@@ -826,24 +898,24 @@ class DeliveredItemSheet extends StatelessWidget {
                 onPressed: () {
                   showDialog<void>(
                       context: context,
-                      barrierDismissible:
-                      false,
+                      barrierDismissible: false,
                       // user must tap button!
-                      builder: (BuildContext
-                      context) {
+                      builder: (BuildContext context) {
                         return UnsuccessfulScreen(
-                          type:
-                          "UNSUCCESSFUL_DELIVERY",
+                          type: "UNSUCCESSFUL_DELIVERY",
                           orderId: orderBloc.getOrderId(),
                         );
                       });
-                  },
+                },
                 child: Text(
                   "Cancel",
                   style: TextStyle(
                       fontFamily: FontFamilies.POPPINS,
                       fontSize:
-                          (MediaQuery.of(context).size.width * 0.008) + 11,
+                      (MediaQuery
+                          .of(context)
+                          .size
+                          .width * 0.008) + 11,
                       color: Colors.black,
                       fontWeight: FontWeight.w500),
                 ),
@@ -859,7 +931,6 @@ class DeliveredItemSheet extends StatelessWidget {
                   elevation: 3,
                   color: AppColors.DELIVERY_COLOR,
                   onPressed: () {
-
                     showDialog(
                         context: context,
                         builder: (_) => PodScreen(

@@ -18,6 +18,8 @@ class OfflineMap extends StatelessWidget {
         if(snapshot.hasData)
           {return GoogleMap(
             liteModeEnabled: true,
+            zoomGesturesEnabled: true,
+            tiltGesturesEnabled: false,
             onMapCreated: (GoogleMapController controller) {
               rootBundle.loadString('assets/map_style').then((string) {
                 _controller.setMapStyle(string);

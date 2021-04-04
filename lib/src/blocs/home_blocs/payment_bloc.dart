@@ -26,18 +26,22 @@ class PaymentBloc {
     await _repository.setBookingPay(
         orderBloc.getBookingId(), int.parse(_price.value));
     orderBloc.getOrders("NOT_PAID");
-
   }
 
   shipperPay() async {
     await _repository.setShipperPay(
         orderBloc.getOrderId(), int.parse(_price.value), "UPFRONT");
     orderBloc.getOrders("NOT_PAID");
-
   }
 
   void dispose() {
     _price.close();
+  }
+
+  resetPrice() {
+    _price.add(null);
+    print(_price.value);
+    price = " ";
   }
 }
 

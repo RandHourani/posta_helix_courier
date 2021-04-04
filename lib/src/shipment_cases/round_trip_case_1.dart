@@ -12,6 +12,7 @@ import 'package:posta_courier/src/ui/home/sheets/new_order_sheet.dart';
 import 'package:posta_courier/src/ui/home/sheets/picked_up_item_sheet.dart';
 import 'package:posta_courier/src/ui/home/sheets/ready_to_pick_up_item_sheet.dart';
 import 'package:posta_courier/src/ui/home/sheets/go_to_new_location_sheet.dart';
+import 'package:posta_courier/src/ui/widgets/dialog_loading.dart';
 
 class RoundTripCase {
   static selectSheetRoundTrip(String state, context, String orderStatus) {
@@ -31,8 +32,6 @@ class RoundTripCase {
               break;
             case "ARRIVED":
               {
-                print("testtttt");
-
                 return PickedUpItemSheet(
                   shipmentCase: "PICKED_UP_CASE_1",
                 );
@@ -47,35 +46,46 @@ class RoundTripCase {
               break;
             case "DONE":
               {
-                // orderBloc.bookingAction();
-
+                print("test000");
                 return StreamBuilder(
                     stream: orderBloc.ride,
                     builder: (BuildContext context,
                         AsyncSnapshot<RideModel> snapshot) {
-                      if (snapshot.data.data.bookings[0].order
-                              .cashOnDeliveryOption ==
-                          "NONE") {
-                        return PaymentWithoutCODSheet(
-                          shipmentCase: "FORWARD_ROUND_TRIP",
-                        );
+                      if (snapshot.hasData) {
+                        if (snapshot
+                                .data
+                                .data
+                                .bookings[orderBloc.getOrderIndex()]
+                                .order
+                                .cashOnDeliveryOption ==
+                            "NONE") {
+                          return PaymentWithoutCODSheet(
+                            shipmentCase: "CASE_1",
+                          );
+                        } else {
+                          return PaymentWithCODSheet(
+                            shipmentCase: "CASE_1",
+                          );
+                        }
                       } else {
-                        return PaymentWithCODSheet(
-                          shipmentCase: "FORWARD_ROUND_TRIP",
-                        );
+                        orderBloc.getRide3();
+                        orderBloc.bookingAction();
+
+                        return LoadingDialogWidget();
                       }
                     });
               }
               break;
-
             case "GO_TO_NEW_LOCATION":
               {
+                print("test");
                 return GoToNewLocationSheet();
               }
               break;
             default:
               {
-                orderBloc.getRoundBackward();
+                print("test0");
+                // orderBloc.getRoundBackward();
                 return StreamBuilder(
                   stream: approvedCaptainBloc.checkUser,
                   builder: (BuildContext context,
@@ -112,19 +122,21 @@ class RoundTripCase {
               break;
             case "DONE":
               {
+                print("test1");
                 // orderBloc.bookingAction();
                 return StreamBuilder(
                     stream: orderBloc.ride,
                     builder: (BuildContext context,
                         AsyncSnapshot<RideModel> snapshot) {
-                      if (snapshot.data.data.bookings[orderBloc.getOrderIndex()]
-                              .order.cashOnDeliveryOption ==
-                          "NONE") {
+                      if (snapshot.hasData) {
                         return PaymentWithoutCODSheet(
                           shipmentCase: "CASE_1",
                         );
                       } else {
-                        return PaymentWithCODSheet(shipmentCase: "CASE_1");
+                        orderBloc.getRide3();
+                        orderBloc.bookingAction();
+
+                        return LoadingDialogWidget();
                       }
                     });
               }
@@ -137,6 +149,7 @@ class RoundTripCase {
 
             default:
               {
+                print("test1");
                 return StreamBuilder(
                   stream: approvedCaptainBloc.checkUser,
                   builder: (BuildContext context,
@@ -166,6 +179,7 @@ class RoundTripCase {
 
       default:
         {
+          print("test");
           return StreamBuilder(
             stream: approvedCaptainBloc.checkUser,
             builder:
@@ -184,14 +198,18 @@ class RoundTripCase {
         }
     }
   }
-  static selectSheetRoundTripShipperPay(String state, context, String orderStatus,int pay) {
+
+  static selectSheetRoundTripShipperPay(String state, context,
+      String orderStatus, int pay) {
     switch (orderStatus) {
       case "PROCESSING_FORWARD":
         {
           switch (state) {
             case "ACCEPTED":
               {
-                return GoToPickUpItemSheet(shipmentCase: "SHIPPER_PAY",);
+                return GoToPickUpItemSheet(
+                  shipmentCase: "SHIPPER_PAY",
+                );
               }
               break;
             case "STARTED":
@@ -201,7 +219,6 @@ class RoundTripCase {
               break;
             case "ARRIVED":
               {
-                print("test");
                 return pay != null
                     ? PickedUpItemSheet(
                         shipmentCase: "CASE_1",
@@ -213,41 +230,50 @@ class RoundTripCase {
               break;
             case "READY_TO_PICK_UP":
               {
-                print("test2");
                 return PickedUpItemSheet(
                   shipmentCase: "CASE_1",
                 );
               }
               break;
 
-
             case "PICKED_UP":
               {
                 return StreamBuilder(
                     stream: orderBloc.ride,
-                    builder:
-                        (BuildContext context, AsyncSnapshot<RideModel> snapshot) {
-                      if (snapshot.data.data.bookings[orderBloc.getOrderIndex()].order
-                          .cashOnDeliveryOption ==
-                          "NONE") {
-                        return DeliveredItemSheet(
-                          shipmentCase: "SHIPPER_PAY",
-                        );
+                    builder: (BuildContext context,
+                        AsyncSnapshot<RideModel> snapshot) {
+                      if (snapshot.hasData) {
+                        if (snapshot
+                            .data
+                            .data
+                            .bookings[orderBloc.getOrderIndex()]
+                            .order
+                            .cashOnDeliveryOption ==
+                            "NONE") {
+                          return DeliveredItemSheet(
+                            shipmentCase: "SHIPPER_PAY",
+                          );
+                        } else {
+                          return DeliveredItemSheet(
+                            shipmentCase: "SHIPPER_PAY_COD",
+                          );
+                        }
                       } else {
-                        return DeliveredItemSheet(
-                          shipmentCase: "SHIPPER_PAY_COD",
-                        );
+                        orderBloc.getRoundBackward();
+                        return LoadingDialogWidget();
                       }
                     });
               }
               break;
+
             case "PAID":
               {
-                orderBloc.getRoundBackward();
-                print("testtttt");
+                // orderBloc.getRoundBackward();
+
                 return GoToNewLocationSheet();
               }
               break;
+
             case "PAYMENT":
               {
                 return PaymentWithoutCODSheet(shipmentCase: "SHIPPER_PAY");
@@ -261,36 +287,45 @@ class RoundTripCase {
               break;
             case "DONE":
               {
-
                 return StreamBuilder(
                     stream: orderBloc.ride,
-                    builder:
-                        (BuildContext context, AsyncSnapshot<RideModel> snapshot) {
-                      if (snapshot.data.data.bookings[orderBloc.getOrderIndex()].order
-                          .cashOnDeliveryOption ==
-                          "NONE") {
-                        return PaymentWithoutCODSheet(
-                          shipmentCase: "CASE_1",
-                        );
+                    builder: (BuildContext context,
+                        AsyncSnapshot<RideModel> snapshot) {
+                      if (snapshot.hasData) {
+                        if (snapshot
+                            .data
+                            .data
+                            .bookings[orderBloc.getOrderIndex()]
+                            .order
+                            .cashOnDeliveryOption ==
+                            "NONE") {
+                          return PaymentWithoutCODSheet(
+                            shipmentCase: "CASE_1",
+                          );
+                        } else {
+                          return PaymentWithCODSheet(shipmentCase: "CASE_1",);
+                        }
                       } else {
-                        return PaymentWithCODSheet(
-                          shipmentCase: "CASE_1",
-                        );
+                        // orderBloc.bookingAction();
+                        orderBloc.getRide3();
+
+                        return LoadingDialogWidget();
                       }
                     });
               }
               break;
             case "GO_TO_NEW_LOCATION":
               {
-                return GoToNewLocationSheet();
+                return GoToNewLocationSheet(orderStatus: orderStatus,);
               }
               break;
             default:
               {
+                print("test2");
                 return StreamBuilder(
                   stream: approvedCaptainBloc.checkUser,
-                  builder:
-                      (BuildContext context, AsyncSnapshot<LogInModel> snapshot) {
+                  builder: (BuildContext context,
+                      AsyncSnapshot<LogInModel> snapshot) {
                     if (snapshot.hasData) {
                       if (snapshot.data.data.activeSuggestion != null) {
                         return NewOrderSuggestionSheet();
@@ -303,16 +338,15 @@ class RoundTripCase {
                   },
                 );
               }
-
-
-        }}
+          }
+        }
         break;
       case "PROCESSING_BACK":
         {
           switch (state) {
             case "ARRIVED":
               {
-                return GoToNewLocationSheet();
+                return GoToNewLocationSheet(orderStatus: orderStatus,);
               }
               break;
             case "PICKED_UP":
@@ -324,19 +358,18 @@ class RoundTripCase {
               break;
             case "DONE":
               {
-                // orderBloc.bookingAction();
                 return StreamBuilder(
                     stream: orderBloc.ride,
                     builder: (BuildContext context,
                         AsyncSnapshot<RideModel> snapshot) {
-                      if (snapshot.data.data.bookings[orderBloc.getOrderIndex()]
-                              .order.cashOnDeliveryOption ==
-                          "NONE") {
+                      if (snapshot.hasData) {
                         return PaymentWithoutCODSheet(
                           shipmentCase: "CASE_1",
                         );
                       } else {
-                        return PaymentWithCODSheet(shipmentCase: "CASE_1");
+                        orderBloc.getRide3();
+                        orderBloc.bookingAction();
+                        return LoadingDialogWidget();
                       }
                     });
               }
@@ -349,6 +382,7 @@ class RoundTripCase {
 
             default:
               {
+                print("test22");
                 return StreamBuilder(
                   stream: approvedCaptainBloc.checkUser,
                   builder: (BuildContext context,
@@ -378,6 +412,7 @@ class RoundTripCase {
 
       default:
         {
+          print("test22");
           return StreamBuilder(
             stream: approvedCaptainBloc.checkUser,
             builder:

@@ -53,11 +53,11 @@ GoToPickUpItemSheet({this.shipmentCase});
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.only(bottom: 2, top: 5),
+          margin: EdgeInsets.only(bottom: 2, top: 8),
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height <= 650
-              ? MediaQuery.of(context).size.height / 4.8
-              : MediaQuery.of(context).size.height / 5.7,
+          // height: MediaQuery.of(context).size.height <= 650
+          //     ? MediaQuery.of(context).size.height / 4.8
+          //     : MediaQuery.of(context).size.height / 5.7,
           child: StreamBuilder(
             stream: orderBloc.ride,
             builder: (BuildContext context, AsyncSnapshot<RideModel> snapshot) {
@@ -67,8 +67,7 @@ GoToPickUpItemSheet({this.shipmentCase});
                     Padding(
                         padding: EdgeInsets.only(top: 22),
                         child: Text(
-                          snapshot.data.data.bookings[0]
-                              .passengerName,
+                          snapshot.data.data.bookings[0].passengerName,
                           style: TextStyle(
                               color: AppColors.TITLE_TEXT_COLOR,
                               fontFamily: FontFamilies.POPPINS,
@@ -79,7 +78,7 @@ GoToPickUpItemSheet({this.shipmentCase});
                         )),
                     Padding(
                       padding: EdgeInsets.only(
-                          top: 5, bottom: 6, left: 40, right: 40),
+                          top: 5, bottom: 7, left: 40, right: 40),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
