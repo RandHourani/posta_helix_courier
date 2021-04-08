@@ -6,6 +6,7 @@ import 'package:http/http.dart';
 import 'package:posta_courier/models/unsuccessful_order_model.dart';
 import 'package:posta_courier/src/constants/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:posta_courier/src/blocs/home_blocs/order_bloc.dart';
 
 class UnsuccessfulOrderProvider {
   Client client = Client();
@@ -63,6 +64,8 @@ class UnsuccessfulOrderProvider {
     if (response.statusCode == 200) {
       http.Response res = await http.Response.fromStream(response);
       print(res.body);
+      orderBloc.setOrderSheet(null);
+      orderBloc.getOrders("NOT_PAID");
     } else {
       print(response.reasonPhrase);
     }

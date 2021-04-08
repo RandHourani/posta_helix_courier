@@ -18,15 +18,16 @@ import 'package:posta_courier/src/ui/home/payment/payment_without_cod_sheet.dart
 
 class ReadyToPickUpItemSheet extends StatelessWidget {
   String shipmentCase;
+
   ReadyToPickUpItemSheet({this.shipmentCase});
+
   @override
   Widget build(BuildContext context) {
     return SizedBox.expand(
       child: DraggableScrollableSheet(
         maxChildSize: MediaQuery.of(context).size.height < 650 ? 0.65 : 0.5,
-        minChildSize: MediaQuery.of(context).size.height < 650 ? 0.23 : 0.21,
-        initialChildSize:
-            MediaQuery.of(context).size.height < 650 ? 0.23 : 0.21,
+        minChildSize: MediaQuery.of(context).size.height < 650 ? 0.25 : 0.23,
+        initialChildSize: MediaQuery.of(context).size.height < 650 ? 0.65 : 0.5,
         builder: (BuildContext context, ScrollController scrollController) {
           return Container(
             margin: EdgeInsets.only(right: 27, left: 27),
@@ -56,7 +57,7 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.only(bottom: 2, top: 5),
+          margin: EdgeInsets.only(bottom: 8, top: 8),
           width: MediaQuery
               .of(context)
               .size
@@ -73,8 +74,7 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
                     Padding(
                         padding: EdgeInsets.only(top: 20),
                         child: Text(
-                          snapshot.data.data.bookings[0]
-                              .passengerName,
+                          snapshot.data.data.bookings[0].passengerName,
                           style: TextStyle(
                               color: AppColors.TITLE_TEXT_COLOR,
                               fontFamily: FontFamilies.POPPINS,
@@ -101,9 +101,14 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
                                   if (snapshot.hasData) {
                                     return InkWell(
                                       onTap: () {
-                                        Utils.launchWhatsApp(phone: snapshot.data.data.bookings[
-                                        orderBloc.getOrderIndex()].shipperContactInfo.phoneNumber);
-
+                                        Utils.launchWhatsApp(
+                                            phone: snapshot
+                                                .data
+                                                .data
+                                                .bookings[
+                                            orderBloc.getOrderIndex()]
+                                                .shipperContactInfo
+                                                .phoneNumber);
                                       },
                                       child: Container(
                                         margin:
@@ -143,7 +148,10 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
                                   color: AppColors.TITLE_TEXT_COLOR,
                                   fontFamily: FontFamilies.POPPINS,
                                   fontSize:
-                                  (MediaQuery.of(context).size.height *
+                                  (MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height *
                                       0.013),
                                 ),
                               )
@@ -158,9 +166,12 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
                                   if (snapshot.hasData) {
                                     return InkWell(
                                       onTap: () {
-                                        Utils.phoneLaunch(snapshot.data.data.bookings[
-                                        orderBloc.getOrderIndex()].shipperContactInfo.phoneNumber);
-
+                                        Utils.phoneLaunch(snapshot
+                                            .data
+                                            .data
+                                            .bookings[orderBloc.getOrderIndex()]
+                                            .shipperContactInfo
+                                            .phoneNumber);
                                       },
                                       child: Container(
                                         margin:
@@ -200,7 +211,10 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
                                   color: AppColors.TITLE_TEXT_COLOR,
                                   fontFamily: FontFamilies.POPPINS,
                                   fontSize:
-                                  (MediaQuery.of(context).size.height *
+                                  (MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height *
                                       0.013),
                                 ),
                               )
@@ -215,13 +229,14 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
                                   if (snapshot.hasData) {
                                     return InkWell(
                                       onTap: () {
-                                        Utils.mapLaunch( snapshot
-                                            .data
-                                            .data
-                                            .bookings[
-                                        orderBloc.getOrderIndex()]
-                                            .pickupLocationPoints
-                                            .points[1],
+                                        Utils.mapLaunch(
+                                            snapshot
+                                                .data
+                                                .data
+                                                .bookings[
+                                            orderBloc.getOrderIndex()]
+                                                .pickupLocationPoints
+                                                .points[1],
                                             snapshot
                                                 .data
                                                 .data
@@ -229,7 +244,6 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
                                             orderBloc.getOrderIndex()]
                                                 .pickupLocationPoints
                                                 .points[0]);
-
                                       },
                                       child: Container(
                                         margin:
@@ -269,7 +283,10 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
                                   color: AppColors.TITLE_TEXT_COLOR,
                                   fontFamily: FontFamilies.POPPINS,
                                   fontSize:
-                                  (MediaQuery.of(context).size.height *
+                                  (MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height *
                                       0.013),
                                 ),
                               )
@@ -339,7 +356,10 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
                                   color: AppColors.TITLE_TEXT_COLOR,
                                   fontFamily: FontFamilies.POPPINS,
                                   fontSize:
-                                  (MediaQuery.of(context).size.height *
+                                  (MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height *
                                       0.018) +
                                       2,
                                 ),
@@ -367,7 +387,10 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
                                   color: AppColors.dialogStatusBar,
                                   fontFamily: FontFamilies.POPPINS,
                                   fontSize:
-                                  (MediaQuery.of(context).size.height *
+                                  (MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height *
                                       0.015),
                                 ),
                               );
@@ -421,7 +444,10 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
                               color: AppColors.TEXT_DARK,
                               fontFamily: FontFamilies.POPPINS,
                               fontSize:
-                              (MediaQuery.of(context).size.height * 0.018) +
+                              (MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height * 0.018) +
                                   2,
                             ),
                           ),
@@ -432,16 +458,16 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
                                 if (snapshot.hasData) {
                                   return Text(
                                     Utils.timeFormat1(snapshot
-                                        .data
-                                        .data
-                                        .bookings[0]
-                                        .dateTime),
+                                        .data.data.bookings[0].dateTime),
                                     style: TextStyle(
                                       fontWeight: FontWeight.w500,
                                       color: AppColors.COMPLETED_INFO_BOX,
                                       fontFamily: FontFamilies.POPPINS,
                                       fontSize:
-                                      (MediaQuery.of(context).size.height *
+                                      (MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height *
                                           0.018) +
                                           2,
                                     ),
@@ -463,9 +489,15 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
           ),
         ),
         Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.width / 7,
-          margin: EdgeInsets.only(left: 15, right: 15),
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
+          height: MediaQuery
+              .of(context)
+              .size
+              .width / 7,
+          margin: EdgeInsets.only(left: 15, right: 15, top: 5),
           child: ButtonTheme(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
@@ -482,8 +514,7 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
                 // else
                 //   {}
 
-                switch(shipmentCase)
-                {
+                switch (shipmentCase) {
                   case "CASE_1":
                     {
                       print("test88");
@@ -512,7 +543,10 @@ class ReadyToPickUpItemSheet extends StatelessWidget {
                       style: TextStyle(
                           fontFamily: FontFamilies.POPPINS,
                           fontSize:
-                          (MediaQuery.of(context).size.width * 0.008) + 10,
+                          (MediaQuery
+                              .of(context)
+                              .size
+                              .width * 0.008) + 10,
                           color: Colors.white,
                           fontWeight: FontWeight.w700),
                     ),

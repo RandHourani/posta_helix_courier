@@ -433,6 +433,9 @@ class PickedUpItemSheet extends StatelessWidget {
                   elevation: 3,
                   color: AppColors.MAIN_COLOR,
                   onPressed: () {
+                    if (shipmentCase == "ROUND_TRIP") {
+                      orderBloc.setOrderSheet("GO_TO_NEW_LOCATION");
+                    }
                     showDialog(
                         context: context,
                         builder: (_) => PodScreen(

@@ -85,7 +85,12 @@ class App extends StatelessWidget {
             message['data']['google.sent_time']));
         print("DateTime.now()");
         print(DateTime.now());
-        orderBloc.setTimer(DateTime.now()
+        orderBloc.setTimer(60 -
+            DateTime.now()
+                .difference(new DateTime.fromMillisecondsSinceEpoch(
+                    message['data']['google.sent_time']))
+                .inSeconds);
+        print(DateTime.now()
             .difference(new DateTime.fromMillisecondsSinceEpoch(
                 message['data']['google.sent_time']))
             .inSeconds);

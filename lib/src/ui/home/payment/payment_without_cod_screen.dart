@@ -71,8 +71,9 @@ class PaymentWithoutCODScreen extends StatelessWidget {
           Column(
             children: [
               Container(
-                margin:
-                    EdgeInsets.only(top: 25, right: 20, left: 30, bottom: 25),
+                height: 90,
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.only(right: 10, left: 10),
                 child: StreamBuilder(
                   stream: orderBloc.ride,
                   builder: (BuildContext context,
@@ -287,8 +288,11 @@ class PaymentWithoutCODScreen extends StatelessWidget {
                 ),
               ),
               Container(
-                height: 100,
-                width: MediaQuery.of(context).size.width,
+                height: 90,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
                 padding: EdgeInsets.only(top: 20, right: 20, left: 10),
                 color: Color(0xffEFEFEF),
                 child: Column(
@@ -355,7 +359,7 @@ class PaymentWithoutCODScreen extends StatelessWidget {
                         Container(
                           height: 50,
                           width: 120,
-                          margin: EdgeInsets.only(right: 10),
+                          margin: EdgeInsets.only(right: 10, bottom: 5),
                           child: RaisedButton(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.0),
@@ -380,6 +384,8 @@ class PaymentWithoutCODScreen extends StatelessWidget {
                         Container(
                           height: 50,
                           width: 160,
+                          margin: EdgeInsets.only(bottom: 5),
+
                           child: StreamBuilder(
                             stream: paymentBloc.payPrice,
                             builder: (context, snap) {
@@ -461,7 +467,7 @@ class PaymentWithoutCODScreen extends StatelessWidget {
                       color: AppColors.KEYBOARD_BACKGROUND,
                       width: MediaQuery.of(context).size.width,
                       child: Padding(
-                        padding: EdgeInsets.only(top: 6, bottom: 6),
+                        padding: EdgeInsets.only(top: 6, bottom: 4),
                         child: Image.asset("assets/images/home_indicator.png"),
                       ),
                     ),

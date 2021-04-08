@@ -31,7 +31,10 @@ class NewOrderSuggestionSheet extends StatelessWidget {
             stream: orderBloc.timer,
             builder: (BuildContext context, AsyncSnapshot<int> snap) {
               if (snap.hasData) {
-                Future.delayed(Duration(seconds: 60), () {
+                print("snap.data");
+                print(snap.data);
+
+                Future.delayed(Duration(seconds: snap.data), () {
                   orderBloc.setOrderSheet("NULL");
                   checkCaptainDataBloc.resetSuggestion();
                 });
@@ -65,6 +68,7 @@ class NewOrderSuggestionSheet extends StatelessWidget {
                   return Container();
                 }
               } else {
+                // orderBloc.setTimer(60);
                 Future.delayed(Duration(seconds: 60), () {
                   orderBloc.setOrderSheet("NULL");
                   checkCaptainDataBloc.resetSuggestion();

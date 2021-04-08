@@ -53,7 +53,7 @@ GoToPickUpItemSheet({this.shipmentCase});
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.only(bottom: 2, top: 8),
+          margin: EdgeInsets.only(bottom: 8, top: 8),
           width: MediaQuery.of(context).size.width,
           // height: MediaQuery.of(context).size.height <= 650
           //     ? MediaQuery.of(context).size.height / 4.8
@@ -155,8 +155,8 @@ GoToPickUpItemSheet({this.shipmentCase});
                                       child: Container(
                                         margin:
                                         EdgeInsets.only(top: 6, bottom: 0),
-                                        width: 48,
-                                        height: 48,
+                                        width: 50,
+                                        height: 50,
                                         child: Container(
                                             child: Image.asset(
                                               "assets/images/call_ii.png",

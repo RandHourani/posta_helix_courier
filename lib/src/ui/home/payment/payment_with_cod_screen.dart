@@ -416,41 +416,33 @@ class PaymentScreen extends StatelessWidget {
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontFamily: FontFamilies.POPPINS,
-                                  fontSize:
-                                  (MediaQuery
-                                      .of(context)
-                                      .size
-                                      .width * 0.008) +
+                                  fontSize: (MediaQuery.of(context).size.width *
+                                          0.008) +
                                       FontSize.BUTTON_FONT_L,
                                   color: Colors.white,
                                 ),
                               ),
                             );
-                              }
-                            },
-                          ),
-                        ),
-
-                      ],
-                    ),
-
-                    Container(
-                      color: AppColors.KEYBOARD_BACKGROUND,
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width,
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: 6),
-                        child: Image.asset("assets/images/home_indicator.png"),
+                          }
+                        },
                       ),
                     ),
                   ],
                 ),
-              ),
-            ],
+                Container(
+                  color: AppColors.KEYBOARD_BACKGROUND,
+                  width: MediaQuery.of(context).size.width,
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 6),
+                    child: Image.asset("assets/images/home_indicator.png"),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ));
+        ],
+      ),
+    ));
   }
 
   Future<void> _showDialog(context) async {

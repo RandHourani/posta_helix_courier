@@ -92,7 +92,7 @@ class PodScreen extends StatelessWidget {
                   color: AppColors.LIGHT_GREY,
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 10, bottom: 10, left: 7),
+                  margin: EdgeInsets.only(top: 10, bottom: 10, left: 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -668,7 +668,7 @@ class PodScreen extends StatelessWidget {
         stream: podBloc.reference,
         builder: (context, snap) {
           return Container(
-            margin: EdgeInsets.only(top: 20),
+            margin: EdgeInsets.only(top: 0, bottom: 6),
             child: TextFormField(
               style: TextStyle(
                 fontFamily: FontFamilies.POPPINS,

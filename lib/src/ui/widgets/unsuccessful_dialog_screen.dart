@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:posta_courier/models/unsuccessful_order_model.dart';
@@ -11,13 +10,13 @@ class UnsuccessfulScreen extends StatelessWidget {
   final String type;
   final orderId;
 
-  UnsuccessfulScreen({this.type,this.orderId});
+  UnsuccessfulScreen({this.type, this.orderId});
 
   @override
   Widget build(BuildContext context) {
     unsuccessfulOrderBloc.unsuccessfulReasons(type);
     return AlertDialog(
-      contentPadding: EdgeInsets.only(left: 17,top: 0,right: 17,bottom: 5),
+      contentPadding: EdgeInsets.only(left: 17, top: 0, right: 17, bottom: 5),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       //this right here
       content: Container(
@@ -28,7 +27,7 @@ class UnsuccessfulScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only( bottom: 10),
+              margin: EdgeInsets.only(bottom: 10),
               child: Text(
                 "Please Select Reason Why \n Canceling The Order!",
                 textAlign: TextAlign.left,
@@ -45,45 +44,44 @@ class UnsuccessfulScreen extends StatelessWidget {
               color: AppColors.LIGHT_GREY,
             ),
             Container(
-                margin: EdgeInsets.only(left: 17, right: 17, top: 5, bottom: 10),
-                height: 50,
+              margin: EdgeInsets.only(left: 17, right: 17, top: 5, bottom: 10),
+              height: 50,
+              child: StreamBuilder(
+                stream: unsuccessfulOrderBloc.reasons,
+                builder: (context, AsyncSnapshot<UnsuccessfulOrderModel> snap) {
+                  if (snap.hasData) {
+                    return StreamBuilder(
+                      stream: unsuccessfulOrderBloc.selectedReasons,
+                      builder: (context, snapshot) {
+                        return DropdownButtonHideUnderline(
+                          child: new DropdownButton<String>(
+                            isExpanded: true,
+                            value: snapshot.data,
+                            items: snap.data.data.data.map((Reason value) {
+                              return new DropdownMenuItem<String>(
+                                value: value.reason,
+                                child: new Text(value.reason),
+                              );
+                            }).toList(),
+                            onChanged: (newValue) {
+                              unsuccessfulOrderBloc.setSelectedReason(newValue);
+                            },
+                          ),
+                        );
+                      },
+                    );
+                  } else {
+                    unsuccessfulOrderBloc
+                        .unsuccessfulReasons("UNSUCCESSFUL_DELIVERY");
 
-                child: StreamBuilder(
-                  stream: unsuccessfulOrderBloc.reasons,
-                  builder: (context,
-                      AsyncSnapshot<UnsuccessfulOrderModel> snap) {
-                    if (snap.hasData) {
-                      return StreamBuilder(
-                        stream: unsuccessfulOrderBloc.selectedReasons,
-                        builder: (context, snapshot) {
-                          return DropdownButtonHideUnderline(
-                            child: new DropdownButton<String>(
-                              isExpanded: true,
-                              value: snapshot.data,
-                              items: snap.data.data.data
-                                  .map((Reason value) {
-                                return new DropdownMenuItem<
-                                    String>(
-                                  value: value.reason,
-                                  child:
-                                  new Text(value.reason),
-                                );
-                              }).toList(),
-                              onChanged: (newValue) {
-                               unsuccessfulOrderBloc.setSelectedReason(newValue);
-                              },
-                            ),
-                          );
-                        },
-                      );
-                    } else {
-                      return Text("");
-                    }
-                  },
-                ),),
+                    return Text("");
+                  }
+                },
+              ),
+            ),
             Padding(
               padding: EdgeInsets.only(top: 0),
-              child:  Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
@@ -104,7 +102,10 @@ class UnsuccessfulScreen extends StatelessWidget {
                         style: TextStyle(
                             fontFamily: FontFamilies.POPPINS,
                             fontSize:
-                            (MediaQuery.of(context).size.width * 0.008) + 8,
+                            (MediaQuery
+                                .of(context)
+                                .size
+                                .width * 0.008) + 8,
                             color: Colors.black,
                             fontWeight: FontWeight.w500),
                       ),
@@ -129,16 +130,21 @@ class UnsuccessfulScreen extends StatelessWidget {
                                   screen: "Unsuccessful",
                                 ));
                       },
-                      child:
-                      Padding(
+                      child: Padding(
                         padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * 0.02),
+                            left: MediaQuery
+                                .of(context)
+                                .size
+                                .width * 0.02),
                         child: Text(
                           "Submit",
                           style: TextStyle(
                               fontFamily: FontFamilies.POPPINS,
                               fontSize:
-                              (MediaQuery.of(context).size.width * 0.008) +
+                              (MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width * 0.008) +
                                   8,
                               color: Colors.white,
                               fontWeight: FontWeight.w700),

@@ -74,18 +74,6 @@ class PodBlock {
   }
 
   POD() async {
-    // if (_image.value == null) {
-    //   var response = await _repository.setPOD(orderBloc.getBookingId(), null,
-    //       _sign.value, _referenceController.value);
-    //   orderBloc.setOrderSheet(response.data.status);
-    //   orderBloc.setPrice(response);
-    //   reset();
-    // } else {
-    //   var response = await _repository.setPOD(orderBloc.getBookingId(),
-    //       _image.value.path, _sign.value, _referenceController.value);
-    //   orderBloc.setOrderSheet(response.data.status);
-    //   reset();
-    // }
     if (_sign.value == null) {
       var response = await _repository.setPOD(orderBloc.getBookingId(),
           _image.value.path, _sign.value, _referenceController.value);

@@ -119,6 +119,10 @@ class OrderBloc {
     _timer.add(min);
   }
 
+  getTimer() {
+    return _timer.value == null ? 60 : _timer.value;
+  }
+
   setPrice(BookingAction price) {
     _bookingAction.add(price);
   }

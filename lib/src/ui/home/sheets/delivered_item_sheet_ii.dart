@@ -59,11 +59,8 @@ class DeliveredItemSheet extends StatelessWidget {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.only(bottom: 2, top: 8),
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
+          margin: EdgeInsets.only(bottom: 8, top: 8),
+          width: MediaQuery.of(context).size.width,
           // height: MediaQuery.of(context).size.height <= 650
           //     ? MediaQuery.of(context).size.height / 4.3
           //     : MediaQuery.of(context).size.height / 4.7,
@@ -79,7 +76,7 @@ class DeliveredItemSheet extends StatelessWidget {
                     return Column(
                       children: [
                         Padding(
-                            padding: EdgeInsets.only(top: 10),
+                            padding: EdgeInsets.only(top: 13),
                             child: Text(
                               snapshot
                                   .data
@@ -99,7 +96,7 @@ class DeliveredItemSheet extends StatelessWidget {
                             )),
                         Padding(
                           padding: EdgeInsets.only(
-                              top: 15, bottom: 7, left: 40, right: 40),
+                              top: 15, bottom: 7, left: 35, right: 35),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -361,7 +358,7 @@ class DeliveredItemSheet extends StatelessWidget {
                                             height: 48,
                                             child: Container(
                                                 child: Image.asset(
-                                                  "assets/images/direction.png",
+                                                  "assets/images/whatsapp.png",
                                                   width: 40,
                                                   height: 40,
                                                   // color: AppColors.MAIN_COLOR,
@@ -376,7 +373,7 @@ class DeliveredItemSheet extends StatelessWidget {
                                           height: 48,
                                           child: Container(
                                               child: Image.asset(
-                                                "assets/images/direction.png",
+                                                "assets/images/whatsapp.png",
                                                 width: 40,
                                                 height: 40,
                                                 // color: AppColors.MAIN_COLOR,
@@ -791,12 +788,19 @@ class DeliveredItemSheet extends StatelessWidget {
             dashLength: 7,
             dashColor: AppColors.LIGHT_GREY),
         Container(
-          width: MediaQuery.of(context).size.width,
+          margin: EdgeInsets.only(top: 4),
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
           child: Row(
             children: [
               Container(
                 height: 90,
-                width: MediaQuery.of(context).size.width / 8.6,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width / 8.6,
                 child: Align(
                   alignment: Alignment.center,
                   child: SvgPicture.asset(
@@ -839,9 +843,9 @@ class DeliveredItemSheet extends StatelessWidget {
                                   color: AppColors.TITLE_TEXT_COLOR,
                                   fontFamily: FontFamilies.POPPINS,
                                   fontSize:
-                                      (MediaQuery.of(context).size.height *
-                                              0.018) +
-                                          2,
+                                  (MediaQuery.of(context).size.height *
+                                      0.018) +
+                                      2,
                                 ),
                               );
                             } else {
@@ -867,8 +871,8 @@ class DeliveredItemSheet extends StatelessWidget {
                                   color: AppColors.dialogStatusBar,
                                   fontFamily: FontFamilies.POPPINS,
                                   fontSize:
-                                      (MediaQuery.of(context).size.height *
-                                          0.015),
+                                  (MediaQuery.of(context).size.height *
+                                      0.015),
                                 ),
                               );
                             } else {

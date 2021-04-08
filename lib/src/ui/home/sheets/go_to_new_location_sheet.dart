@@ -57,14 +57,8 @@ class GoToNewLocationSheet extends StatelessWidget {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.only(bottom: 2, top: 8),
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
-          // height: MediaQuery.of(context).size.height <= 650
-          //     ? MediaQuery.of(context).size.height / 4.8
-          //     : MediaQuery.of(context).size.height / 5.7,
+          margin: EdgeInsets.only(bottom: 8, top: 8),
+          width: MediaQuery.of(context).size.width,
           child: StreamBuilder(
             stream: orderBloc.ride,
             builder: (BuildContext context, AsyncSnapshot<RideModel> snapshot) {
@@ -109,7 +103,7 @@ class GoToNewLocationSheet extends StatelessWidget {
                                         height: 48,
                                         child: Container(
                                             child: Image.asset(
-                                              "assets/images/direction.png",
+                                              "assets/images/whatsapp.png",
                                               width: 40,
                                               height: 40,
                                               // color: AppColors.MAIN_COLOR,
@@ -287,12 +281,20 @@ class GoToNewLocationSheet extends StatelessWidget {
             dashLength: 4,
             dashColor: AppColors.LIGHT_GREY),
         Container(
-          width: MediaQuery.of(context).size.width,
+          margin: EdgeInsets.only(top: 4),
+
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
           child: Row(
             children: [
               Container(
                 height: 70,
-                width: MediaQuery.of(context).size.width / 8.6,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width / 8.6,
                 child: Align(
                   alignment: Alignment.center,
                   child: SvgPicture.asset(
@@ -474,9 +476,15 @@ class GoToNewLocationSheet extends StatelessWidget {
           ),
         ),
         Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.width / 7,
-          margin: EdgeInsets.only(left: 15, right: 15),
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
+          height: MediaQuery
+              .of(context)
+              .size
+              .width / 7,
+          margin: EdgeInsets.only(left: 15, right: 15, top: 6),
           child: ButtonTheme(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
@@ -485,7 +493,7 @@ class GoToNewLocationSheet extends StatelessWidget {
             child: RaisedButton(
               elevation: 0,
               onPressed: () {
-                orderBloc.bookingAction2();
+                orderBloc.setOrderSheet("READY_TO_DELIVERY");
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

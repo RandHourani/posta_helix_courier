@@ -269,8 +269,9 @@ class RoundTripCase {
             case "PAID":
               {
                 // orderBloc.getRoundBackward();
-
-                return GoToNewLocationSheet();
+                return PickedUpItemSheet(
+                  shipmentCase: "ROUND_TRIP",
+                );
               }
               break;
 
@@ -346,10 +347,19 @@ class RoundTripCase {
           switch (state) {
             case "ARRIVED":
               {
-                return GoToNewLocationSheet(orderStatus: orderStatus,);
+                return PickedUpItemSheet(
+                  shipmentCase: "ROUND_TRIP",
+                );
               }
               break;
             case "PICKED_UP":
+              {
+                return GoToNewLocationSheet(
+                  orderStatus: orderStatus,
+                );
+              }
+              break;
+            case "READY_TO_DELIVERY":
               {
                 return DeliveredItemSheet(
                   shipmentCase: "ROUND_TRIP",
