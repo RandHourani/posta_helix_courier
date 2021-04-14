@@ -229,17 +229,11 @@ class PodScreen extends StatelessWidget {
                                     child: Image.asset(
                                       "assets/images/camera.png",
                                       width:
-                                      (MediaQuery
-                                          .of(context)
-                                          .size
-                                          .height *
-                                          0.02),
+                                          (MediaQuery.of(context).size.height *
+                                              0.02),
                                       height:
-                                      (MediaQuery
-                                          .of(context)
-                                          .size
-                                          .height *
-                                          0.02),
+                                          (MediaQuery.of(context).size.height *
+                                              0.02),
                                     ),
                                     onPressed: () {
                                       FlutterStatusbarcolor.setStatusBarColor(
@@ -573,11 +567,8 @@ class PodScreen extends StatelessWidget {
                                                   }
                                                   Navigator.of(context)
                                                       .pop(true);
-                                                  orderBloc
-                                                      .getOrders("NOT_PAID");
 
                                                   _showDialog(context);
-                                                  orderBloc.getRide3();
                                                 }
                                               },
                                               child: Padding(
@@ -804,6 +795,7 @@ class PodScreen extends StatelessWidget {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         Future.delayed(Duration(seconds: 2), () {
+          // orderBloc.getRide3();
           Navigator.of(context).pop(true);
         });
         return LoadingDialogWidget();

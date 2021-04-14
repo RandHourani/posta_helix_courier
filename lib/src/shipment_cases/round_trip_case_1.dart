@@ -40,7 +40,7 @@ class RoundTripCase {
             case "PICKED_UP":
               {
                 return DeliveredItemSheet(
-                  shipmentCase: "DELIVERED_UP_CASE_1",
+                  shipmentCase: "DELIVERED_CASE_1",
                 );
               }
               break;
@@ -110,7 +110,9 @@ class RoundTripCase {
           switch (state) {
             case "ARRIVED":
               {
-                return GoToNewLocationSheet();
+                return PickedUpItemSheet(
+                  shipmentCase: "ROUND_TRIP",
+                );
               }
               break;
             case "PICKED_UP":
@@ -199,8 +201,8 @@ class RoundTripCase {
     }
   }
 
-  static selectSheetRoundTripShipperPay(String state, context,
-      String orderStatus, int pay) {
+  static selectSheetRoundTripShipperPay(
+      String state, context, String orderStatus, int pay) {
     switch (orderStatus) {
       case "PROCESSING_FORWARD":
         {
@@ -238,39 +240,17 @@ class RoundTripCase {
 
             case "PICKED_UP":
               {
-                return StreamBuilder(
-                    stream: orderBloc.ride,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<RideModel> snapshot) {
-                      if (snapshot.hasData) {
-                        if (snapshot
-                            .data
-                            .data
-                            .bookings[orderBloc.getOrderIndex()]
-                            .order
-                            .cashOnDeliveryOption ==
-                            "NONE") {
-                          return DeliveredItemSheet(
-                            shipmentCase: "SHIPPER_PAY",
-                          );
-                        } else {
-                          return DeliveredItemSheet(
-                            shipmentCase: "SHIPPER_PAY_COD",
-                          );
-                        }
-                      } else {
-                        orderBloc.getRoundBackward();
-                        return LoadingDialogWidget();
-                      }
-                    });
+                return DeliveredItemSheet(
+                  shipmentCase: "ROUND_TRIP",
+                );
               }
               break;
 
             case "PAID":
               {
-                // orderBloc.getRoundBackward();
+                // orderBloc.getRide3();
                 return PickedUpItemSheet(
-                  shipmentCase: "ROUND_TRIP",
+                  shipmentCase: "GO_TO_NEW_LOCATION",
                 );
               }
               break;
@@ -304,7 +284,9 @@ class RoundTripCase {
                             shipmentCase: "CASE_1",
                           );
                         } else {
-                          return PaymentWithCODSheet(shipmentCase: "CASE_1",);
+                          return PaymentWithCODSheet(
+                            shipmentCase: "CASE_1",
+                          );
                         }
                       } else {
                         // orderBloc.bookingAction();
@@ -317,12 +299,15 @@ class RoundTripCase {
               break;
             case "GO_TO_NEW_LOCATION":
               {
-                return GoToNewLocationSheet(orderStatus: orderStatus,);
+                return GoToNewLocationSheet(
+                  orderStatus: orderStatus,
+                );
               }
               break;
             default:
               {
                 print("test2");
+                orderBloc.getRide3();
                 return StreamBuilder(
                   stream: approvedCaptainBloc.checkUser,
                   builder: (BuildContext context,
@@ -378,7 +363,7 @@ class RoundTripCase {
                         );
                       } else {
                         orderBloc.getRide3();
-                        orderBloc.bookingAction();
+                        // orderBloc.bookingAction();
                         return LoadingDialogWidget();
                       }
                     });

@@ -106,6 +106,7 @@ class OrderProvider {
       "Authorization": "Bearer " + accessToken,
       "Accept": "application/json",
     });
+    print(response.statusCode);
     print(response.body);
     return RideModel.fromJson(jsonDecode(response.body));
   }
@@ -166,36 +167,12 @@ class OrderProvider {
       http.Response res = await http.Response.fromStream(response);
       print(res.body);
       orderBloc.getOrders("NOT_PAID");
-      orderBloc.getRide3();
 
-      // orderBloc.bookingAction2();
       return BookingAction.fromJson(jsonDecode(res.body));
     } else {
       print(response.reasonPhrase);
     }
 
-    // var acceptUrl = Constants.MAIN_URL + "booking/$bookingId/action";
-    // var request = await client.put(acceptUrl,
-    //     body: json.encode({
-    //       "proofs": [
-    //         {
-    //           "type": "PHOTO",
-    //           "reference": ref,
-    //           "image": {"name": sig, "size": "0"}
-    //         }
-    //       ],
-    //       "_method": "PUT"
-    //     }),
-    //     headers: {
-    //       "Authorization": "Bearer " + accessToken,
-    //       "Accept": "application/json",
-    //       'Content-Type': 'application/json'
-    //     });
-    // request.headers.addAll({
-    //   "Authorization": "Bearer " + accessToken,
-    //   "Accept": "application/json",
-    // });
-    // request.files.add(http.MultipartFile.fromString(
   }
 
   Future<void> setBookingPay(int bookingId, int price) async {

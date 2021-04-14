@@ -23,6 +23,9 @@ class PickedUpItemSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     unsuccessfulOrderBloc.unsuccessfulReasons("UNSUCCESSFUL_PICKUP");
+    if (shipmentCase == "ROUND_TRIP") {
+      orderBloc.getRide3();
+    }
 
     return SizedBox.expand(
       child: DraggableScrollableSheet(

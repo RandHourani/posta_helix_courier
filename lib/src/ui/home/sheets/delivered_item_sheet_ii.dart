@@ -305,6 +305,8 @@ class DeliveredItemSheet extends StatelessWidget {
                       ],
                     );
                   } else {
+                    // orderBloc.getRide3();
+
                     return Column(
                       children: [
                         Padding(
@@ -541,6 +543,7 @@ class DeliveredItemSheet extends StatelessWidget {
                     );
                   }
                 } else {
+                  // orderBloc.getRide3();
                   return Column(
                     children: [
                       Padding(
@@ -935,6 +938,9 @@ class DeliveredItemSheet extends StatelessWidget {
                   elevation: 3,
                   color: AppColors.DELIVERY_COLOR,
                   onPressed: () {
+                    if (shipmentCase == "ROUND_TRIP") {
+                      orderBloc.setOrderSheet("GO_TO_NEW_LOCATION");
+                    }
                     showDialog(
                         context: context,
                         builder: (_) => PodScreen(

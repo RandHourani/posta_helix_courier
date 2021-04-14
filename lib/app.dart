@@ -120,6 +120,9 @@ class App extends StatelessWidget {
           approvedCaptainBloc.checkUserAuth();
         }
         break;
+      case 'ORDER_ACTION':
+        {}
+        break;
       case 'GPS':
         {}
         break;
@@ -131,10 +134,17 @@ class App extends StatelessWidget {
         {}
         break;
       case 'CAPTAIN_CHANGED':
-        {}
+        {
+          orderBloc.getOrders("NOT_PAID");
+        }
         break;
       case 'CANCELLED':
         {}
+        break;
+      case 'APPROVED':
+        {
+          orderBloc.getRide3();
+        }
         break;
     }
   }
