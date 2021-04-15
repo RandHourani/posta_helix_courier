@@ -71,7 +71,7 @@ class DeliveredItemSheet extends StatelessWidget {
                 if (snapshot.data.data.bookings[orderBloc.getOrderIndex()].order
                     .roundTrip) {
                   if (snapshot.data.data.bookings[orderBloc.getOrderIndex()]
-                      .order.status ==
+                          .order.status ==
                       "PROCESSING_BACK") {
                     return Column(
                       children: [
@@ -846,7 +846,10 @@ class DeliveredItemSheet extends StatelessWidget {
                                   color: AppColors.TITLE_TEXT_COLOR,
                                   fontFamily: FontFamilies.POPPINS,
                                   fontSize:
-                                  (MediaQuery.of(context).size.height *
+                                  (MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height *
                                       0.018) +
                                       2,
                                 ),
@@ -874,7 +877,10 @@ class DeliveredItemSheet extends StatelessWidget {
                                   color: AppColors.dialogStatusBar,
                                   fontFamily: FontFamilies.POPPINS,
                                   fontSize:
-                                  (MediaQuery.of(context).size.height *
+                                  (MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height *
                                       0.015),
                                 ),
                               );

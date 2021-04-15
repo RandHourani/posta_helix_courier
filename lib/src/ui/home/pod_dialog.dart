@@ -263,45 +263,44 @@ class PodScreen extends StatelessWidget {
                                     FlutterStatusbarcolor.setStatusBarColor(
                                         AppColors.dialogStatusBar);
                                     showDialog<void>(
-                                        context: context,
-                                        barrierDismissible: false,
-                                        // user must tap button!
-                                        builder: (BuildContext context) {
-                                          return WillPopScope(
-                                              onWillPop: () {
-                                                FlutterStatusbarcolor
-                                                    .setStatusBarColor(
-                                                    Colors.white);
-                                                return Future.value(true);
-                                              },
-                                              child: AlertDialog(
-                                                contentPadding:
-                                                EdgeInsets.all(8),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                    BorderRadius.all(
-                                                        Radius.circular(
-                                                            15.0))),
-                                                content: Container(
-                                                  height: 50,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                    children: <Widget>[
-                                                      cameraNew(),
-                                                      VerticalDivider(
-                                                        color: AppColors
-                                                            .labelColor,
+                                            context: context,
+                                            barrierDismissible: false,
+                                            // user must tap button!
+                                            builder: (BuildContext context) {
+                                              return WillPopScope(
+                                                  onWillPop: () {
+                                                    FlutterStatusbarcolor
+                                                        .setStatusBarColor(
+                                                            Colors.white);
+                                                    return Future.value(true);
+                                                  },
+                                                  child: AlertDialog(
+                                                    contentPadding:
+                                                        EdgeInsets.all(8),
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    15.0))),
+                                                    content: Container(
+                                                      height: 50,
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceAround,
+                                                        children: <Widget>[
+                                                          cameraNew(),
+                                                          VerticalDivider(
+                                                            color: AppColors
+                                                                .labelColor,
+                                                          ),
+                                                          galleryNew(),
+                                                        ],
                                                       ),
-                                                      galleryNew(),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ));
-                                        })
-                                        .then((value) =>
-                                        FlutterStatusbarcolor
+                                                    ),
+                                                  ));
+                                            })
+                                        .then((value) => FlutterStatusbarcolor
                                             .setStatusBarColor(Colors.white));
                                   },
                                   child: Padding(

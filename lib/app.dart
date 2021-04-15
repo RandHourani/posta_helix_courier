@@ -81,10 +81,6 @@ class App extends StatelessWidget {
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
-        print(new DateTime.fromMillisecondsSinceEpoch(
-            message['data']['google.sent_time']));
-        print("DateTime.now()");
-        print(DateTime.now());
         orderBloc.setTimer(60 -
             DateTime.now()
                 .difference(new DateTime.fromMillisecondsSinceEpoch(

@@ -16,8 +16,9 @@ class CaptainAuthProvider {
 
   Future<LogInModel> checkAuth(Map<String, String> header) async {
     var response = await client.get(checkAuthUrl, headers: header);
-    if (response.statusCode == 401) {
+    if (response.statusCode != 200) {
       Utils.setScreen('/signIn');
+      print("invalid");
     } else {}
     return LogInModel.fromJson(jsonDecode(response.body));
   }
