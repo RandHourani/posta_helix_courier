@@ -2,9 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_dash/flutter_dash.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:posta_courier/models/registered_captain_model.dart';
 import 'package:posta_courier/models/ride_model.dart';
 import 'package:posta_courier/src/blocs/home_blocs/approved_captain_bloc.dart';
@@ -17,7 +14,6 @@ import 'package:posta_courier/src/utils/util.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:intl/intl.dart';
 import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/get_captain_data_bloc.dart';
-
 import 'finding_order_sheet.dart';
 
 class NewOrderSuggestionSheet extends StatelessWidget {
@@ -130,10 +126,7 @@ class NewOrderSuggestionSheet extends StatelessWidget {
               fontWeight: FontWeight.w500,
               color: AppColors.MAIN_COLOR,
               fontFamily: FontFamilies.POPPINS,
-              fontSize: (MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.018) + 2,
+              fontSize: (MediaQuery.of(context).size.height * 0.018) + 2,
             ),
           ),
         ),
@@ -179,8 +172,7 @@ class NewOrderSuggestionSheet extends StatelessWidget {
                     Container(
                       width: MediaQuery.of(context).size.width / 1.45,
                       child: Text(
-                        snapshot
-                            .booking.pickupLocationName,
+                        snapshot.booking.pickupLocationName,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: AppColors.TITLE_TEXT_COLOR,
@@ -196,14 +188,16 @@ class NewOrderSuggestionSheet extends StatelessWidget {
                     Container(
                       width: MediaQuery.of(context).size.width / 1.45,
                       child: Text(
-                        snapshot.booking
-                            .pickupLocationDetails,
+                        snapshot.booking.pickupLocationDetails,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: AppColors.dialogStatusBar,
                           fontFamily: FontFamilies.POPPINS,
                           fontSize:
-                              (MediaQuery.of(context).size.height * 0.015),
+                          (MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.015),
                         ),
                       ),
                     ),
@@ -255,8 +249,7 @@ class NewOrderSuggestionSheet extends StatelessWidget {
                     Container(
                       width: MediaQuery.of(context).size.width / 1.45,
                       child: Text(
-                        snapshot
-                            .booking.pullDownLocationName,
+                        snapshot.booking.pullDownLocationName,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: AppColors.TITLE_TEXT_COLOR,
@@ -272,14 +265,16 @@ class NewOrderSuggestionSheet extends StatelessWidget {
                     Container(
                       width: MediaQuery.of(context).size.width / 1.45,
                       child: Text(
-                        snapshot.booking
-                            .pullDownLocationDetails,
+                        snapshot.booking.pullDownLocationDetails,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: AppColors.dialogStatusBar,
                           fontFamily: FontFamilies.POPPINS,
                           fontSize:
-                              (MediaQuery.of(context).size.height * 0.015),
+                          (MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.015),
                         ),
                       ),
                     ),
@@ -330,8 +325,7 @@ class NewOrderSuggestionSheet extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            Utils.timeFormat1(snapshot
-                                .booking.dateTime)
+                            Utils.timeFormat1(snapshot.booking.dateTime)
                                 .toString(),
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
@@ -368,8 +362,7 @@ class NewOrderSuggestionSheet extends StatelessWidget {
                 elevation: 3,
                 color: Colors.white,
                 onPressed: () {
-                  orderBloc.rejectOrderSuggestion(
-                      snapshot.booking.id);
+                  orderBloc.rejectOrderSuggestion(snapshot.booking.id);
                   orderBloc.setOrderSheet("NULL");
                   checkCaptainDataBloc.resetSuggestion();
                 },
@@ -394,8 +387,7 @@ class NewOrderSuggestionSheet extends StatelessWidget {
                   elevation: 3,
                   color: AppColors.MAIN_COLOR,
                   onPressed: () {
-                    orderBloc.acceptOrderSuggestion(
-                        snapshot.booking.id);
+                    orderBloc.acceptOrderSuggestion(snapshot.booking.id);
                     orderBloc.setOrderSheet("NULL");
                     checkCaptainDataBloc.resetSuggestion();
                   },

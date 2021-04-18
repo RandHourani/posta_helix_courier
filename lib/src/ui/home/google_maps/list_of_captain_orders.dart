@@ -34,24 +34,15 @@ class CaptainOrders extends StatelessWidget {
     );
   }
 
-  ListView orderList( OrderModel orders) {
+  ListView orderList(OrderModel orders) {
     return ListView.builder(
       shrinkWrap: true,
       scrollDirection: Axis.horizontal,
       itemCount: orders.data.data.length,
       itemBuilder: (BuildContext context, int index) {
-        return orderContainer(context, orders.data.data[index], index);
-      },
-    );
-  }
-
-  ListView waitingList() {
-    return ListView.builder(
-      shrinkWrap: true,
-      scrollDirection: Axis.horizontal,
-      itemCount: orders.data.data.length,
-      itemBuilder: (BuildContext context, int index) {
-        return waitingContainer(context, orders.data.data[index], index);
+        return orders.data.data[index].waiting
+            ? waitingContainer(context, orders.data.data[index], index)
+            : orderContainer(context, orders.data.data[index], index);
       },
     );
   }
@@ -72,7 +63,7 @@ class CaptainOrders extends StatelessWidget {
       },
       child: Container(
           width: MediaQuery.of(context).size.width / 2.2,
-          margin: EdgeInsets.only(left: 10, right: 10),
+          margin: EdgeInsets.only(left: 10, right: 10, bottom: 20),
           decoration: new BoxDecoration(
             color: Colors.white,
             borderRadius: new BorderRadius.all(
@@ -82,23 +73,26 @@ class CaptainOrders extends StatelessWidget {
           child: Stack(
             children: [
               Container(
-                padding:
-                    EdgeInsets.only(top: 10, bottom: 10, left: 5, right: 5),
+                padding: EdgeInsets.only(top: 10, left: 5, right: 5),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     SvgPicture.asset("assets/images/order_card_icon.svg"),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          orders.passenger.firstName +
-                              " " +
-                              orders.passenger.lastName,
-                          style: TextStyle(
-                              color: AppColors.TITLE_TEXT_COLOR,
-                              fontFamily: FontFamilies.POPPINS,
-                              fontSize: 12),
+                        Padding(
+                          padding: EdgeInsets.only(right: 2, left: 7),
+                          child: Text(
+                            orders.passenger.firstName +
+                                " " +
+                                orders.passenger.lastName,
+                            style: TextStyle(
+                                color: AppColors.COMPLETED_INFO_TEXT,
+                                fontFamily: FontFamilies.POPPINS,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                         SizedBox(
                           width: 10,
@@ -108,15 +102,17 @@ class CaptainOrders extends StatelessWidget {
                           style: TextStyle(
                               color: AppColors.MAIN_COLOR,
                               fontFamily: FontFamilies.POPPINS,
-                              fontSize: 12),
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
                     Text(orders.status,
                         style: TextStyle(
-                            color: AppColors.TITLE_TEXT_COLOR,
-                            fontFamily: FontFamilies.POPPINS,
-                            fontSize: 12)),
+                          color: AppColors.COMPLETED_INFO_TEXT,
+                          fontFamily: FontFamilies.POPPINS,
+                          fontSize: 10,
+                        )),
                   ],
                 ),
               ),
@@ -149,31 +145,39 @@ class CaptainOrders extends StatelessWidget {
               Radius.circular(15.0),
             ),
             border: Border.all(color: CardColors.color1),
-            image: DecorationImage(
-              image: AssetImage("assets/images/waiting.png"),
-              fit: BoxFit.cover,
-            ),
+            /*        image: DecorationImage(
+              image: AssetImage("assets/images/waiting_bac.png"),
+              fit: BoxFit.fill,
+            ),*/
           ),
           child: Stack(
             children: [
               Container(
                 padding:
-                    EdgeInsets.only(top: 10, bottom: 10, left: 5, right: 5),
+                EdgeInsets.only(top: 10, bottom: 22, left: 5, right: 5),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    SvgPicture.asset("assets/images/order_card_icon.svg"),
+                    SvgPicture.asset(
+                      "assets/images/car.svg",
+                      width: 30,
+                      height: 30,
+                    ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          orders.passenger.firstName +
-                              " " +
-                              orders.passenger.lastName,
-                          style: TextStyle(
-                              color: AppColors.TITLE_TEXT_COLOR,
-                              fontFamily: FontFamilies.POPPINS,
-                              fontSize: 12),
+                        Padding(
+                          padding: EdgeInsets.only(right: 2, left: 7),
+                          child: Text(
+                            orders.passenger.firstName +
+                                " " +
+                                orders.passenger.lastName,
+                            style: TextStyle(
+                                color: AppColors.COMPLETED_INFO_TEXT,
+                                fontFamily: FontFamilies.POPPINS,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                         SizedBox(
                           width: 10,
@@ -183,15 +187,17 @@ class CaptainOrders extends StatelessWidget {
                           style: TextStyle(
                               color: AppColors.MAIN_COLOR,
                               fontFamily: FontFamilies.POPPINS,
-                              fontSize: 12),
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
                     Text(orders.status,
                         style: TextStyle(
-                            color: AppColors.TITLE_TEXT_COLOR,
-                            fontFamily: FontFamilies.POPPINS,
-                            fontSize: 12)),
+                          color: AppColors.COMPLETED_INFO_TEXT,
+                          fontFamily: FontFamilies.POPPINS,
+                          fontSize: 10,
+                        )),
                   ],
                 ),
               ),
@@ -206,11 +212,34 @@ class CaptainOrders extends StatelessWidget {
                   height: 15,
                 ),
               ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: 20,
+                  padding: EdgeInsets.only(top: 2),
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
+                  decoration: BoxDecoration(
+                    color: CardColors.color1,
+                    borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(15),
+                      bottomLeft: Radius.circular(15),
+                    ),
+                  ),
+                  child: Text(
+                    "waiting",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: FontFamilies.POPPINS,
+                        fontSize: 10),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
             ],
           )),
     );
   }
-
-
-
 }
