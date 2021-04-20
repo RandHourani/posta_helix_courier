@@ -14,9 +14,11 @@ import 'package:posta_courier/src/blocs/home_blocs/google_map_bloc.dart';
 import 'package:posta_courier/src/blocs/home_blocs/online_offline_bloc.dart';
 import 'package:posta_courier/src/blocs/home_blocs/order_bloc.dart';
 import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/get_captain_data_bloc.dart';
+import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/rout_sceen.dart';
 import 'package:posta_courier/src/shipment_cases/case_1.dart';
 import 'package:posta_courier/src/shipment_cases/round_trip_case_1.dart';
 import 'package:posta_courier/src/ui/home/google_maps/list_of_captain_orders.dart';
+import 'package:posta_courier/src/ui/signIn_and_createAccount_screens/signIn_screen.dart';
 import 'package:posta_courier/src/ui/widgets/error_going_offline_dialog_screen.dart';
 import 'package:posta_courier/src/ui/home/payment/payment_with_cod_sheet.dart';
 import 'package:posta_courier/src/ui/home/payment/payment_without_cod_sheet.dart';
@@ -75,7 +77,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // googleMapBloc.getUserLocation();
-    Utils.setScreen('/home');
     _firebaseMessaging.getToken().then((token) {
       approvedCaptainBloc.setNotificationToken(token);
     });
@@ -87,6 +88,40 @@ class HomeScreen extends StatelessWidget {
         LifecycleEventHandler(resumeCallBack: () async => "resume"));
 
     GoogleMapController _controller;
+    return StreamBuilder(
+      stream: screensBloc.screen,
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        return checkAuth(context, snapshot.data);
+      },
+    );
+  }
+
+  checkAuth(context, String status) {
+    switch (status) {
+      case '/home':
+        {
+          return home();
+        }
+        break;
+
+      case '/signIn':
+        {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return SignInScreen();
+          }));
+          // return SignInScreen();
+        }
+        break;
+      default:
+        {
+          return home();
+        }
+    }
+  }
+
+  WillPopScope home() {
+    Utils.setScreen('/home');
+
     return new WillPopScope(
         onWillPop: () {
           //   // this is the block you need
@@ -2132,3 +2167,4 @@ class HomeScreen extends StatelessWidget {
         ));
   }
 }
+

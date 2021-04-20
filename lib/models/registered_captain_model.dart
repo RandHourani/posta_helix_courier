@@ -7,6 +7,9 @@ class LogInModel {
   LogInModel({this.data, this.message});
 
   factory LogInModel.fromJson(Map<String, dynamic> json) {
+    if (json['data'] == null) {
+      print("invalid");
+    } else {}
     return LogInModel(
       data: json['data'] == null ? null : DataDetails.fromJson(json['data']),
       message: json['message'] as String,

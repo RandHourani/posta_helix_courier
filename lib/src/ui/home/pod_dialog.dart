@@ -508,7 +508,6 @@ class PodScreen extends StatelessWidget {
                                         orderBloc.getOrders("NOT_PAID");
                                         Navigator.of(context).pop(true);
                                         _showDialog(context);
-                                        orderBloc.getRide3();
                                       },
                                       child: Padding(
                                         padding: EdgeInsets.only(

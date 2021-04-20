@@ -2,7 +2,9 @@
 import 'package:posta_courier/models/get_captain_model.dart';
 import 'package:posta_courier/models/registered_captain_model.dart';
 import 'package:posta_courier/src/blocs/home_blocs/online_offline_bloc.dart';
+import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/rout_sceen.dart';
 import 'package:posta_courier/src/reasources/repository.dart';
+import 'package:posta_courier/src/utils/util.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:posta_courier/src/blocs/home_blocs/approved_captain_bloc.dart';
@@ -48,11 +50,20 @@ class IncompleteBloc {
     String accessToken = await storage.read(key: "accessToken");
     LogInModel user = await _repository.checkAuth({
       "Authorization": "Bearer " + accessToken,
-      "version_code": 48.toString()
+      "Accept": "application/json",
     });
+    // print(user.data.id);
+    //  if(user==null)
+    //    {  Utils.setScreen('/signIn');
+    //    screensBloc.setScreen('/signIn');
+    //    print("invalid");
+    //    print(user.data);
+    //
+    //    }
+    //  else {
     _checkAuth.add(user);
 
-    print(_checkAuth.value.data.lastCheck);
+    // print(_checkAuth.value.data.lastCheck);
     if (_checkAuth.value.data.activeSuggestion != null) {
       print("sugg");
       _activeSugg.add(_checkAuth.value.data.activeSuggestion);

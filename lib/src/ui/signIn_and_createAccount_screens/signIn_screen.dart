@@ -20,7 +20,7 @@ import 'package:posta_courier/src/blocs/home_blocs/weekly_report_bloc.dart';
 import 'package:country_codes/country_codes.dart';
 import 'package:posta_courier/src/blocs/home_blocs/wallet_bloc.dart';
 import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/sign_up_bloc.dart';
-import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/forgot_pass_bloc.dart';
+import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/rout_sceen.dart';
 import 'package:posta_courier/src/ui/widgets/country_code_dialog.dart';
 import 'package:posta_courier/src/ui/widgets/country_code.dart';
 
@@ -850,11 +850,12 @@ class SignInScreen extends StatelessWidget {
                       if (snapshot.hasData) {
                         if (snapshot.data.data.approvedAt != null) {
                           signInBloc.resetCountry();
-                      googleMapBloc.getUserLocation();
-                      // approvedCaptainBloc.checkUserAuth();
-                      // walletBloc.walletAccount();
-                      return HomeScreen();
-                    }
+                          googleMapBloc.getUserLocation();
+                          // approvedCaptainBloc.checkUserAuth();
+                          // walletBloc.walletAccount();
+                          screensBloc.setScreen('/home');
+                          return HomeScreen();
+                        }
                     else if (snapshot.data.data.car.car.isEmpty||
                         snapshot.data.data.idCardBack == null ||
                         snapshot.data.data.idCardFront == null ||
@@ -873,8 +874,7 @@ class SignInScreen extends StatelessWidget {
                   }
                   else
                     {
-
-                      return CompletedInfoScreen();
+                      return SignInScreen();
                     }}
 
                 );

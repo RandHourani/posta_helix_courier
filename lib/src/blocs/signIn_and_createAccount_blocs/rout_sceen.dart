@@ -16,6 +16,10 @@ class ScreensBloc {
     }
   }
 
+  setScreen(String status) {
+    _screen.add(status);
+  }
+
   getScreen() {
     return _screen.value;
   }

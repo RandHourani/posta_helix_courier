@@ -178,7 +178,6 @@ class CaptainProvider {
           "Accept": "application/json"
         });
 
-    print(response.statusCode.toString());
     return CaptainData.fromJson(jsonDecode(response.body));
   }
 }

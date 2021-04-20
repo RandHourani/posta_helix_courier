@@ -167,6 +167,7 @@ class OrderProvider {
       http.Response res = await http.Response.fromStream(response);
       print(res.body);
       orderBloc.getOrders("NOT_PAID");
+      orderBloc.getRide3();
 
       return BookingAction.fromJson(jsonDecode(res.body));
     } else {

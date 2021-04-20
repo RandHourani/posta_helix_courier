@@ -5,6 +5,8 @@ import 'package:posta_courier/models/online_offline_model.dart';
 import 'package:posta_courier/models/registered_captain_model.dart';
 import 'package:posta_courier/src/constants/constants.dart';
 import 'package:posta_courier/src/utils/util.dart';
+import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/rout_sceen.dart';
+import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/signIn_bloc.dart';
 
 class CaptainAuthProvider {
   Client client = Client();
@@ -18,9 +20,12 @@ class CaptainAuthProvider {
     var response = await client.get(checkAuthUrl, headers: header);
     if (response.statusCode != 200) {
       Utils.setScreen('/signIn');
+      screensBloc.setScreen('/signIn');
+      signInBloc.setLoginValidation();
       print("invalid");
-    } else {}
-    return LogInModel.fromJson(jsonDecode(response.body));
+    } else {
+      return LogInModel.fromJson(jsonDecode(response.body));
+    }
   }
 
   Future<CaptainCarsData> captainCarList(Map<String, String> header) async {

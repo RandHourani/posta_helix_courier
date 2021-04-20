@@ -26,7 +26,6 @@ import 'package:posta_courier/src/blocs/home_blocs/approved_captain_bloc.dart';
 import 'package:posta_courier/src/blocs/home_blocs/google_map_bloc.dart';
 import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/get_captain_data_bloc.dart';
 import 'package:posta_courier/models/notification_model.dart';
-import 'package:posta_courier/src/ui/home/google_maps/home.dart';
 
 class App extends StatelessWidget {
 //   String screen;
