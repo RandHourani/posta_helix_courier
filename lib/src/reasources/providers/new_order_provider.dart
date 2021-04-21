@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:posta_courier/src/utils/util.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:http/http.dart';
 import 'package:posta_courier/models/booking_action_model.dart';
 import 'package:posta_courier/models/order_model.dart';
@@ -173,7 +172,6 @@ class OrderProvider {
     } else {
       print(response.reasonPhrase);
     }
-
   }
 
   Future<void> setBookingPay(int bookingId, int price) async {
