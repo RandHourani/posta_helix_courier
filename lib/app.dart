@@ -28,8 +28,6 @@ import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/get_capta
 import 'package:posta_courier/models/notification_model.dart';
 
 class App extends StatelessWidget {
-//   String screen;
-// App({this.screen});
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   @override

@@ -597,11 +597,11 @@ class DeliveredItemSheet extends StatelessWidget {
                                           height: 48,
                                           child: Container(
                                               child: Image.asset(
-                                                "assets/images/direction.png",
-                                                width: 40,
-                                                height: 40,
-                                                // color: AppColors.MAIN_COLOR,
-                                              )),
+                                            "assets/images/whatsapp.png",
+                                            width: 40,
+                                            height: 40,
+                                            // color: AppColors.MAIN_COLOR,
+                                          )),
                                         ),
                                       );
                                     } else {
@@ -612,7 +612,7 @@ class DeliveredItemSheet extends StatelessWidget {
                                         height: 48,
                                         child: Container(
                                             child: Image.asset(
-                                              "assets/images/direction.png",
+                                              "assets/images/whatsapp.png",
                                               width: 40,
                                               height: 40,
                                               // color: AppColors.MAIN_COLOR,
