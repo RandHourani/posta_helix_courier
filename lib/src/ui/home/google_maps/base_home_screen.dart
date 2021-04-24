@@ -14,7 +14,7 @@ import 'package:posta_courier/src/blocs/home_blocs/google_map_bloc.dart';
 import 'package:posta_courier/src/blocs/home_blocs/online_offline_bloc.dart';
 import 'package:posta_courier/src/blocs/home_blocs/order_bloc.dart';
 import 'package:posta_courier/src/blocs/signIn_and_createAccount_blocs/get_captain_data_bloc.dart';
-import 'package:posta_courier/src/shipment_cases/case_1.dart';
+import 'package:posta_courier/src/shipment_cases/simple_case.dart';
 import 'package:posta_courier/src/shipment_cases/round_trip_case_1.dart';
 import 'package:posta_courier/src/ui/home/google_maps/home_screen.dart';
 import 'package:posta_courier/src/ui/home/google_maps/list_of_captain_orders.dart';

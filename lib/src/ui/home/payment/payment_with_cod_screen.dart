@@ -452,7 +452,7 @@ class PaymentScreen extends StatelessWidget {
       builder: (BuildContext context) {
         Future.delayed(Duration(seconds: 3), () {
           Navigator.of(context).pop(true);
-          orderBloc.getRide3();
+          // orderBloc.getRide3();
 
           paymentBloc.resetPrice();
         });
